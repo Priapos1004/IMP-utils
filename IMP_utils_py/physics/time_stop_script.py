@@ -37,23 +37,13 @@ from IMP_utils_py.config.logging import setup_logger
 logger = setup_logger()
 
 ### periods calculation functions
-def calc_periods(data: list):
-    periods = [data[i]-data[i-1] if i!=0 else data[i] for i in range(len(data))]
-    return periods
-
 def calc_half_periods(data: list):
-    periods = [data[i] for i in range(1, len(data), 2)]
-    periods = calc_periods(periods)
+    periods = [data[i]+data[i-1] for i in range(1, len(data), 2)]
     periods += [None]*(len(data)-len(periods))
     return periods
 
 def calc_half_periods_v2(data: list):
-    periods = []
-    for i in range(1, len(data)):
-        if i==1:
-            periods.append(data[i])
-        else:
-            periods.append(data[i]-data[i-2])
+    periods = [data[i]+data[i-1] for i in range(1, len(data))]
     periods += [None]*(len(data)-len(periods))
     return periods
 
@@ -121,11 +111,17 @@ def time_stop(raw_data_path: str, evaluation_data_path: str):
             else:
                 times.append(time.time()-start_time)
                 logger.info(f"Round: {len(times)}")
-        if key==97: #  press "a" to stop
+                start_time = time.time()
+        elif key==97: #  press "a" to stop
             logger.info("... finished \n")
             break
 
-    df_raw_data = pd.DataFrame({"periods": calc_periods(times), "half periods": calc_half_periods(times), "half periods v2": calc_half_periods_v2(times)})
+        elif key==112: #  press "p" to pause
+            logger.info("paused")
+            start_press = False
+
+
+    df_raw_data = pd.DataFrame({"periods": times, "half periods": calc_half_periods(times), "half periods v2": calc_half_periods_v2(times)})
     df_evaluation = eval_df(df_raw_data)
 
     df_raw_data.to_csv(raw_data_path)
