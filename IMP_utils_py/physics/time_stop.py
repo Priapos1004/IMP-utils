@@ -24,7 +24,6 @@ NOTE:
     - python version 3.9 and higher
 """
 
-import logging
 import sys
 import time
 import tty
@@ -32,19 +31,10 @@ import tty
 import numpy as np  # pip install numpy
 import pandas as pd  # pip install pandas
 
+from IMP_utils_py.config.logging import setup_logger
+
+
 ### logging setup
-def setup_logger(name=__name__):
-    logger = logging.getLogger(name)
-    logger.setLevel(logging.DEBUG)
-    
-    c_handler = logging.StreamHandler(sys.stdout)
-
-    c_format = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
-    c_handler.setFormatter(c_format)
-
-    logger.addHandler(c_handler)
-    return logger
-
 logger = setup_logger()
 
 ### periods calculation functions
@@ -92,7 +82,7 @@ def eval(data: pd.Series) -> tuple[int, float, float, float]:
     return len(data), avg_data, std_data, std_avg_data
 
 ### main program
-if __name__ == "__main__":
+def time_stop():
     tty.setcbreak(sys.stdin)  # needed for keyboard input
 
     times: list[float] = []
