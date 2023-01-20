@@ -3,7 +3,7 @@ Instructions for "time_stop" function:
 
 1. you can start the time measurement with the "space" key and every time you click it, the time is taken
 
-2. to end the measurement press "a"
+2. to end the measurement press "a", to pause the measurement press "p" and start it with "space" again
 
 3. the program will automatically create two files "raw_data.csv" and "evaluation_data.csv" with the data and its evaluation
 
