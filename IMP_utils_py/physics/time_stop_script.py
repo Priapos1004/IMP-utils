@@ -28,11 +28,11 @@ import sys
 import time
 import tty
 
+import gin
 import numpy as np  # pip install numpy
 import pandas as pd  # pip install pandas
 
 from IMP_utils_py.config.logging import setup_logger
-
 
 ### logging setup
 logger = setup_logger()
@@ -76,13 +76,22 @@ def eval(data: pd.Series) -> tuple[int, float, float, float]:
     returns tuple (number of values, average, std, std of average)
     """
     data = list(data.dropna()) # clear list from None values
+
+    # special cases
+    if not data:
+        return 0, None, None, None
+    elif len(data)==1:
+        return 1, data[0], 0, 0
+
     avg_data = np.mean(data)
     std_data = std(data, avg_data)
     std_avg_data = std_data/np.sqrt(len(data))
+
     return len(data), avg_data, std_data, std_avg_data
 
 ### main program
-def time_stop() -> tuple[pd.DataFrame, pd.DataFrame]:
+@gin.configurable
+def time_stop(raw_data_path: str, evaluation_data_path: str) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     returns raw_data and evaluation_data dataframes (also saves them as csv)
     """
@@ -121,12 +130,14 @@ def time_stop() -> tuple[pd.DataFrame, pd.DataFrame]:
     df_evaluation["Standardabweichung"] = [ev[2] for ev in eval_list]
     df_evaluation["Vertrauensbereich"] = [ev[3] for ev in eval_list]
 
-    df_raw_data.to_csv("raw_data.csv")
-    df_evaluation.to_csv("evaluation_data.csv")
+    df_raw_data.to_csv(raw_data_path)
+    df_evaluation.to_csv(evaluation_data_path)
 
     logger.info("data files are created and saved")
 
     return df_raw_data, df_evaluation
 
-if __name__ == "__main__":
-    time_stop()
+### eval program
+@gin.configurable
+def eval_raw_data(raw_data_path: str, evaluation_data_path: str):
+    pass

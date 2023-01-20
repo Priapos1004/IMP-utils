@@ -31,3 +31,7 @@ from IMP_utils_py.physics import time_stop
 
 time_stop()
 ```
+
+```
+python IMP_utils_py/cli.py --mode=time-stop --gin_file=IMP_utils_py/config/config.gin
+```

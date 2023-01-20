@@ -1,0 +1,8 @@
+TIMESTOP_RAW_DATA_PATH = "data/raw_data_timestop.csv"
+TIMESTOP_EVALUATION_DATA_PATH = "data/evaluation_data_timestop.csv"
+
+time_stop.raw_data_path = %TIMESTOP_RAW_DATA_PATH
+time_stop.evaluation_data_path = %TIMESTOP_EVALUATION_DATA_PATH
+
+eval_raw_data.raw_data_path = %TIMESTOP_RAW_DATA_PATH
+eval_raw_data.evaluation_data_path = %TIMESTOP_EVALUATION_DATA_PATH

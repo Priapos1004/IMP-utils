@@ -1,1 +1,1 @@
-from .time_stop import time_stop
+from .time_stop_script import eval_raw_data, time_stop

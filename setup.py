@@ -17,6 +17,9 @@ setup(
     install_requires=[
         "pandas",
         "numpy",
+        "ipykernel",
+        "gin-config",
+        "absl-py",
     ],
     extras_require={
         "test": ["pytest", "pylint!=2.5.0", "isort", "refurb"],
