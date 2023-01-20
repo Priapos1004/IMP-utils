@@ -24,14 +24,16 @@ cd IMP-utils/
 pip install -e .
 ```
 
-4. now you can import the package, e.g.:
+4. now you can use the package:
 
-```
-from IMP_utils_py.physics import time_stop
-
-time_stop()
-```
+For running the time-stop script, execute the following command in the terminal (current working directory: `IMP-utils` folder)
 
 ```
 python IMP_utils_py/cli.py --mode=time-stop --gin_file=IMP_utils_py/config/config.gin
+```
+
+For evaluating the raw data, execute the following command in the terminal (current working directory: `IMP-utils` folder)
+
+```
+python IMP_utils_py/cli.py --mode=eval-raw-data --gin_file=IMP_utils_py/config/config.gin
 ```

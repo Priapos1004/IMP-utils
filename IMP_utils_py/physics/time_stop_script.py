@@ -69,7 +69,7 @@ def std(data: list, mean: float) -> float:
     sigma = np.sqrt(sum/(len(data)-1))
     return sigma
 
-def eval(data: pd.Series) -> tuple[int, float, float, float]:
+def calc_metrics(data: pd.Series) -> tuple[int, float, float, float]:
     """
     returns tuple (number of values, average, std, std of average)
     """
@@ -86,6 +86,17 @@ def eval(data: pd.Series) -> tuple[int, float, float, float]:
     std_avg_data = std_data/np.sqrt(len(data))
 
     return len(data), avg_data, std_data, std_avg_data
+
+def eval_df(df: pd.DataFrame) -> pd.DataFrame:
+    columns_metrics = [calc_metrics(df[col]) for col in df.columns]
+
+    df_evaluation = pd.DataFrame({"counting": df.columns})
+    df_evaluation["Messwerte Anzahl"] = [ev[0] for ev in columns_metrics]
+    df_evaluation["Mittelwert"] = [ev[1] for ev in columns_metrics]
+    df_evaluation["Standardabweichung"] = [ev[2] for ev in columns_metrics]
+    df_evaluation["Vertrauensbereich"] = [ev[3] for ev in columns_metrics]
+
+    return df_evaluation
 
 ### main program
 @gin.configurable
@@ -116,17 +127,7 @@ def time_stop(raw_data_path: str, evaluation_data_path: str) -> tuple[pd.DataFra
             break
 
     df_raw_data = pd.DataFrame({"periods": calc_periods(times), "half periods": calc_half_periods(times), "half periods v2": calc_half_periods_v2(times)})
-    
-    eval_p = eval(df_raw_data["periods"])
-    eval_hp = eval(df_raw_data["half periods"])
-    eval_hp_v2 = eval(df_raw_data["half periods v2"])
-    eval_list = [eval_p, eval_hp, eval_hp_v2]
-
-    df_evaluation = pd.DataFrame({"counting": ["periods", "half periods", "half periods v2"]})
-    df_evaluation["Messwerte Anzahl"] = [ev[0] for ev in eval_list]
-    df_evaluation["Mittelwert"] = [ev[1] for ev in eval_list]
-    df_evaluation["Standardabweichung"] = [ev[2] for ev in eval_list]
-    df_evaluation["Vertrauensbereich"] = [ev[3] for ev in eval_list]
+    df_evaluation = eval_df(df_raw_data)
 
     df_raw_data.to_csv(raw_data_path)
     df_evaluation.to_csv(evaluation_data_path)
@@ -138,4 +139,8 @@ def time_stop(raw_data_path: str, evaluation_data_path: str) -> tuple[pd.DataFra
 ### eval program
 @gin.configurable
 def eval_raw_data(raw_data_path: str, evaluation_data_path: str):
-    pass
+    logger.info("start reading raw data")
+    df_raw_data = pd.read_csv(raw_data_path, index_col=0)
+    df_evaluation = eval_df(df_raw_data)
+    df_evaluation.to_csv(evaluation_data_path)
+    logger.info("evaluation file created and saved")
