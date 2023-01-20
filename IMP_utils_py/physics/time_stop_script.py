@@ -43,9 +43,7 @@ def calc_periods(data: list):
     return periods
 
 def calc_half_periods(data: list):
-    periods = []
-    for i in range(1, len(data), 2):
-        periods.append(data[i])
+    periods = [data[i] for i in range(1, len(data), 2)]
     periods = calc_periods(periods)
     periods += [None]*(len(data)-len(periods))
     return periods
