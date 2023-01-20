@@ -17,7 +17,7 @@ setup(
     install_requires=[
         "pandas",
         "numpy",
-        "ipykernel",
+        #"ipykernel",
         "gin-config",
         "absl-py",
     ],

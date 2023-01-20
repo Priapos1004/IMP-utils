@@ -1,16 +1,15 @@
 """
 Instructions for "time_stop" function:
 
-1. check that you have "pandas" and "numpy" installed
-(e.g. you can use "pip install pandas" and "pip install numpy" in the terminal)
+1. you can start the time measurement with the "space" key and every time you click it, the time is taken
 
-2. run the code (e.g. in the terminal with "python <file path>")
+2. to end the measurement press "a"
 
-3. you can start the time measurement with the "space" key and every time you click it, the time is taken
+3. the program will automatically create two files "raw_data.csv" and "evaluation_data.csv" with the data and its evaluation
 
-4. to end the measurement press "a"
+Instructions for "eval_raw_data" function:
 
-5. the program will automatically create two files "raw_data.csv" and "evaluation_data.csv" with the data and its evaluation
+- the raw data will be evaluated and as an evaluation file saved (old evaluation file will be overwritten)
 
 INFO:
     the three counting types are (all will be shown in raw and evaluation data):
@@ -100,7 +99,7 @@ def eval_df(df: pd.DataFrame) -> pd.DataFrame:
 
 ### main program
 @gin.configurable
-def time_stop(raw_data_path: str, evaluation_data_path: str) -> tuple[pd.DataFrame, pd.DataFrame]:
+def time_stop(raw_data_path: str, evaluation_data_path: str):
     """
     returns raw_data and evaluation_data dataframes (also saves them as csv)
     """
@@ -133,8 +132,6 @@ def time_stop(raw_data_path: str, evaluation_data_path: str) -> tuple[pd.DataFra
     df_evaluation.to_csv(evaluation_data_path)
 
     logger.info("data files are created and saved")
-
-    return df_raw_data, df_evaluation
 
 ### eval program
 @gin.configurable
