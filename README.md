@@ -12,7 +12,7 @@ stuff to make your life easier
 git clone https://github.com/Priapos1004/IMP-utils
 ```
 
-2. go into the `IMP-utils` folder (following command for Unix terminal)
+2. go into the `IMP-utils` folder
 
 ```
 cd IMP-utils/

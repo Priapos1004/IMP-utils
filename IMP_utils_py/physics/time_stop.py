@@ -1,5 +1,5 @@
 """
-Instructions:
+Instructions for "time_stop" function:
 
 1. check that you have "pandas" and "numpy" installed
 (e.g. you can use "pip install pandas" and "pip install numpy" in the terminal)
@@ -82,7 +82,10 @@ def eval(data: pd.Series) -> tuple[int, float, float, float]:
     return len(data), avg_data, std_data, std_avg_data
 
 ### main program
-def time_stop():
+def time_stop() -> tuple[pd.DataFrame, pd.DataFrame]:
+    """
+    returns raw_data and evaluation_data dataframes (also saves them as csv)
+    """
     tty.setcbreak(sys.stdin)  # needed for keyboard input
 
     times: list[float] = []
@@ -122,3 +125,8 @@ def time_stop():
     df_evaluation.to_csv("evaluation_data.csv")
 
     logger.info("data files are created and saved")
+
+    return df_raw_data, df_evaluation
+
+if __name__ == "__main__":
+    time_stop()
