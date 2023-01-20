@@ -1,2 +1,2 @@
 # IMP-utils
-scripts to make your life easier
+stuff to make your life easier
