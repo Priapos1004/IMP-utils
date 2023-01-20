@@ -134,4 +134,4 @@ dmypy.json
 .LSOverride
 
 # End of https://www.gitignore.io/api/python
-/data
+/data/*
