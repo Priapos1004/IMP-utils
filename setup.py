@@ -11,6 +11,7 @@ setup(
     description="stuff to make your IMP life easier",
     long_description=long_description,
     long_description_content_type="text/markdown",
+    python_requires='>=3.9',
     packages=find_packages(),
     package_data={},
     scripts=[],
