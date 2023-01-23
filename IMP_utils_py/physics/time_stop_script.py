@@ -25,7 +25,14 @@ NOTE:
 
 import sys
 import time
-import tty
+
+SYSTEM: str = ""
+try:
+    import tty  # MacOS
+    SYSTEM = "MacOS"
+except:
+    import keyboard  # Windows
+    SYSTEM = "Windows"
 
 import gin
 import numpy as np  # pip install numpy
@@ -87,12 +94,8 @@ def eval_df(df: pd.DataFrame) -> pd.DataFrame:
 
     return df_evaluation
 
-### main program
-@gin.configurable
-def time_stop(raw_data_path: str, evaluation_data_path: str):
-    """
-    returns raw_data and evaluation_data dataframes (also saves them as csv)
-    """
+### keyboard input functions
+def keyboard_input_MacOS() -> list[float]:
     tty.setcbreak(sys.stdin)  # needed for keyboard input
 
     times: list[float] = []
@@ -119,6 +122,64 @@ def time_stop(raw_data_path: str, evaluation_data_path: str):
         elif key==112: #  press "p" to pause
             logger.info("paused")
             start_press = False
+
+    return times
+
+def keyboard_input_Windows() -> list[float]:
+    times: list[float] = []
+    start_time: float = 0
+    start_press: bool = False # first "space" press happend
+
+    logger.info("now ready for key board input \n")
+
+    space_clicked = False
+    a_clicked = False
+    p_clicked = False
+
+    while True:
+        if keyboard.is_pressed("space") and not space_clicked: # press "space" to time
+            if not start_press:
+                logger.info("Time started...")
+                start_time = time.time()
+                start_press = True
+            else:
+                times.append(time.time()-start_time)
+                logger.info(f"Round: {len(times)}")
+                start_time = time.time()
+            space_clicked = True
+
+        elif keyboard.is_pressed("a") and not a_clicked: #  press "a" to stop
+            logger.info("... finished \n")
+            a_clicked = True
+            break
+
+        elif keyboard.is_pressed("p") and not p_clicked: # press "p" to pause
+            logger.info("paused")
+            start_press = False
+            p_clicked = True
+
+        elif not keyboard.is_pressed("space") and space_clicked:
+            space_clicked=False
+        elif not keyboard.is_pressed("a") and a_clicked:
+            a_clicked=False
+        elif not keyboard.is_pressed("p") and p_clicked:
+            p_clicked=False
+
+    return times
+
+
+### main program
+@gin.configurable
+def time_stop(raw_data_path: str, evaluation_data_path: str):
+    """
+    returns raw_data and evaluation_data dataframes (also saves them as csv)
+    """
+    if SYSTEM == "Windows":
+        times = keyboard_input_Windows()
+    elif SYSTEM == "MacOS":
+        times = keyboard_input_MacOS()
+    else:
+        raise ValueError(f"wrong input ('{SYSTEM}') for variable system -> needs to be 'Windows' or 'MacOS'")
 
 
     df_raw_data = pd.DataFrame({"periods": times, "half periods": calc_half_periods(times), "half periods v2": calc_half_periods_v2(times)})

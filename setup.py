@@ -17,9 +17,10 @@ setup(
     install_requires=[
         "pandas",
         "numpy",
-        #"ipykernel",
+        "ipykernel", # for jupyter notebooks
         "gin-config",
         "absl-py",
+        "keyboard; platform_system=='Windows'", # only on Windows needed
     ],
     extras_require={
         "test": ["pytest", "pylint!=2.5.0", "isort", "refurb"],
