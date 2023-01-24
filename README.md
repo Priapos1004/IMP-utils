@@ -30,9 +30,9 @@ Run the following commands in the terminal (current working directory: `IMP-util
 
 **For the time stopping**
 
-- **TIMESTOP_RAW_DATA_PATH**: location for the csv file of the raw data
+- TIMESTOP_RAW_DATA_PATH: location for the csv file of the raw data
 
-- **TIMESTOP_EVALUATION_DATA_PATH**: location for the csv file of the evaluation data
+- TIMESTOP_EVALUATION_DATA_PATH: location for the csv file of the evaluation data
 
 ```
 python IMP_utils_py/cli.py --mode=time-stop --gin_file=IMP_utils_py/config/config.gin
