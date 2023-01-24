@@ -211,6 +211,10 @@ def hist_gauss(raw_data_path: str, graphic_path: str, column_name: str, class_nu
     minx = data.min()
     maxx = data.max()
 
+    logger.info(f"class width: {maxx-minx}")
+    logger.info(f"min: {minx}")
+    logger.info(f"max: {maxx}")
+
     x = np.linspace(minx, maxx, 1000)
     normal_pdf = norm.pdf(x, loc=mu, scale=sigma)
 
@@ -221,14 +225,16 @@ def hist_gauss(raw_data_path: str, graphic_path: str, column_name: str, class_nu
         ax.hist(data, bins=class_number, weights=[1/len(data)]*len(data))
     else:
         ax.hist(data, bins=class_number)
+
     ax.set_title(title)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
 
     ax = fig.add_subplot()
-    ax.hist(data, bins=class_number, density=True)
+    ax.hist(data, bins=class_number, density=True, ec='black')
     ax.plot(x, normal_pdf)
     ax.set_yticks([])
     ax.set_xticks([])
 
     fig.savefig(graphic_path)
+    logger.info("histogram saved")
