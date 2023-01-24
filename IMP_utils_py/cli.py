@@ -1,7 +1,7 @@
 import gin
 from absl import app, flags
 
-from IMP_utils_py.physics import eval_raw_data, time_stop
+from IMP_utils_py.physics import eval_raw_data, hist_gauss, time_stop
 
 flags.DEFINE_enum(
     "mode",
@@ -10,6 +10,7 @@ flags.DEFINE_enum(
         "test",
         "time-stop",
         "eval-raw-data",
+        "hist-gauss",
     ],
     "just ask Samuel",
 )
@@ -28,7 +29,8 @@ def main(*unused_argv):
         time_stop()
     elif FLAGS.mode == "eval-raw-data":
         eval_raw_data() 
-
+    elif FLAGS.mode == "hist-gauss":
+        hist_gauss() 
 
 def console_entry_point():
     """From pip installed script."""

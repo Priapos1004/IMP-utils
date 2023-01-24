@@ -1,8 +1,25 @@
 TIMESTOP_RAW_DATA_PATH = "data/raw_data_timestop.csv"
 TIMESTOP_EVALUATION_DATA_PATH = "data/evaluation_data_timestop.csv"
+TIMESTOP_HIST_PATH = "data/graphics/hist_gauss.png"
+
+TIMESTOP_HIST_COLUMN = "periods" # column to use from raw data for histogram
+TIMESTOP_HIST_CLASS_NUMBER = 10 # number of classes in histogram
+TIMESTOP_HIST_TITLE = "" # title of Histogram
+TIMESTOP_HIST_XLABEL = "Periode T in s" # x label of histogram
+TIMESTOP_HIST_YLABEL = "Häufigkeit" # y label of histogram
+TIMESTOP_HIST_NORMED_Y = False # y ticks normed (True or False)
 
 time_stop.raw_data_path = %TIMESTOP_RAW_DATA_PATH
 time_stop.evaluation_data_path = %TIMESTOP_EVALUATION_DATA_PATH
 
 eval_raw_data.raw_data_path = %TIMESTOP_RAW_DATA_PATH
 eval_raw_data.evaluation_data_path = %TIMESTOP_EVALUATION_DATA_PATH
+
+hist_gauss.raw_data_path = %TIMESTOP_RAW_DATA_PATH
+hist_gauss.column_name = %TIMESTOP_HIST_COLUMN
+hist_gauss.class_number = %TIMESTOP_HIST_CLASS_NUMBER
+hist_gauss.title = %TIMESTOP_HIST_TITLE
+hist_gauss.x_label = %TIMESTOP_HIST_XLABEL
+hist_gauss.y_label = %TIMESTOP_HIST_YLABEL
+hist_gauss.graphic_path = %TIMESTOP_HIST_PATH
+hist_gauss.normed_y = %TIMESTOP_HIST_NORMED_Y

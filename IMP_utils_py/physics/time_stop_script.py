@@ -35,8 +35,10 @@ except:
     SYSTEM = "Windows"
 
 import gin
+import matplotlib.pyplot as plt
 import numpy as np  # pip install numpy
 import pandas as pd  # pip install pandas
+from scipy.stats import norm
 
 from IMP_utils_py.config.logging import setup_logger
 
@@ -198,3 +200,35 @@ def eval_raw_data(raw_data_path: str, evaluation_data_path: str):
     df_evaluation = eval_df(df_raw_data)
     df_evaluation.to_csv(evaluation_data_path)
     logger.info("evaluation file created and saved")
+
+@gin.configurable
+def hist_gauss(raw_data_path: str, graphic_path: str, column_name: str, class_number: int, title: str, x_label: str, y_label: str, normed_y: bool):
+    data = pd.read_csv(raw_data_path, index_col=0)
+    data = data[column_name]
+    mu = np.mean(data)
+    sigma = std(data, mu)
+
+    minx = data.min()
+    maxx = data.max()
+
+    x = np.linspace(minx, maxx, 1000)
+    normal_pdf = norm.pdf(x, loc=mu, scale=sigma)
+
+    fig = plt.figure()
+    ax = fig.add_subplot() # background plot for axes
+
+    if normed_y:
+        ax.hist(data, bins=class_number, weights=[1/len(data)]*len(data))
+    else:
+        ax.hist(data, bins=class_number)
+    ax.set_title(title)
+    ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
+
+    ax = fig.add_subplot()
+    ax.hist(data, bins=class_number, density=True)
+    ax.plot(x, normal_pdf)
+    ax.set_yticks([])
+    ax.set_xticks([])
+
+    fig.savefig(graphic_path)
