@@ -6,7 +6,7 @@ stuff to make your life easier
 
 ### getting started
 
-1. clone this repository into your current working directory (you can also download the code as zip-file)
+1. clone this repository into your current working directory (you can also download the code as zip-file or use tools like `GitHub Desktop`)
 
 ```
 git clone https://github.com/Priapos1004/IMP-utils
