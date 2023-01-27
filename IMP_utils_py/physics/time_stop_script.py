@@ -34,6 +34,8 @@ except:
     import keyboard  # Windows
     SYSTEM = "Windows"
 
+from typing import Union
+
 import gin
 import matplotlib.pyplot as plt
 import numpy as np  # pip install numpy
@@ -55,6 +57,17 @@ def calc_half_periods_v2(data: list):
     periods = [data[i]+data[i-1] for i in range(1, len(data))]
     periods += [None]*(len(data)-len(periods))
     return periods
+
+def T_sin(grad: Union[list[float],float]):
+    """
+    function for period durations normed with period duration of 5 degree
+
+    @param:
+        grad: array-like object with degrees or one single degree
+    """
+    phi = np.pi/180 * grad
+    y = 1+0.25 * np.sin(phi/2)**2 + 0.140625 * np.sin(phi/2)**4
+    return y
 
 ### evaluation functions
 def std(data: list, mean: float) -> float:
@@ -201,6 +214,7 @@ def eval_raw_data(raw_data_path: str, evaluation_data_path: str):
     df_evaluation.to_csv(evaluation_data_path)
     logger.info("evaluation file created and saved")
 
+### plot function for histogram with gaussian fit
 @gin.configurable
 def hist_gauss(raw_data_path: str, graphic_path: str, column_name: str, class_number: int, title: str, x_label: str, y_label: str, normed_y: bool):
     data = pd.read_csv(raw_data_path, index_col=0)
@@ -238,3 +252,42 @@ def hist_gauss(raw_data_path: str, graphic_path: str, column_name: str, class_nu
 
     fig.savefig(graphic_path)
     logger.info("histogram saved")
+
+### normed periods and errorbars plot
+@gin.configurable
+def errorbar_phi(data_path: str, graphic_path: str, amplitude_column: str, normed_value_column: str, error_column: str):
+    """
+    @params:
+        data_path: path to csv file or pandas DataFrame
+        amplitude_column: amplitude in degree
+        normed_value_column: with 5 degree period duration normed period durations
+        error_column: error in degree for every amplitude
+    """
+
+    data = pd.read_csv(data_path, index_col=0)
+    data.sort_values(by=[amplitude_column])
+
+    x_specific = list(data[amplitude_column])
+    y_values = data[normed_value_column]
+    e = data[error_column]
+
+    xmin = x_specific[0]
+    xmax = x_specific[-1]
+    x = np.linspace(xmin, xmax+5, 1000)
+
+    y=T_sin(x)
+
+    fig = plt.figure()
+    ax = fig.add_subplot()
+
+    text = r"T$_{\varphi}$/T$_{KW}$"
+    ax.plot(x, y, label=text)
+    ax.legend()
+
+    plt.errorbar(x_specific, y_values, xerr=e, linestyle='None', marker='.', elinewidth=0.5, capsize=3)
+    ax.set_xticks(x_specific)
+    ax.set_xlabel('Auslenkungswinkel in Grad')
+    ax.set_ylabel(r'Periodendauer auf T$_{5°}$ normiert')
+
+    fig.savefig(graphic_path)
+    logger.info("plot saved")
