@@ -38,7 +38,7 @@ Run the following commands in the terminal (current working directory: `IMP-util
 python IMP_utils_py/cli.py --mode=time-stop --gin_file=IMP_utils_py/config/config.gin
 ```
 
-**For evaluating the raw data**
+## For evaluating the raw data
 
 - TIMESTOP_RAW_DATA_PATH: location of the csv file for the raw data
 
@@ -48,7 +48,7 @@ python IMP_utils_py/cli.py --mode=time-stop --gin_file=IMP_utils_py/config/confi
 python IMP_utils_py/cli.py --mode=eval-raw-data --gin_file=IMP_utils_py/config/config.gin
 ```
 
-**For creating a histogram with gaussian fit for the raw data**
+## For creating a histogram with gaussian fit for the raw data
 
 - TIMESTOP_RAW_DATA_PATH: location of the csv file for the data
 
@@ -70,7 +70,7 @@ python IMP_utils_py/cli.py --mode=eval-raw-data --gin_file=IMP_utils_py/config/c
 python IMP_utils_py/cli.py --mode=hist-gauss --gin_file=IMP_utils_py/config/config.gin
 ```
 
-**For creating a errorbar plot with normed period duration**
+## For creating a errorbar plot with normed period duration
 
 - TIMESTOP_RAW_DATA_PATH: location of the csv file for the data
 
