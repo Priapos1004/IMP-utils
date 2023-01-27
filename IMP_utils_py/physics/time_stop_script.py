@@ -272,7 +272,7 @@ def errorbar_phi(data_path: str, graphic_path: str, amplitude_column: str, norme
 
     xmin = x_specific[0]
     xmax = x_specific[-1]
-    x = np.linspace(xmin, xmax+5, 1000)
+    x = np.linspace(xmin, xmax+max(5, e.max()+2), 1000)
 
     y=T_sin(x)
 
