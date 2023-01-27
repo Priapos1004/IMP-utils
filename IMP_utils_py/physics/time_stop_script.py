@@ -255,10 +255,9 @@ def hist_gauss(raw_data_path: str, graphic_path: str, column_name: str, class_nu
 
 ### normed periods and errorbars plot
 @gin.configurable
-def errorbar_phi(data_path: str, graphic_path: str, amplitude_column: str, normed_value_column: str, error_column: str):
+def errorbar_phi(data_path: str, graphic_path: str, amplitude_column: str, normed_value_column: str, error_column: str, title: str, x_label: str, y_label: str):
     """
     @params:
-        data_path: path to csv file or pandas DataFrame
         amplitude_column: amplitude in degree
         normed_value_column: with 5 degree period duration normed period durations
         error_column: error in degree for every amplitude
@@ -286,8 +285,9 @@ def errorbar_phi(data_path: str, graphic_path: str, amplitude_column: str, norme
 
     plt.errorbar(x_specific, y_values, xerr=e, linestyle='None', marker='.', elinewidth=0.5, capsize=3)
     ax.set_xticks(x_specific)
-    ax.set_xlabel('Auslenkungswinkel in Grad')
-    ax.set_ylabel(r'Periodendauer auf T$_{5°}$ normiert')
+    ax.set_title(title)
+    ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
 
     fig.savefig(graphic_path)
     logger.info("plot saved")

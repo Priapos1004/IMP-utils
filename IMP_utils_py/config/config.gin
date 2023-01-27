@@ -13,6 +13,9 @@ TIMESTOP_HIST_NORMED_Y = False # y ticks normed (True or False)
 TIMESTOP_ERRORBAR_AMPLITUDE_COLUMN = "amplitude"
 TIMESTOP_ERRORBAR_NORMED_PERIOD_COLUMN = "normed periods"
 TIMESTOP_ERRORBAR_ERROR_COLUMN = "error"
+TIMESTOP_ERRORBAR_TITLE = "" # title of errorbar
+TIMESTOP_ERRORBAR_XLABEL = "Auslenkungswinkel in Grad" # x label of errorbar
+TIMESTOP_ERRORBAR_YLABEL = r"Periodendauer auf T$_{5°}$ normiert" # y label of errorbar
 
 time_stop.raw_data_path = %TIMESTOP_RAW_DATA_PATH
 time_stop.evaluation_data_path = %TIMESTOP_EVALUATION_DATA_PATH
@@ -34,3 +37,6 @@ errorbar_phi.graphic_path = %TIMESTOP_ERRORBAR_PATH
 errorbar_phi.amplitude_column = %TIMESTOP_ERRORBAR_AMPLITUDE_COLUMN
 errorbar_phi.normed_value_column = %TIMESTOP_ERRORBAR_NORMED_PERIOD_COLUMN
 errorbar_phi.error_column = %TIMESTOP_ERRORBAR_ERROR_COLUMN
+errorbar_phi.title = %TIMESTOP_ERRORBAR_TITLE
+errorbar_phi.x_label = %TIMESTOP_ERRORBAR_XLABEL
+errorbar_phi.y_label = %TIMESTOP_ERRORBAR_YLABEL

@@ -76,6 +76,12 @@ python IMP_utils_py/cli.py --mode=hist-gauss --gin_file=IMP_utils_py/config/conf
 
 - TIMESTOP_ERRORBAR_PATH: location for the png of the errorbar
 
+- TIMESTOP_ERRORBAR_TITLE: title of errorbar
+
+- TIMESTOP_ERRORBAR_XLABEL: x label of errorbar
+
+- TIMESTOP_ERRORBAR_YLABEL: y label of errorbar
+
 Column names:
 
 - TIMESTOP_ERRORBAR_AMPLITUDE_COLUMN: column with amplitudes in degree
