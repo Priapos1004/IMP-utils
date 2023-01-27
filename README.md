@@ -28,7 +28,7 @@ pip install -e .
 
 Run the following commands in the terminal (current working directory: `IMP-utils` folder). You can change the available parameter of the functions in `IMP_utils_py/config/config.gin`.
 
-**For the time stopping**
+## For the time stopping
 
 - TIMESTOP_RAW_DATA_PATH: location for the csv file of the raw data
 
