@@ -69,3 +69,32 @@ python IMP_utils_py/cli.py --mode=eval-raw-data --gin_file=IMP_utils_py/config/c
 ```
 python IMP_utils_py/cli.py --mode=hist-gauss --gin_file=IMP_utils_py/config/config.gin
 ```
+
+**For creating a errorbar plot with normed period duration**
+
+- TIMESTOP_RAW_DATA_PATH: location of the csv file for the data
+
+- TIMESTOP_ERRORBAR_PATH: location for the png of the errorbar
+
+Column names:
+
+- TIMESTOP_ERRORBAR_AMPLITUDE_COLUMN: column with amplitudes in degree
+
+- TIMESTOP_ERRORBAR_NORMED_PERIOD_COLUMN: column with period durations normed with period duration of 5 degree
+
+- TIMESTOP_ERRORBAR_ERROR_COLUMN: column with error of degree for amplitudes
+
+Example table for raw data:
+
+|    |   amplitude |   normed periods |   error |
+|---:|------------:|-----------------:|--------:|
+|  0 |           5 |          1       |     1.5 |
+|  1 |          10 |          1.00139 |     1.5 |
+|  2 |          15 |          1.00274 |     1.5 |
+|  3 |          20 |          1.00402 |     1.5 |
+|  4 |          30 |          1.00541 |     1.5 |
+|  5 |          45 |          1.01253 |     1.5 |
+
+```
+python IMP_utils_py/cli.py --mode=errorbar-phi --gin_file=IMP_utils_py/config/config.gin
+```
