@@ -26,7 +26,7 @@ pip install -e .
 
 4. now you can use the package:
 
-Run the following commands in the terminal (current working directory: `IMP-utils` folder). You can change the available parameter of the functions in `IMP_utils_py/config/config.gin`.
+Run the following commands in the terminal (current working directory: `IMP-utils` folder). You can change the available parameter of the functions in `IMP_utils_py/config/timestop_config.gin`.
 
 ## For the time stopping
 
@@ -35,7 +35,7 @@ Run the following commands in the terminal (current working directory: `IMP-util
 - TIMESTOP_EVALUATION_DATA_PATH: location for the csv file of the evaluation data
 
 ```
-python IMP_utils_py/cli.py --mode=time-stop --gin_file=IMP_utils_py/config/config.gin
+python IMP_utils_py/cli.py --mode=time-stop --gin_file=IMP_utils_py/config/timestop_config.gin
 ```
 
 ## For evaluating the raw data
@@ -45,7 +45,7 @@ python IMP_utils_py/cli.py --mode=time-stop --gin_file=IMP_utils_py/config/confi
 - TIMESTOP_EVALUATION_DATA_PATH: location for the csv file of the evaluation data
 
 ```
-python IMP_utils_py/cli.py --mode=eval-raw-data --gin_file=IMP_utils_py/config/config.gin
+python IMP_utils_py/cli.py --mode=eval-raw-data --gin_file=IMP_utils_py/config/timestop_config.gin
 ```
 
 ## For creating a histogram with gaussian fit for the raw data
@@ -67,7 +67,7 @@ python IMP_utils_py/cli.py --mode=eval-raw-data --gin_file=IMP_utils_py/config/c
 - TIMESTOP_HIST_NORMED_Y: y ticks normed (True or False)
 
 ```
-python IMP_utils_py/cli.py --mode=hist-gauss --gin_file=IMP_utils_py/config/config.gin
+python IMP_utils_py/cli.py --mode=hist-gauss --gin_file=IMP_utils_py/config/timestop_config.gin
 ```
 
 ## For creating a errorbar plot with normed period duration
@@ -102,7 +102,7 @@ Example table for raw data:
 |  5 |          45 |          1.01253 |     1.5 |
 
 ```
-python IMP_utils_py/cli.py --mode=errorbar-phi --gin_file=IMP_utils_py/config/config.gin
+python IMP_utils_py/cli.py --mode=errorbar-phi --gin_file=IMP_utils_py/config/timestop_config.gin
 ```
 
 ## For creating a errorbar plot with linear fit of length and squared period duration
@@ -151,5 +151,5 @@ Example table of data:
 - the columns `length` and `length error` are both in meters (relevant for unit $m/s^2$ of $g$)
 
 ```
-python IMP_utils_py/cli.py --mode=errorbar-l --gin_file=IMP_utils_py/config/config.gin
+python IMP_utils_py/cli.py --mode=errorbar-l --gin_file=IMP_utils_py/config/timestop_config.gin
 ```
