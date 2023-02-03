@@ -26,10 +26,10 @@ pip install -e .
 
 4. now you can use the package:
 
-You can find the terminal commands of the package in '[readme files](readme files)' and edit the parameters of the commands in the different gin-files in `IMP_utils_py/config/`.
+You can find the terminal commands of the package in '[readme files](readme_files)' and edit the parameters of the commands in the different gin-files in `IMP_utils_py/config/`.
 
 **ALLWAYS** run the commands with the current working directory: `IMP-utils` folder.
 
 ### command sets
 
-- [timestop](readme files/timestop.md): Einführungspraktikum Physik (Fadenpendel)
+- [timestop](readme_files/timestop.md): Einführungspraktikum Physik (Fadenpendel)
