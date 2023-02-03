@@ -28,7 +28,7 @@ pip install -e .
 
 You can find the terminal commands of the package in '[readme files](readme_files)' and edit the parameters of the commands in the different gin-files in `IMP_utils_py/config/`.
 
-**ALLWAYS** run the commands with the current working directory: `IMP-utils` folder.
+**ALLWAYS** run the commands with the current working directory: `IMP-utils` folder
 
 ### command sets
 
