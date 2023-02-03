@@ -291,3 +291,52 @@ def errorbar_phi(data_path: str, graphic_path: str, amplitude_column: str, norme
 
     fig.savefig(graphic_path)
     logger.info("plot saved")
+
+@gin.configurable
+def errorbar_l(data_path: str, graphic_path: str, length_column: str, length_error_column: str, yi_column: str, yi_error_column: str, title: str, x_label: str, y_label: str, x_ticks_number: int):
+    """
+    @params:
+        length_column: length in meter
+        length_error_column: total length error in meter
+        yi_column: squared single period duration (periods in s)
+        yi_error_column: y error in s^2
+
+    @output:
+        Unsicherheit der Steigung: dm = sqrt(max(length_error)^2 + max(yi_error)^2)
+    """
+    
+    data = pd.read_csv(data_path, index_col=0)
+    data.sort_values(by=[length_column])
+
+    x = data[length_column]
+    dx = data[length_error_column]
+    y = data[yi_column]
+    dy = data[yi_error_column]
+
+    max_length = int(np.ceil(max(x)*10))/10
+
+    fig = plt.figure()
+    ax = fig.add_subplot()
+
+    x_new = np.array(x)[:,np.newaxis]
+    a, _, _, _ = np.linalg.lstsq(x_new, y, rcond=None)
+
+    logger.info(f"Ursprungsgerade Steigung: {a[0]}")
+    logger.info(f"Gravitationsbeschleunigung: {4*np.pi**2/a[0]}")
+
+    dm = np.sqrt(max(dx)**2 + max(dy)**2)
+
+    logger.info(f"Unsicherheit der Steigung: {dm}")
+    logger.info(f"Unsicherheit der Gravitationsbeschleunigung: {np.sqrt((4*np.pi**2/a[0]**2 * dm)**2)}")
+
+    x_intervall = np.linspace(0, max_length, 1000)
+    ax.plot(x_intervall, a*x_intervall, '--k')
+    plt.errorbar(x, y, yerr=dy, xerr=dx, linestyle='None', marker='.', elinewidth=0.5, capsize=3)
+
+    ax.set_xticks(np.linspace(0, max_length, x_ticks_number))
+    ax.set_title(title)
+    ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
+
+    fig.savefig(graphic_path)
+    logger.info("plot saved")
