@@ -104,3 +104,31 @@ Example table for raw data:
 ```
 python IMP_utils_py/cli.py --mode=errorbar-phi --gin_file=IMP_utils_py/config/config.gin
 ```
+
+## For creating a errorbar plot with linear fit of length and squared period duration
+
+- Parameters similar to errorbar of amplitudes
+
+- TIMESTOP_ERRORBAR_L_XTICKS_NUMBER: number of ticks on x axes (has to be adjusted a bit for better laylout)
+
+Example table of data:
+
+|    |   length |   length error |       y |   y error |
+|---:|---------:|---------------:|--------:|----------:|
+|  0 |   1.0935 |     0.00131939 | 4.09769 |  0.518774 |
+|  1 |   1.2605 |     0.00137074 | 4.91041 |  0.57056  |
+|  2 |   1.3675 |     0.00140431 | 5.27111 |  0.592302 |
+|  3 |   1.4945 |     0.0014448  | 5.88793 |  0.628006 |
+|  4 |   1.5755 |     0.00147096 | 6.21804 |  0.646433 |
+|  5 |   1.6725 |     0.00150261 | 6.67994 |  0.671512 |
+|  6 |   1.7805 |     0.00153822 | 7.02253 |  0.689624 |
+|  7 |   1.8895 |     0.00157456 | 7.25691 |  0.701794 |
+|  8 |   1.9875 |     0.00160753 | 7.92647 |  0.735653 |
+|  9 |   2.0925 |     0.00164317 | 8.05976 |  0.742244 |
+
+**IMPORTANT:**
+currently calculation of "Steigungsunsicherheit" with dm = sqrt(max(length_error)^2 + max(y_error)^2)
+
+```
+python IMP_utils_py/cli.py --mode=errorbar-l --gin_file=IMP_utils_py/config/config.gin
+```
