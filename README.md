@@ -30,9 +30,9 @@ Run the following commands in the terminal (current working directory: `IMP-util
 
 ## For the time stopping
 
-- TIMESTOP_RAW_DATA_PATH: location for the csv file of the raw data
+- RAW_DATA_PATH: location for the csv file of the raw data
 
-- TIMESTOP_EVALUATION_DATA_PATH: location for the csv file of the evaluation data
+- EVALUATION_DATA_PATH: location for the csv file of the evaluation data
 
 ```
 python IMP_utils_py/cli.py --mode=time-stop --gin_file=IMP_utils_py/config/timestop_config.gin
@@ -40,9 +40,9 @@ python IMP_utils_py/cli.py --mode=time-stop --gin_file=IMP_utils_py/config/times
 
 ## For evaluating the raw data
 
-- TIMESTOP_RAW_DATA_PATH: location of the csv file for the raw data
+- RAW_DATA_PATH: location of the csv file for the raw data
 
-- TIMESTOP_EVALUATION_DATA_PATH: location for the csv file of the evaluation data
+- EVALUATION_DATA_PATH: location for the csv file of the evaluation data
 
 ```
 python IMP_utils_py/cli.py --mode=eval-raw-data --gin_file=IMP_utils_py/config/timestop_config.gin
@@ -50,21 +50,21 @@ python IMP_utils_py/cli.py --mode=eval-raw-data --gin_file=IMP_utils_py/config/t
 
 ## For creating a histogram with gaussian fit for the raw data
 
-- TIMESTOP_RAW_DATA_PATH: location of the csv file for the data
+- RAW_DATA_PATH: location of the csv file for the data
 
-- TIMESTOP_HIST_PATH: location for the png of the histogram
+- HIST_PATH: location for the png of the histogram
 
-- TIMESTOP_HIST_COLUMN: column name from data to use for the histogram
+- HIST_COLUMN: column name from data to use for the histogram
 
-- TIMESTOP_HIST_CLASS_NUMBER: number of classes in the histogram
+- HIST_CLASS_NUMBER: number of classes in the histogram
 
-- TIMESTOP_HIST_TITLE: title of histogram
+- HIST_TITLE: title of histogram
 
-- TIMESTOP_HIST_XLABEL: x label of histogram
+- HIST_XLABEL: x label of histogram
 
-- TIMESTOP_HIST_YLABEL: y label of histogram
+- HIST_YLABEL: y label of histogram
 
-- TIMESTOP_HIST_NORMED_Y: y ticks normed (True or False)
+- HIST_NORMED_Y: y ticks normed (True or False)
 
 ```
 python IMP_utils_py/cli.py --mode=hist-gauss --gin_file=IMP_utils_py/config/timestop_config.gin
@@ -72,23 +72,23 @@ python IMP_utils_py/cli.py --mode=hist-gauss --gin_file=IMP_utils_py/config/time
 
 ## For creating a errorbar plot with normed period duration
 
-- TIMESTOP_RAW_DATA_PATH: location of the csv file for the data
+- RAW_DATA_PATH: location of the csv file for the data
 
-- TIMESTOP_ERRORBAR_PHI_PATH: location for the png of the errorbar
+- ERRORBAR_PHI_PATH: location for the png of the errorbar
 
-- TIMESTOP_ERRORBAR_PHI_TITLE: title of errorbar
+- ERRORBAR_PHI_TITLE: title of errorbar
 
-- TIMESTOP_ERRORBAR_PHI_XLABEL: x label of errorbar
+- ERRORBAR_PHI_XLABEL: x label of errorbar
 
-- TIMESTOP_ERRORBAR_PHI_YLABEL: y label of errorbar
+- ERRORBAR_PHI_YLABEL: y label of errorbar
 
 Column names:
 
-- TIMESTOP_ERRORBAR_PHI_AMPLITUDE_COLUMN: column with amplitudes in degree
+- ERRORBAR_PHI_AMPLITUDE_COLUMN: column with amplitudes in degree
 
-- TIMESTOP_ERRORBAR_PHI_NORMED_PERIOD_COLUMN: column with period durations normed with period duration of 5 degree
+- ERRORBAR_PHI_NORMED_PERIOD_COLUMN: column with period durations normed with period duration of 5 degree
 
-- TIMESTOP_ERRORBAR_PHI_ERROR_COLUMN: column with error of degree for amplitudes
+- ERRORBAR_PHI_ERROR_COLUMN: column with error of degree for amplitudes
 
 Example table for raw data:
 
@@ -107,27 +107,27 @@ python IMP_utils_py/cli.py --mode=errorbar-phi --gin_file=IMP_utils_py/config/ti
 
 ## For creating a errorbar plot with linear fit of length and squared period duration
 
-- TIMESTOP_RAW_DATA_PATH: location of the csv file for the data
+- RAW_DATA_PATH: location of the csv file for the data
 
-- TIMESTOP_ERRORBAR_L_PATH: location for the png of the errorbar
+- ERRORBAR_L_PATH: location for the png of the errorbar
 
-- TIMESTOP_ERRORBAR_L_TITLE: title of errorbar
+- ERRORBAR_L_TITLE: title of errorbar
 
-- TIMESTOP_ERRORBAR_L_XLABEL: x label of errorbar
+- ERRORBAR_L_XLABEL: x label of errorbar
 
-- TIMESTOP_ERRORBAR_L_YLABEL: y label of errorbar
+- ERRORBAR_L_YLABEL: y label of errorbar
 
-- TIMESTOP_ERRORBAR_L_XTICKS_NUMBER: number of ticks on x axes (has sometimes to be adjusted a bit for a better laylout)
+- ERRORBAR_L_XTICKS_NUMBER: number of ticks on x axes (has sometimes to be adjusted a bit for a better laylout)
 
 Column names:
 
-- TIMESTOP_ERRORBAR_L_LENGTH_COLUMN: column with length in meters
+- ERRORBAR_L_LENGTH_COLUMN: column with length in meters
 
-- TIMESTOP_ERRORBAR_L_LENGTH_ERROR_COLUMN: column with length error in meters
+- ERRORBAR_L_LENGTH_ERROR_COLUMN: column with length error in meters
 
-- TIMESTOP_ERRORBAR_L_Y_COLUMN: column with $y = T^2$
+- ERRORBAR_L_Y_COLUMN: column with $y = T^2$
 
-- TIMESTOP_ERRORBAR_L_Y_ERROR_COLUMN: column with $\Delta y = 2 * T * \Delta T$
+- ERRORBAR_L_Y_ERROR_COLUMN: column with $\Delta y = 2 * T * \Delta T$
 
 Example table of data:
 
