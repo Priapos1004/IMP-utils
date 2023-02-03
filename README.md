@@ -74,21 +74,21 @@ python IMP_utils_py/cli.py --mode=hist-gauss --gin_file=IMP_utils_py/config/conf
 
 - TIMESTOP_RAW_DATA_PATH: location of the csv file for the data
 
-- TIMESTOP_ERRORBAR_PATH: location for the png of the errorbar
+- TIMESTOP_ERRORBAR_PHI_PATH: location for the png of the errorbar
 
-- TIMESTOP_ERRORBAR_TITLE: title of errorbar
+- TIMESTOP_ERRORBAR_PHI_TITLE: title of errorbar
 
-- TIMESTOP_ERRORBAR_XLABEL: x label of errorbar
+- TIMESTOP_ERRORBAR_PHI_XLABEL: x label of errorbar
 
-- TIMESTOP_ERRORBAR_YLABEL: y label of errorbar
+- TIMESTOP_ERRORBAR_PHI_YLABEL: y label of errorbar
 
 Column names:
 
-- TIMESTOP_ERRORBAR_AMPLITUDE_COLUMN: column with amplitudes in degree
+- TIMESTOP_ERRORBAR_PHI_AMPLITUDE_COLUMN: column with amplitudes in degree
 
-- TIMESTOP_ERRORBAR_NORMED_PERIOD_COLUMN: column with period durations normed with period duration of 5 degree
+- TIMESTOP_ERRORBAR_PHI_NORMED_PERIOD_COLUMN: column with period durations normed with period duration of 5 degree
 
-- TIMESTOP_ERRORBAR_ERROR_COLUMN: column with error of degree for amplitudes
+- TIMESTOP_ERRORBAR_PHI_ERROR_COLUMN: column with error of degree for amplitudes
 
 Example table for raw data:
 
@@ -107,9 +107,27 @@ python IMP_utils_py/cli.py --mode=errorbar-phi --gin_file=IMP_utils_py/config/co
 
 ## For creating a errorbar plot with linear fit of length and squared period duration
 
-- Parameters similar to errorbar of amplitudes (TIMESTOP_ERRORBAR_PHI_... -> TIMESTOP_ERRORBAR_L_...)
+- TIMESTOP_RAW_DATA_PATH: location of the csv file for the data
 
-- TIMESTOP_ERRORBAR_L_XTICKS_NUMBER: number of ticks on x axes (has to be adjusted a bit for better laylout)
+- TIMESTOP_ERRORBAR_L_PATH: location for the png of the errorbar
+
+- TIMESTOP_ERRORBAR_L_TITLE: title of errorbar
+
+- TIMESTOP_ERRORBAR_L_XLABEL: x label of errorbar
+
+- TIMESTOP_ERRORBAR_L_YLABEL: y label of errorbar
+
+- TIMESTOP_ERRORBAR_L_XTICKS_NUMBER: number of ticks on x axes (has sometimes to be adjusted a bit for a better laylout)
+
+Column names:
+
+- TIMESTOP_ERRORBAR_L_LENGTH_COLUMN: column with length in meters
+
+- TIMESTOP_ERRORBAR_L_LENGTH_ERROR_COLUMN: column with length error in meters
+
+- TIMESTOP_ERRORBAR_L_Y_COLUMN: column with $y = T^2$
+
+- TIMESTOP_ERRORBAR_L_Y_ERROR_COLUMN: column with $\Delta y = 2 * T * \Delta T$
 
 Example table of data:
 
@@ -127,8 +145,8 @@ Example table of data:
 |  9 |   2.0925 |     0.00164317 | 8.05976 |  0.742244 |
 
 **IMPORTANT:**
-currently calculation of "Steigungsunsicherheit"
-- dm = sqrt(max(length_error)^2 + max(y_error)^2)
+- currently calculation of "Steigungsunsicherheit": dm = sqrt(max(length_error)^2 + max(y_error)^2)
+- the columns `length` and `length error` are both in meters (relevant for unit m/s^2 of g)
 
 ```
 python IMP_utils_py/cli.py --mode=errorbar-l --gin_file=IMP_utils_py/config/config.gin
