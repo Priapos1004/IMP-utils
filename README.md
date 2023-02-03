@@ -107,7 +107,7 @@ python IMP_utils_py/cli.py --mode=errorbar-phi --gin_file=IMP_utils_py/config/co
 
 ## For creating a errorbar plot with linear fit of length and squared period duration
 
-- Parameters similar to errorbar of amplitudes
+- Parameters similar to errorbar of amplitudes (TIMESTOP_ERRORBAR_PHI_... -> TIMESTOP_ERRORBAR_L_...)
 
 - TIMESTOP_ERRORBAR_L_XTICKS_NUMBER: number of ticks on x axes (has to be adjusted a bit for better laylout)
 
@@ -127,7 +127,8 @@ Example table of data:
 |  9 |   2.0925 |     0.00164317 | 8.05976 |  0.742244 |
 
 **IMPORTANT:**
-currently calculation of "Steigungsunsicherheit" with dm = sqrt(max(length_error)^2 + max(y_error)^2)
+currently calculation of "Steigungsunsicherheit"
+- dm = sqrt(max(length_error)^2 + max(y_error)^2)
 
 ```
 python IMP_utils_py/cli.py --mode=errorbar-l --gin_file=IMP_utils_py/config/config.gin
