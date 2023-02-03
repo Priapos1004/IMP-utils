@@ -146,8 +146,8 @@ Example table of data:
 
 **IMPORTANT:**
 - current calculation of $\Delta m = \sqrt{max(length_{error})^2 + max(y_{error})^2}$ (Unsicherheit der Steigung $m$)
-- calculation of $g = \frac{4 \cdot\pi^2}{m}$ (Gravitationsbeschleunigung)
-- calculation of $\Delta g = \sqrt{\left(\frac{4\cdot\pi^2}{m^2} \cdot \Delta m\right)^2}$ (Unsicherheit der Gravitationsbeschleunigung)
+- calculation of $g = \frac{4\pi^2}{m}$ (Gravitationsbeschleunigung)
+- calculation of $\Delta g = \sqrt{\left(\frac{4\pi^2}{m^2} \cdot \Delta m\right)^2}$ (Unsicherheit der Gravitationsbeschleunigung)
 - the columns `length` and `length error` are both in meters (relevant for unit $m/s^2$ of $g$)
 
 ```
