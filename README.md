@@ -145,7 +145,9 @@ Example table of data:
 |  9 |   2.0925 |     0.00164317 | 8.05976 |  0.742244 |
 
 **IMPORTANT:**
-- currently calculation of "Steigungsunsicherheit": dm = sqrt(max(length_error)^2 + max(y_error)^2)
+- current calculation of $\Delta m = \sqrt(max(length_error)^2 + max(y_error)^2)$ (Unsicherheit der Steigung $m$)
+- calculation of $g = \frac{4*\pi^2}{m}$ (Gravitationsbeschleunigung)
+- calculation of $\Delta g = \sqrt((\frac{4*\pi^2}{m^2} * \Delta m)^2)$ (Unsicherheit der Gravitationsbeschleunigung)
 - the columns `length` and `length error` are both in meters (relevant for unit m/s^2 of g)
 
 ```
