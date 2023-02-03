@@ -1,4 +1,4 @@
-TIMESTOP_RAW_DATA_PATH = "data/Einführungspraktikum/errorbar_l.csv" #"data/raw_data_timestop.csv"
+TIMESTOP_RAW_DATA_PATH = "data/raw_data_timestop.csv"
 TIMESTOP_EVALUATION_DATA_PATH = "data/evaluation_data_timestop.csv"
 TIMESTOP_HIST_PATH = "data/graphics/hist_gauss.png"
 TIMESTOP_ERRORBAR_PHI_PATH = "data/graphics/errorbar_phi.png"
