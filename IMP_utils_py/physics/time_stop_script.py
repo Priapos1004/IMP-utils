@@ -1,28 +1,3 @@
-"""
-Instructions for "time_stop" function:
-
-1. you can start the time measurement with the "space" key and every time you click it, the time is taken
-
-2. to end the measurement press "a", to pause the measurement press "p" and start it with "space" again
-
-3. the program will automatically create two files "raw_data.csv" and "evaluation_data.csv" with the data and its evaluation
-
-Instructions for "eval_raw_data" function:
-
-- the raw data will be evaluated and as an evaluation file saved (old evaluation file will be overwritten)
-
-INFO:
-    the three counting types are (all will be shown in raw and evaluation data):
-
-    - periods: every click means a new period
-    - half periods: every second click means a period and the others are ignored
-    - half periods v2: the periods will be 1+2, 2+3, 3+4, 4+5, ... (every time is used for two periods)
-
-NOTE:
-    - the program needs a moment to initialize and a message will appear when the program is ready for the key board input
-    - python version 3.9 and higher
-"""
-
 import sys
 import time
 

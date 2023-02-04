@@ -8,6 +8,25 @@ Run the following commands in the terminal (current working directory: `IMP-util
 
 - EVALUATION_DATA_PATH: location for the csv file of the evaluation data
 
+**Instructions:**
+
+1. you can start the time measurement with the "space" key and every time you click it, the time is taken
+
+2. to end the measurement press "a", to pause the measurement press "p" and start it with "space" again
+
+3. the program will automatically create two files one with the raw data and one with its evaluation values
+
+**INFO:**
+
+- the three counting types are (all will be shown in raw and evaluation data):
+
+    - periods: every click means a new period
+    - half periods: every second click means a period and the others are ignored
+    - half periods v2: the periods will be 1+2, 2+3, 3+4, 4+5, ... (every time is used for two periods)
+
+- the program needs a moment to initialize and a message will appear when the program is ready for the key board input
+
+
 ```
 python IMP_utils_py/cli.py --mode=time-stop --gin_file=IMP_utils_py/config/timestop_config.gin
 ```
@@ -17,6 +36,11 @@ python IMP_utils_py/cli.py --mode=time-stop --gin_file=IMP_utils_py/config/times
 - RAW_DATA_PATH: location of the csv file for the raw data
 
 - EVALUATION_DATA_PATH: location for the csv file of the evaluation data
+
+**Instructions:**
+
+- the raw data will be evaluated and as an evaluation file saved (old evaluation file will be overwritten)
+
 
 ```
 python IMP_utils_py/cli.py --mode=eval-raw-data --gin_file=IMP_utils_py/config/timestop_config.gin

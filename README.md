@@ -18,7 +18,7 @@ git clone https://github.com/Priapos1004/IMP-utils
 cd IMP-utils/
 ```
 
-3. install the package to your activated virtual environment (don't forget the `.` at the end of the command)
+3. install the package to your activated virtual environment (don't forget the `.` at the end of the command) (python version 3.9 and higher is required)
 
 ```
 pip install -e .
