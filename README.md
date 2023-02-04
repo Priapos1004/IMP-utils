@@ -36,4 +36,4 @@ You can find the terminal commands of the package in '[readme files](readme_file
 
 ### example notebooks
 
-- [timestop and pandas](IMP_utils_py_examples/timestop.ipynb)
+- [timestop and pandas](IMP_utils_py_examples/timestop.ipynb): Pandas basics for timestop
