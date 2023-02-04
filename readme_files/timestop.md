@@ -4,15 +4,15 @@ Run the following commands in the terminal (current working directory: `IMP-util
 
 ## table of content
 
-- [time-stop](#time-stop)
+- [time-stop](#time-stop): time stopping of periods
 
-- [eval-raw-data](#eval-raw-data)
+- [eval-raw-data](#eval-raw-data): evaluating raw data
 
-- [hist-gauss](#hist-gauss)
+- [hist-gauss](#hist-gauss): creating a histogram with gaussian fit for the raw data
 
-- [errorbar-phi](#errorbar-phi)
+- [errorbar-phi](#errorbar-phi): creating a errorbar plot with normed period duration
 
-- [errorbar-l](#errorbar-l)
+- [errorbar-l](#errorbar-l): creating a errorbar plot with linear fit of length and squared period duration
 
 <a name="time-stop"/>
 
