@@ -33,3 +33,7 @@ You can find the terminal commands of the package in '[readme files](readme_file
 ### command sets
 
 - [timestop](readme_files/timestop.md): Einführungspraktikum Physik (Fadenpendel)
+
+### example notebooks
+
+- [timestop and pandas](IMP_utils_py_examples/timestop.ipynb)
