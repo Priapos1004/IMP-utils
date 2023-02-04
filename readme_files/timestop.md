@@ -2,6 +2,20 @@
 
 Run the following commands in the terminal (current working directory: `IMP-utils` folder). You can change the available parameter of the functions in `IMP_utils_py/config/timestop_config.gin`.
 
+## table of content
+
+- [time-stop](#time-stop)
+
+- [eval-raw-data](#eval-raw-data)
+
+- [hist-gauss](#hist-gauss)
+
+- [errorbar-phi](#errorbar-phi)
+
+- [errorbar-l](#errorbar-l)
+
+<a name="time-stop"/>
+
 ## For the time stopping
 
 - RAW_DATA_PATH: location for the csv file of the raw data
@@ -31,6 +45,8 @@ Run the following commands in the terminal (current working directory: `IMP-util
 python IMP_utils_py/cli.py --mode=time-stop --gin_file=IMP_utils_py/config/timestop_config.gin
 ```
 
+<a name="eval-raw-data"/>
+
 ## For evaluating the raw data
 
 - RAW_DATA_PATH: location of the csv file for the raw data
@@ -45,6 +61,8 @@ python IMP_utils_py/cli.py --mode=time-stop --gin_file=IMP_utils_py/config/times
 ```
 python IMP_utils_py/cli.py --mode=eval-raw-data --gin_file=IMP_utils_py/config/timestop_config.gin
 ```
+
+<a name="hist-gauss"/>
 
 ## For creating a histogram with gaussian fit for the raw data
 
@@ -67,6 +85,8 @@ python IMP_utils_py/cli.py --mode=eval-raw-data --gin_file=IMP_utils_py/config/t
 ```
 python IMP_utils_py/cli.py --mode=hist-gauss --gin_file=IMP_utils_py/config/timestop_config.gin
 ```
+
+<a name="errorbar-phi"/>
 
 ## For creating a errorbar plot with normed period duration
 
@@ -102,6 +122,8 @@ Example table for raw data:
 ```
 python IMP_utils_py/cli.py --mode=errorbar-phi --gin_file=IMP_utils_py/config/timestop_config.gin
 ```
+
+<a name="errorbar-l"/>
 
 ## For creating a errorbar plot with linear fit of length and squared period duration
 
