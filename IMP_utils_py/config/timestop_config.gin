@@ -1,4 +1,4 @@
-RAW_DATA_PATH = "data/raw_data_.csv"
+RAW_DATA_PATH = "data/raw_data_timestop.csv"
 EVALUATION_DATA_PATH = "data/evaluation_data_timestop.csv"
 HIST_PATH = "data/graphics/hist_gauss.png"
 ERRORBAR_PHI_PATH = "data/graphics/errorbar_phi.png"
@@ -23,8 +23,8 @@ ERRORBAR_L_LENGTH_ERROR_COLUMN = "length error"
 ERRORBAR_L_Y_COLUMN = "y"
 ERRORBAR_L_Y_ERROR_COLUMN = "y error"
 ERRORBAR_L_TITLE = "" # title of errorbar
-ERRORBAR_L_XLABEL = r"Länge $l_i$ in m" # x label of errorbar
-ERRORBAR_L_YLABEL = r"$y_i(l_i)$ in $s^2$" # y label of errorbar
+ERRORBAR_L_XLABEL = r"Länge $l_{i, ges}$ in m" # x label of errorbar
+ERRORBAR_L_YLABEL = r"$y_i(l_{i, ges})$ in $s^2$" # y label of errorbar
 ERRORBAR_L_XTICKS_NUMBER = 8 # number of ticks on x axes
 
 time_stop.raw_data_path = %RAW_DATA_PATH
