@@ -13,14 +13,24 @@ from typing import Union
 
 import gin
 import matplotlib.pyplot as plt
-import numpy as np  # pip install numpy
-import pandas as pd  # pip install pandas
+import numpy as np
+import pandas as pd
+from kafe2 import Fit, XYContainer
 from scipy.stats import norm
 
 from IMP_utils_py.config.logging import setup_logger
 
 ### logging setup
 logger = setup_logger()
+
+### helper funtions
+def linear_zero_model(x, a=1.0):
+    """ y = a * x """
+    return a * x
+
+def linear_model(x, a=1.0, b=0.0):
+    """ y = a * x + b """
+    return a*x+b
 
 ### periods calculation functions
 def calc_half_periods(data: list):
@@ -268,18 +278,24 @@ def errorbar_phi(data_path: str, graphic_path: str, amplitude_column: str, norme
     logger.info("plot saved")
 
 @gin.configurable
-def errorbar_l(data_path: str, graphic_path: str, length_column: str, length_error_column: str, yi_column: str, yi_error_column: str, title: str, x_label: str, y_label: str, x_ticks_number: int):
+def errorbar_l(data_path: str, graphic_path: str, length_column: str, length_error_column: str, yi_column: str, yi_error_column: str, title: str, x_label: str, y_label: str, x_ticks_number: int, intercept_zero: bool):
     """
     @params:
         length_column: length in meter
         length_error_column: total length error in meter
         yi_column: squared single period duration (periods in s)
         yi_error_column: y error in s^2
+        intercept_zero: True (y = m*x) or False (y = m*x + n)
 
     @output:
         Unsicherheit der Steigung: dm = sqrt(max(length_error)^2 + max(yi_error)^2)
     """
-    
+
+    if intercept_zero:
+        model = linear_zero_model
+    else:
+        model = linear_model
+
     data = pd.read_csv(data_path, index_col=0)
     data.sort_values(by=[length_column])
 
@@ -293,19 +309,36 @@ def errorbar_l(data_path: str, graphic_path: str, length_column: str, length_err
     fig = plt.figure()
     ax = fig.add_subplot()
 
-    x_new = np.array(x)[:,np.newaxis]
-    a, _, _, _ = np.linalg.lstsq(x_new, y, rcond=None)
+    ### kafe2 calculation
+    xy_data = XYContainer(x,y)
+    xy_data.add_error("x", dx)
+    xy_data.add_error("y", dy)
 
-    logger.info(f"Ursprungsgerade Steigung: {a[0]}")
-    logger.info(f"Gravitationsbeschleunigung: {4*np.pi**2/a[0]}")
+    my_fit = Fit(xy_data, model)
+    my_fit.do_fit()
+    model_params = my_fit.parameter_values
+    model_params_error = my_fit.parameter_errors
 
-    dm = np.sqrt(max(dx)**2 + max(dy)**2)
+    m = model_params[0]
+    dm = model_params_error[0]
+    if not intercept_zero:
+        n = model_params[1]
+        dn = model_params_error[1]
 
+    logger.info(f"Steigung der Gerade: {m}")
     logger.info(f"Unsicherheit der Steigung: {dm}")
-    logger.info(f"Unsicherheit der Gravitationsbeschleunigung: {np.sqrt((4*np.pi**2/a[0]**2 * dm)**2)}")
+    if not intercept_zero:
+        logger.info(f"y-Achsenschnitt der Gerade: {n}")
+        logger.info(f"Unsicherheit des y-Achsenschnitt: {dn}")
+
+    logger.info(f"Gravitationsbeschleunigung: {4*np.pi**2/m}")
+    logger.info(f"Unsicherheit der Gravitationsbeschleunigung: {np.sqrt((4*np.pi**2/m**2 * dm)**2)}")
 
     x_intervall = np.linspace(0, max_length, 1000)
-    ax.plot(x_intervall, a*x_intervall, '--k')
+    if intercept_zero:
+        ax.plot(x_intervall, m*x_intervall, '--k')
+    else:
+        ax.plot(x_intervall, m*x_intervall+n, '--k')
     plt.errorbar(x, y, yerr=dy, xerr=dx, linestyle='None', marker='.', elinewidth=0.5, capsize=3)
 
     ax.set_xticks(np.linspace(0, max_length, x_ticks_number))

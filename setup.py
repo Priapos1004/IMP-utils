@@ -23,6 +23,8 @@ setup(
         "keyboard; platform_system=='Windows'", # only on Windows needed
         "matplotlib",
         "scipy",
+        "kafe2",
+        "iminuit", # better performance with c++ library for kafe2
     ],
     extras_require={
         "test": ["pytest", "pylint!=2.5.0", "isort", "refurb"],

@@ -26,6 +26,7 @@ ERRORBAR_L_TITLE = "" # title of errorbar
 ERRORBAR_L_XLABEL = r"Länge $l_{i, ges}$ in m" # x label of errorbar
 ERRORBAR_L_YLABEL = r"$y_i(l_{i, ges})$ in $s^2$" # y label of errorbar
 ERRORBAR_L_XTICKS_NUMBER = 8 # number of ticks on x axes
+ERRORBAR_L_INTERCEPT_ZERO = True # True (linear model with intercept zero) or False (linear model)
 
 time_stop.raw_data_path = %RAW_DATA_PATH
 time_stop.evaluation_data_path = %EVALUATION_DATA_PATH
@@ -61,3 +62,4 @@ errorbar_l.title = %ERRORBAR_L_TITLE
 errorbar_l.x_label = %ERRORBAR_L_XLABEL
 errorbar_l.y_label = %ERRORBAR_L_YLABEL
 errorbar_l.x_ticks_number = %ERRORBAR_L_XTICKS_NUMBER
+errorbar_l.intercept_zero = %ERRORBAR_L_INTERCEPT_ZERO

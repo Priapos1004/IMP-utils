@@ -139,6 +139,8 @@ python IMP_utils_py/cli.py --mode=errorbar-phi --gin_file=IMP_utils_py/config/ti
 
 - ERRORBAR_L_XTICKS_NUMBER: number of ticks on x axes (has sometimes to be adjusted a bit for a better laylout)
 
+- **ERRORBAR_L_INTERCEPT_ZERO**: True ($y = m \cdot x$) or False ($y = m \cdot x + n$)
+
 Column names:
 
 - ERRORBAR_L_LENGTH_COLUMN: column with length in meters
@@ -165,7 +167,7 @@ Example table of data:
 |  9 |   2.0925 |     0.00164317 | 8.05976 |  0.742244 |
 
 **IMPORTANT:**
-- current calculation of $\Delta m = \sqrt{max(length_{error})^2 + max(y_{error})^2}$ (Unsicherheit der Steigung $m$)
+- calculation of $\Delta m$ (Unsicherheit der Steigung $m$) and $\Delta n$ (Unsicherheit des y-Achsenschnitt $n$) with `kafe2` library
 - calculation of $g = \frac{4\pi^2}{m}$ (Gravitationsbeschleunigung)
 - calculation of $\Delta g = \sqrt{\left(\frac{4\pi^2}{m^2} \cdot \Delta m\right)^2}$ (Unsicherheit der Gravitationsbeschleunigung)
 - the columns `length` and `length error` are both in meters (relevant for unit $m/s^2$ of $g$)
