@@ -149,7 +149,7 @@ Column names:
 
 - ERRORBAR_L_Y_COLUMN: column with y = T^2 with T single period duration
 
-- ERRORBAR_L_Y_ERROR_COLUMN: column with $\Delta y = 2 * T * \Delta T$ with $\Delta T$ the error of a single period duration
+- ERRORBAR_L_Y_ERROR_COLUMN: column with dy = 2 * T * dT with dT the error of a single period duration
 
 Example table of data:
 
