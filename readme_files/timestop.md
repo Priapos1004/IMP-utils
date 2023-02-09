@@ -139,7 +139,7 @@ python IMP_utils_py/cli.py --mode=errorbar-phi --gin_file=IMP_utils_py/config/ti
 
 - ERRORBAR_L_XTICKS_NUMBER: number of ticks on x axes (has sometimes to be adjusted a bit for a better laylout)
 
-- **ERRORBAR_L_INTERCEPT_ZERO**: True ($y = m \cdot x$) or False ($y = m \cdot x + n$)
+- **ERRORBAR_L_INTERCEPT_ZERO**: True (y = m * x) or False (y = m * x + n)
 
 Column names:
 
@@ -147,7 +147,7 @@ Column names:
 
 - ERRORBAR_L_LENGTH_ERROR_COLUMN: column with length error in meters
 
-- ERRORBAR_L_Y_COLUMN: column with $y = T^2$ with $T$ single period duration
+- ERRORBAR_L_Y_COLUMN: column with y = T^2 with T single period duration
 
 - ERRORBAR_L_Y_ERROR_COLUMN: column with $\Delta y = 2 * T * \Delta T$ with $\Delta T$ the error of a single period duration
 
