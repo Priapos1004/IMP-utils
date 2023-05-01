@@ -1,0 +1,58 @@
+RAW_DATA_PATH = "data/Grundpraktikum/O6_ghg.csv" #"data/raw_data_timestop.csv"
+LINEAR_PLOT_PATH = "data/graphics/plot_O6_ghg.png"
+POINTS_PLOT_PATH = "data/graphics/plot_O6_ghg_residual.png"
+RESIDUAL_PLOT_PATH = "data/graphics/plot_O6_ghg_residual.png"
+
+LINEAR_PLOT_X_COLUMN = 'k'
+LINEAR_PLOT_X_ERROR_COLUMN = ""
+LINEAR_PLOT_Y_COLUMN = "y"
+LINEAR_PLOT_Y_ERROR_COLUMN = "uy"
+LINEAR_PLOT_TITLE = "" # title of linear plot
+LINEAR_PLOT_XLABEL = r"k" # x label of linear plot
+LINEAR_PLOT_YLABEL = r"$r_k^2$" # y label of linear plot
+LINEAR_PLOT_XTICKS_NUMBER = 7 # number of ticks on x axes
+LINEAR_PLOT_INTERCEPT_ZERO = False # True (linear model with intercept zero) or False (linear model)
+
+POINTS_PLOT_X_COLUMN = 'k'
+POINTS_PLOT_Y_COLUMN = "uy"
+POINTS_PLOT_TITLE = "" # title of points plot
+POINTS_PLOT_XLABEL = r"k" # x label of points plot
+POINTS_PLOT_YLABEL = r"$u_y$" # y label of points plot
+POINTS_PLOT_XTICKS_NUMBER = 7 # number of ticks on x axes
+
+RESIDUAL_PLOT_X_COLUMN = 'k'
+RESIDUAL_PLOT_Y_COLUMN = "uy"
+RESIDUAL_PLOT_TITLE = "" # title of residual plot
+RESIDUAL_PLOT_XLABEL = r"k" # x label of residual plot
+RESIDUAL_PLOT_YLABEL = r"$u_y$" # y label of residual plot
+RESIDUAL_PLOT_XTICKS_NUMBER = 7 # number of ticks on x axes
+
+linear_plot.data_path = %RAW_DATA_PATH
+linear_plot.graphic_path = %LINEAR_PLOT_PATH
+linear_plot.x_column = %LINEAR_PLOT_X_COLUMN
+linear_plot.x_error_column = %LINEAR_PLOT_X_ERROR_COLUMN
+linear_plot.y_column = %LINEAR_PLOT_Y_COLUMN
+linear_plot.y_error_column = %LINEAR_PLOT_Y_ERROR_COLUMN
+linear_plot.title = %LINEAR_PLOT_TITLE
+linear_plot.x_label = %LINEAR_PLOT_XLABEL
+linear_plot.y_label = %LINEAR_PLOT_YLABEL
+linear_plot.x_ticks_number = %LINEAR_PLOT_XTICKS_NUMBER
+linear_plot.intercept_zero = %LINEAR_PLOT_INTERCEPT_ZERO
+
+points_plot.data_path = %RAW_DATA_PATH
+points_plot.graphic_path = %POINTS_PLOT_PATH
+points_plot.x_column = %POINTS_PLOT_X_COLUMN
+points_plot.y_column = %POINTS_PLOT_Y_COLUMN
+points_plot.title = %POINTS_PLOT_TITLE
+points_plot.x_label = %POINTS_PLOT_XLABEL
+points_plot.y_label = %POINTS_PLOT_YLABEL
+points_plot.x_ticks_number = %POINTS_PLOT_XTICKS_NUMBER
+
+residual_plot.data_path = %RAW_DATA_PATH
+residual_plot.graphic_path = %RESIDUAL_PLOT_PATH
+residual_plot.x_column = %RESIDUAL_PLOT_X_COLUMN
+residual_plot.y_column = %RESIDUAL_PLOT_Y_COLUMN
+residual_plot.title = %RESIDUAL_PLOT_TITLE
+residual_plot.x_label = %RESIDUAL_PLOT_XLABEL
+residual_plot.y_label = %RESIDUAL_PLOT_YLABEL
+residual_plot.x_ticks_number = %RESIDUAL_PLOT_XTICKS_NUMBER

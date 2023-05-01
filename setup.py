@@ -25,6 +25,8 @@ setup(
         "scipy",
         "kafe2",
         "iminuit", # better performance with c++ library for kafe2
+        "openpyxl", # needed for pandas read_excel
+        "seaborn", # plot library like matplotlib (used for residual plot)
     ],
     extras_require={
         "test": ["pytest", "pylint!=2.5.0", "isort", "refurb"],
