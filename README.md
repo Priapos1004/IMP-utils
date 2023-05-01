@@ -33,6 +33,7 @@ You can find the terminal commands of the package in '[readme files](readme_file
 ### command sets
 
 - [timestop](readme_files/timestop.md): Einführungspraktikum Physik (Fadenpendel)
+- [plotting](readme_files/plotting.md): allgemeine Plotfunktionen *(beinhaltet alle benötigten Funktionen für das Grundpraktikum)*
 
 ### example notebooks
 
