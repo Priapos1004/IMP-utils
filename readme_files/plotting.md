@@ -60,7 +60,7 @@ python IMP_utils_py/cli.py --mode=linear-plot --gin_file=IMP_utils_py/config/plo
 
 - RAW_DATA_PATH: location of the csv file with the data
 
-- LINEAR_PLOT_PATH: location for the png of the plot
+- RESIDUAL_PLOT_PATH: location for the png of the plot
 
 ### column name parameters
 
