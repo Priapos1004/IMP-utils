@@ -7,7 +7,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name="IMP_utils_py",
-    version="0.0.1",
+    version="0.0.2",
     description="stuff to make your IMP life easier",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -25,6 +25,7 @@ setup(
         "scipy",
         "kafe2",
         "iminuit", # better performance with c++ library for kafe2
+        "openpyxl", # needed for pandas read_excel
     ],
     extras_require={
         "test": ["pytest", "pylint!=2.5.0", "isort", "refurb"],

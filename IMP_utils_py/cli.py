@@ -2,7 +2,8 @@ import gin
 from absl import app, flags
 
 from IMP_utils_py.physics import (errorbar_l, errorbar_phi, eval_raw_data,
-                                  hist_gauss, time_stop)
+                                  hist_gauss, linear_plot,
+                                  residual_plot, time_stop)
 
 flags.DEFINE_enum(
     "mode",
@@ -14,6 +15,8 @@ flags.DEFINE_enum(
         "hist-gauss",
         "errorbar-phi",
         "errorbar-l",
+        "linear-plot",
+        "residual-plot",
     ],
     "just ask Samuel",
 )
@@ -38,6 +41,10 @@ def main(*unused_argv):
         errorbar_phi() 
     elif FLAGS.mode == "errorbar-l":
         errorbar_l() 
+    elif FLAGS.mode == "linear-plot":
+        linear_plot()
+    elif FLAGS.mode == "residual-plot":
+        residual_plot()
 
 def console_entry_point():
     """From pip installed script."""
