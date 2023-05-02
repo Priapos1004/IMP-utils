@@ -6,7 +6,7 @@ Run the following commands in the terminal (current working directory: `IMP-util
 
 - [linear-plot](#linear-plot): linear plot (with and without intercept zero)
 
-- [residual-plot](#residual-plot): residual plot of linear plot
+- [residual-plot](#residual-plot): residual plot for linear function (with and without intercept zero)
 
 <a name="linear-plot"/>
 
@@ -45,7 +45,7 @@ Run the following commands in the terminal (current working directory: `IMP-util
 ### example plot
 
 <p align="left">
-  <img src="./images/plot_O6_bhg.png" width="350" title="linear plot example" alt="linear plot example">
+  <img src="./images/plot_O6_bhg.png" width="400" title="linear plot example" alt="linear plot example">
 </p>
 
 ### command
@@ -88,12 +88,12 @@ python IMP_utils_py/cli.py --mode=linear-plot --gin_file=IMP_utils_py/config/plo
 
 ### **Info**
 
-The residual plot represents the residual of the linear plot with the same parameters.
+The residual plot represents the residuals of the linear plot with the same parameters.
 
 ### example plot
 
 <p align="left">
-  <img src="./images/plot_O6_bhg_residual.png" width="350" title="residual plot example" alt="residual plot example">
+  <img src="./images/plot_O6_bhg_residual.png" width="400" title="residual plot example" alt="residual plot example">
 </p>
 
 ### command
