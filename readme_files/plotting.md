@@ -42,6 +42,11 @@ Run the following commands in the terminal (current working directory: `IMP-util
 
 - LINEAR_PLOT_INTERCEPT_ZERO: True (linear model with intercept zero - y=m\*x) or False (linear model- y=m\*x+n)
 
+<a name="linear-plot-info"/>
+### INFO
+
+The x-/y-values and x-/y-error-values are used to create a linear fit with the [kafe2](https://github.com/PhiLFitters/kafe2) library. The parameters of the fit and also their errors will be logged in the console.
+
 ### example plot
 
 <p align="left">
@@ -55,6 +60,8 @@ python IMP_utils_py/cli.py --mode=linear-plot --gin_file=IMP_utils_py/config/plo
 ```
 
 <a name="residual-plot"/>
+
+## residual plot
 
 ### path parameters
 
@@ -86,9 +93,9 @@ python IMP_utils_py/cli.py --mode=linear-plot --gin_file=IMP_utils_py/config/plo
 
 - LINEAR_PLOT_INTERCEPT_ZERO: True (linear model with intercept zero - y=m\*x) or False (linear model- y=m\*x+n)
 
-### **Info**
+### INFO
 
-The residual plot represents the residuals of the linear plot with the same parameters.
+The residual plot represents the residuals *(actual_y_value − predicted_y_value)* of the linear function mentioned in [linear-plot](#linear-plot-info).
 
 ### example plot
 
