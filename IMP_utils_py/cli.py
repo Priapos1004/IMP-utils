@@ -2,8 +2,8 @@ import gin
 from absl import app, flags
 
 from IMP_utils_py.physics import (errorbar_l, errorbar_phi, eval_raw_data,
-                                  hist_gauss, linear_plot,
-                                  residual_plot, time_stop)
+                                  hist_gauss, linear_plot, residual_plot,
+                                  time_stop)
 
 flags.DEFINE_enum(
     "mode",
