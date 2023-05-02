@@ -2,7 +2,7 @@ import gin
 from absl import app, flags
 
 from IMP_utils_py.physics import (errorbar_l, errorbar_phi, eval_raw_data,
-                                  hist_gauss, linear_plot, points_plot,
+                                  hist_gauss, linear_plot,
                                   residual_plot, time_stop)
 
 flags.DEFINE_enum(
@@ -16,7 +16,6 @@ flags.DEFINE_enum(
         "errorbar-phi",
         "errorbar-l",
         "linear-plot",
-        "points-plot",
         "residual-plot",
     ],
     "just ask Samuel",
@@ -44,8 +43,6 @@ def main(*unused_argv):
         errorbar_l() 
     elif FLAGS.mode == "linear-plot":
         linear_plot()
-    elif FLAGS.mode == "points-plot":
-        points_plot()
     elif FLAGS.mode == "residual-plot":
         residual_plot()
 

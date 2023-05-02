@@ -2,7 +2,6 @@ import gin
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import seaborn as sns
 from kafe2 import Fit, XYContainer
 from scipy.stats import norm
 
@@ -99,17 +98,24 @@ def linear_plot(data_path: str, graphic_path: str, x_column: str, x_error_column
     fig.savefig(graphic_path)
     logger.info("plot saved")
 
-
 @gin.configurable
-def points_plot(data_path: str, graphic_path: str, x_column: str, y_column: str, title: str, x_label: str, y_label: str, x_ticks_number: int):
+def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_column: str, y_column: str, y_error_column: str, title: str, x_label: str, y_label: str, x_ticks_number: int, intercept_zero: bool):
     """
     @params:
         x_column: column name for x values
+        x_error_column: column name for x value errors
         y_column: column name for y values
+        y_error_column: column name for y value errors
+        intercept_zero: True (y = m*x) or False (y = m*x + n)
 
     @output:
         plot saved in graphic_path
     """
+
+    if intercept_zero:
+        model = linear_zero_model
+    else:
+        model = linear_model
 
     data = pd.read_csv(data_path, index_col=0)
     data.sort_values(by=[x_column])
@@ -117,43 +123,43 @@ def points_plot(data_path: str, graphic_path: str, x_column: str, y_column: str,
     x = data[x_column]
     y = data[y_column]
 
+    if x_error_column != "":
+        dx = data[x_error_column]
+    else:
+        dx = None
+    if y_error_column != "":
+        dy = data[y_error_column]
+    else:
+        dy = None
+
     max_length = int(np.ceil(max(x)*10))/10
 
     fig = plt.figure()
     ax = fig.add_subplot()
 
-    plt.plot(x, y, marker="o", markersize=3, linestyle = 'None')
-    
-    ax.set_xticks(np.linspace(0, max_length, x_ticks_number))
-    ax.set_title(title)
-    ax.set_xlabel(x_label)
-    ax.set_ylabel(y_label)
+    ### kafe2 calculation
+    xy_data = XYContainer(x,y)
+    if dx is not None:
+        xy_data.add_error("x", dx)
+    if dy is not None:
+        xy_data.add_error("y", dy)
 
-    fig.savefig(graphic_path)
-    logger.info("plot saved")
+    my_fit = Fit(xy_data, model)
+    my_fit.do_fit()
+    model_params = my_fit.parameter_values
 
+    m = model_params[0]
+    if not intercept_zero:
+        n = model_params[1]
 
-@gin.configurable
-def residual_plot(data_path: str, graphic_path: str, x_column: str, y_column: str, title: str, x_label: str, y_label: str, x_ticks_number: int):
-    """
-    @params:
-        x_column: column name for x values
-        y_column: column name for y values
+    if intercept_zero:
+        residuals = [linear_zero_model(x.iloc[idx], m)-y.iloc[idx] for idx in range(len(x))]
+    else:
+        residuals = [linear_model(x.iloc[idx], m, n)-y.iloc[idx] for idx in range(len(x))]
 
-    @output:
-        plot saved in graphic_path
-    """
-
-    data = pd.read_csv(data_path, index_col=0)
-    data.sort_values(by=[x_column])
-
-    x = data[x_column]
-    max_length = int(np.ceil(max(x)*10))/10
-
-    fig = plt.figure()
-    ax = fig.add_subplot()
-
-    sns.residplot(x=x_column, y=y_column, data=data, ax=ax)
+    plt.scatter(x, residuals, s=10)
+    x_intervall = np.linspace(0, max_length, 1000)
+    ax.plot(x_intervall, 0*x_intervall, '--k')
     
     ax.set_xticks(np.linspace(0, max_length, x_ticks_number))
     ax.set_title(title)
