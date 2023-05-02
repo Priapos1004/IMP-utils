@@ -43,6 +43,7 @@ Run the following commands in the terminal (current working directory: `IMP-util
 - LINEAR_PLOT_INTERCEPT_ZERO: True (linear model with intercept zero - y=m\*x) or False (linear model- y=m\*x+n)
 
 <a name="linear-plot-info"/>
+
 ### INFO
 
 The x-/y-values and x-/y-error-values are used to create a linear fit with the [kafe2](https://github.com/PhiLFitters/kafe2) library. The parameters of the fit and also their errors will be logged in the console.
