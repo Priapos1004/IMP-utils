@@ -9,7 +9,7 @@ LINEAR_PLOT_Y_COLUMN = "y"
 LINEAR_PLOT_Y_ERROR_COLUMN = "uy"
 LINEAR_PLOT_TITLE = "" # title of linear plot
 LINEAR_PLOT_XLABEL = r"k" # x label of linear plot
-LINEAR_PLOT_YLABEL = r"$r_k^2$" # y label of linear plot
+LINEAR_PLOT_YLABEL = r"$r_k^2$ in $mm^2$" # y label of linear plot
 LINEAR_PLOT_XTICKS_NUMBER = 7 # number of ticks on x axes
 LINEAR_PLOT_INTERCEPT_ZERO = False # True (linear model with intercept zero) or False (linear model)
 
@@ -17,14 +17,14 @@ POINTS_PLOT_X_COLUMN = 'k'
 POINTS_PLOT_Y_COLUMN = "uy"
 POINTS_PLOT_TITLE = "" # title of points plot
 POINTS_PLOT_XLABEL = r"k" # x label of points plot
-POINTS_PLOT_YLABEL = r"$u_y$" # y label of points plot
+POINTS_PLOT_YLABEL = r"$u_y$ in $mm^2$" # y label of points plot
 POINTS_PLOT_XTICKS_NUMBER = 7 # number of ticks on x axes
 
 RESIDUAL_PLOT_X_COLUMN = 'k'
 RESIDUAL_PLOT_Y_COLUMN = "uy"
 RESIDUAL_PLOT_TITLE = "" # title of residual plot
 RESIDUAL_PLOT_XLABEL = r"k" # x label of residual plot
-RESIDUAL_PLOT_YLABEL = r"$u_y$" # y label of residual plot
+RESIDUAL_PLOT_YLABEL = r"$u_y$ in $mm^2$" # y label of residual plot
 RESIDUAL_PLOT_XTICKS_NUMBER = 7 # number of ticks on x axes
 
 linear_plot.data_path = %RAW_DATA_PATH

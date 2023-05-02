@@ -159,6 +159,7 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, y_column: st
     ax.set_title(title)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
+    fig.subplots_adjust(left=0.15)
 
     fig.savefig(graphic_path)
     logger.info("plot saved")
