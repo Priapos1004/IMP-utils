@@ -6,7 +6,7 @@ stuff to make your life easier
 
 ### getting started
 
-1. clone this repository into your current working directory (you can also download the code as zip-file or use tools like `GitHub Desktop`)
+1. clone this repository into your current working directory (you can also download the code as zip-file or use tools like [GitHub Desktop](https://desktop.github.com))
 
 ```
 git clone https://github.com/Priapos1004/IMP-utils
@@ -33,7 +33,7 @@ You can find the terminal commands of the package in '[readme files](readme_file
 ### command sets
 
 - [timestop](readme_files/timestop.md): Einführungspraktikum Physik (Fadenpendel)
-- [plotting](readme_files/plotting.md): general plotfunctions *(beinhaltet alle benötigten Funktionen für das Grundpraktikum)*
+- [plotting](readme_files/plotting.md): general plotfunctions *(beinhaltet benötigte Funktionen für folgende Experimente des Grundpraktikums: O6)*
 
 ### example notebooks
 
