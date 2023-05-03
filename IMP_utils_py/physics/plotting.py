@@ -153,13 +153,13 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
         n = model_params[1]
 
     if intercept_zero:
-        residuals = [linear_zero_model(x.iloc[idx], m)-y.iloc[idx] for idx in range(len(x))]
+        residuals = [y.iloc[idx]-linear_zero_model(x.iloc[idx], m) for idx in range(len(x))]
     else:
-        residuals = [linear_model(x.iloc[idx], m, n)-y.iloc[idx] for idx in range(len(x))]
+        residuals = [y.iloc[idx]-linear_model(x.iloc[idx], m, n) for idx in range(len(x))]
 
     plt.scatter(x, residuals, s=10)
     x_intervall = np.linspace(0, max_length, 1000)
-    ax.plot(x_intervall, 0*x_intervall, '--k')
+    ax.plot(x_intervall, 0*x_intervall, '--k', linewidth=1)
     
     ax.set_xticks(np.linspace(0, max_length, x_ticks_number))
     ax.set_title(title)
