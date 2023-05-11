@@ -95,11 +95,11 @@ def linear_plot(data_path: str, graphic_path: str, x_column: str, x_error_column
             n = model_params[1]
             dn = model_params_error[1]
 
-        logger.info(f"Steigung der Gerade ({y_idx+1}): {m}")
-        logger.info(f"Unsicherheit der Steigung ({y_idx+1}): {dm}")
+        logger.info(f"Steigung der Gerade ({y_column[y_idx]}): {m}")
+        logger.info(f"Unsicherheit der Steigung ({y_column[y_idx]}): {dm}")
         if not intercept_zero:
-            logger.info(f"y-Achsenschnitt der Gerade ({y_idx+1}): {n}")
-            logger.info(f"Unsicherheit des y-Achsenschnitt ({y_idx+1}): {dn}")
+            logger.info(f"y-Achsenschnitt der Gerade ({y_column[y_idx]}): {n}")
+            logger.info(f"Unsicherheit des y-Achsenschnitt ({y_column[y_idx]}): {dn}")
 
         x_intervall = np.linspace(0, max_length, 1000)
         if intercept_zero:
