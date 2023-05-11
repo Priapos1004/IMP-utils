@@ -24,7 +24,7 @@ Run the following commands in the terminal (current working directory: `IMP-util
 
 - LINEAR_PLOT_X_ERROR_COLUMN: 
   - column name of column with errors of x values
-  - **note:** use an empty string "" if there are no errors
+  - **NOTE:** use an empty string "" to provide no error column for the x-values
 
 - LINEAR_PLOT_Y_COLUMN: 
   - column name of column with y values
@@ -33,14 +33,14 @@ Run the following commands in the terminal (current working directory: `IMP-util
 - LINEAR_PLOT_Y_ERROR_COLUMN:
   - column name of column with errors of y values
   - list of column names of columns with errors of y values *(for multiple linear plots in one graph)*
-  - **note:** use an empty string "" if there are no errors
+  - **NOTE:** use an empty string "" to provide no error column for the y-values
 
 ### plot legend parameters
 
 - LINEAR_PLOT_PLOTLABELS:
   - label for plot in legend
   - list of labels for plots in legend
-  - **note:** use an empty string "" if there shall be no label for this plot
+  - **NOTE:** use an empty string "" if there shall be no label for this plot
 
 - LINEAR_PLOT_TITLE: title 
 
@@ -60,7 +60,7 @@ Run the following commands in the terminal (current working directory: `IMP-util
 
 The x-/y-values and x-/y-error-values are used to create a linear fit with the [kafe2](https://github.com/PhiLFitters/kafe2) library. The parameters of the fit and also their errors will be logged in the console.
 
-If you input more than 5 y-value column names, the plot colors will no be unique anymore.
+If you input more than 5 y-value column names, the plot colors will not be unique anymore.
 
 ### linear plot example
 

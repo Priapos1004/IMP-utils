@@ -70,7 +70,7 @@ def linear_plot(data_path: str, graphic_path: str, x_column: str, x_error_column
     ax = fig.add_subplot()
 
     max_length = int(np.ceil(max(x)*10))/10
-    colors = ['red', 'green', 'blue', 'cyan', 'magenta']
+    colors = ['blue', 'green', 'red', 'cyan', 'magenta']
 
     for y_idx in range(len(y_column)):
         y = data[y_column[y_idx]]
