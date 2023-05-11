@@ -35,7 +35,7 @@ def linear_plot(data_path: str, graphic_path: str, x_column: str, x_error_column
     @output:
         plot saved in graphic_path and errors in console
 
-    @Note: max 5 y value sets
+    @Note: max 5 y-value sets
     """
 
     if intercept_zero:
