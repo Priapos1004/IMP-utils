@@ -1,15 +1,16 @@
-RAW_DATA_PATH = "data/Grundpraktikum/O6_na.csv"
-LINEAR_PLOT_PATH = "data/graphics/plot_O6_na.png"
+RAW_DATA_PATH = "data/Grundpraktikum/M12_kg.csv"
+LINEAR_PLOT_PATH = "data/graphics/plot_M12_kg.png"
 RESIDUAL_PLOT_PATH = "data/graphics/plot_O6_na_residual.png"
 
-LINEAR_PLOT_X_COLUMN = 'k'
+LINEAR_PLOT_X_COLUMN = 'n'
 LINEAR_PLOT_X_ERROR_COLUMN = ""
-LINEAR_PLOT_Y_COLUMN = "y"
-LINEAR_PLOT_Y_ERROR_COLUMN = "uy"
+LINEAR_PLOT_Y_COLUMN = ["f_1kg", "f_2kg", "f_3kg"]
+LINEAR_PLOT_PLOTLABELS = ["1kg", "2kg", "3kg"] # labels for linear plots in legend
+LINEAR_PLOT_Y_ERROR_COLUMN = ["u_1kg", "u_2kg", "u_3kg"]
 LINEAR_PLOT_TITLE = "" # title of linear/residual plot
-LINEAR_PLOT_XLABEL = r"k" # x label of linear/residual plot
-LINEAR_PLOT_YLABEL = r"$r_k^2$ in $mm^2$" # y label of linear/residual plot
-LINEAR_PLOT_XTICKS_NUMBER = 7 # number of ticks on x axes
+LINEAR_PLOT_XLABEL = r"n" # x label of linear/residual plot
+LINEAR_PLOT_YLABEL = r"Frequenzen $f_n$ in Hz für 1kg/2kg/3kg" # y label of linear/residual plot
+LINEAR_PLOT_XTICKS_NUMBER = 8 # number of ticks on x axes
 LINEAR_PLOT_INTERCEPT_ZERO = False # True (linear model with intercept zero) or False (linear model)
 
 
@@ -18,6 +19,7 @@ linear_plot.graphic_path = %LINEAR_PLOT_PATH
 linear_plot.x_column = %LINEAR_PLOT_X_COLUMN
 linear_plot.x_error_column = %LINEAR_PLOT_X_ERROR_COLUMN
 linear_plot.y_column = %LINEAR_PLOT_Y_COLUMN
+linear_plot.y_plot_label = %LINEAR_PLOT_PLOTLABELS
 linear_plot.y_error_column = %LINEAR_PLOT_Y_ERROR_COLUMN
 linear_plot.title = %LINEAR_PLOT_TITLE
 linear_plot.x_label = %LINEAR_PLOT_XLABEL
