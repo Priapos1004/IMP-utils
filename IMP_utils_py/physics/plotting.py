@@ -63,6 +63,8 @@ def linear_plot(data_path: str, graphic_path: str, x_column: str, x_error_column
         raise ValueError(f"Number of y_columns ({len(y_column)}), number of y_error_column ({len(y_error_column)}), or number of y_plot_label ({len(y_plot_label)}) do not match")
     elif len(y_column) > 5:
         logger.warning(f"Found more than 5 y-value sets ({len(y_column)} > 5) -> the plot colors will not be unique")
+
+    y_plot_label = [None if elem == "" else elem for elem in y_plot_label]
     
     fig = plt.figure()
     ax = fig.add_subplot()
