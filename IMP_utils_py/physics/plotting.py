@@ -122,7 +122,8 @@ def linear_plot(data_path: str, graphic_path: str, x_column: str, x_error_column
     ax.set_title(title)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
-    ax.legend()
+    if not all(v is None for v in y_plot_label):
+        ax.legend()
 
     fig.savefig(graphic_path)
     logger.info("plot saved")
