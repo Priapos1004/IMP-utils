@@ -52,6 +52,7 @@ def linear_plot(data_path: str, graphic_path: str, x_column: str, x_error_column
     else:
         dx = None
 
+    # convert string input to list of string
     if type(y_column) == str:
         y_column = [y_column]
     if type(y_plot_label) == str:
@@ -59,17 +60,21 @@ def linear_plot(data_path: str, graphic_path: str, x_column: str, x_error_column
     if type(y_error_column) == str:
         y_error_column = [y_error_column]
 
+    # check if lengths of y columns is correct
     if not (len(y_column) == len(y_error_column) == len(y_plot_label)):
         raise ValueError(f"Number of y_columns ({len(y_column)}), number of y_error_column ({len(y_error_column)}), or number of y_plot_label ({len(y_plot_label)}) do not match")
     elif len(y_column) > 5:
         logger.warning(f"Found more than 5 y-value sets ({len(y_column)} > 5) -> the plot colors will not be unique")
 
+    # replace empty strings with None in y_plot_label
     y_plot_label = [None if elem == "" else elem for elem in y_plot_label]
     
     fig = plt.figure()
     ax = fig.add_subplot()
 
+    # max value on x-axes
     max_length = int(np.ceil(max(x)*10))/10
+    # colors for y-value fits
     colors = ['blue', 'green', 'red', 'cyan', 'magenta']
 
     for y_idx in range(len(y_column)):
@@ -91,6 +96,7 @@ def linear_plot(data_path: str, graphic_path: str, x_column: str, x_error_column
         model_params = my_fit.parameter_values
         model_params_error = my_fit.parameter_errors
 
+        # fit values
         m = model_params[0]
         dm = model_params_error[0]
         if not intercept_zero:
@@ -103,6 +109,7 @@ def linear_plot(data_path: str, graphic_path: str, x_column: str, x_error_column
             logger.info(f"y-Achsenschnitt der Gerade ({y_column[y_idx]}): {n}")
             logger.info(f"Unsicherheit des y-Achsenschnitt ({y_column[y_idx]}): {dn}")
 
+        # add graphs to plot
         x_intervall = np.linspace(0, max_length, 1000)
         if intercept_zero:
             ax.plot(x_intervall, m*x_intervall, '--', label=y_plot_label[y_idx], color=colors[y_idx%len(colors)])
@@ -110,6 +117,7 @@ def linear_plot(data_path: str, graphic_path: str, x_column: str, x_error_column
             ax.plot(x_intervall, m*x_intervall+n, '--', label=y_plot_label[y_idx], color=colors[y_idx%len(colors)])
         plt.errorbar(x, y, yerr=dy, xerr=dx, linestyle='None', marker='.', elinewidth=0.5, capsize=3, color="black")
 
+    # legend settings
     ax.set_xticks(np.linspace(0, max_length, x_ticks_number))
     ax.set_title(title)
     ax.set_xlabel(x_label)
@@ -153,6 +161,7 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
     else:
         dy = None
 
+    # max value on x-axes
     max_length = int(np.ceil(max(x)*10))/10
 
     fig = plt.figure()
@@ -173,15 +182,18 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
     if not intercept_zero:
         n = model_params[1]
 
+    # calculate residuals
     if intercept_zero:
         residuals = [y.iloc[idx]-linear_zero_model(x.iloc[idx], m) for idx in range(len(x))]
     else:
         residuals = [y.iloc[idx]-linear_model(x.iloc[idx], m, n) for idx in range(len(x))]
 
+    # add graphs to plot
     plt.scatter(x, residuals, s=10)
     x_intervall = np.linspace(0, max_length, 1000)
     ax.plot(x_intervall, 0*x_intervall, '--k', linewidth=1)
     
+    # legend settings
     ax.set_xticks(np.linspace(0, max_length, x_ticks_number))
     ax.set_title(title)
     ax.set_xlabel(x_label)
