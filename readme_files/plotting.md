@@ -58,7 +58,7 @@ Run the following commands in the terminal (current working directory: `IMP-util
 
 ### INFO
 
-The x-/y-values and x-/y-error-values are used to create a linear fit with the [kafe2](https://github.com/PhiLFitters/kafe2) library. The parameters of the fit and also their errors will be logged in the console.
+The x-/y-values and x-/y-error-values are used to create a linear fit with the [kafe2](https://github.com/PhiLFitters/kafe2) library. The advantage of kafe2 compared to matplotlib or scipy is that the errors in x- and y-axes are used to calculate the increase and also the error of the increase. The parameters of the fit and also their errors will be logged in the console.
 
 If you input more than 5 y-value column names, the plot colors will not be unique anymore.
 
