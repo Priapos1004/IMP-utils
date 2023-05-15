@@ -125,6 +125,9 @@ def linear_plot(data_path: str, graphic_path: str, x_column: str, x_error_column
     if not all(v is None for v in y_plot_label):
         ax.legend()
 
+    # if y-axes values are long numbers, the y-label is cut off. Has to be tested if always best solution for this.
+    fig.subplots_adjust(left=0.15)
+
     fig.savefig(graphic_path)
     logger.info("plot saved")
 
