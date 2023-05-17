@@ -97,7 +97,7 @@ If you input more than 5 y-value column names, the plot colors will not be uniqu
 python IMP_utils_py/cli.py --mode=linear-plot --gin_file=IMP_utils_py/config/plotting.gin
 ```
 
-
+---
 
 <a name="residual-plot"/>
 
