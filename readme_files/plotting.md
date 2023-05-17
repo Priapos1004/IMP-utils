@@ -143,13 +143,13 @@ python IMP_utils_py/cli.py --mode=linear-plot --gin_file=IMP_utils_py/config/plo
   - `string` e.g. "Frequenz f in Hz"
   - **NOTE:** use an empty string "" if there shall be no label for this axes
 
-- LINEAR_PLOT_XTICKS_NUMBER: number of ticks on x axes *(has sometimes to be adjusted a bit for a better laylout)*
-  -   `integer`
+- LINEAR_PLOT_XTICKS_NUMBER: number of ticks on x axes *(has sometimes to be adjusted a bit for a better laylout)* <br>
+  - `integer`
 
 ### function parameter
 
-- LINEAR_PLOT_INTERCEPT_ZERO: True (linear model with intercept zero - y=m\*x) or False (linear model - y=m\*x+n)
-  -   `boolean`
+- LINEAR_PLOT_INTERCEPT_ZERO: True (linear model with intercept zero - y=m\*x) or False (linear model - y=m\*x+n) <br>
+  - `boolean`
 
 ### INFO
 
