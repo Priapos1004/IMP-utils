@@ -20,6 +20,17 @@ def linear_model(x, a=1.0, b=0.0):
     """ y = a * x + b """
     return a*x+b
 
+def read_data(data_path: str) -> pd.DataFrame:
+    """ read data as pandas DataFrame from path """
+    if data_path.split(".")[-1] == "csv":
+        data = pd.read_csv(data_path, index_col=0)
+    elif data_path.split(".")[-1] == "xlsx":
+        data = pd.read_excel(data_path)
+    else:
+        raise ValueError(f"raw data path '{data_path}' file format is not supported -> use .csv or .xlsx")
+    
+    return data
+
 ### command functions
 @gin.configurable
 def linear_plot(data_path: str, graphic_path: str, x_column: str, x_error_column: str, y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: int, intercept_zero: bool):
@@ -43,7 +54,7 @@ def linear_plot(data_path: str, graphic_path: str, x_column: str, x_error_column
     else:
         model = linear_model
 
-    data = pd.read_csv(data_path, index_col=0)
+    data = read_data(data_path)
     data.sort_values(by=[x_column])
 
     x = data[x_column]
@@ -150,7 +161,7 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
     else:
         model = linear_model
 
-    data = pd.read_csv(data_path, index_col=0)
+    data = read_data(data_path)
     data.sort_values(by=[x_column])
 
     x = data[x_column]
