@@ -1,0 +1,3 @@
+LEISTUNGSSPIEGEL_PATH = "data/Leistungsspiegel.pdf"
+
+GradeCalculator.file_path = %LEISTUNGSSPIEGEL_PATH
