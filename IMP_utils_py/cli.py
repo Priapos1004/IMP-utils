@@ -4,6 +4,7 @@ from absl import app, flags
 from IMP_utils_py.physics import (errorbar_l, errorbar_phi, eval_raw_data,
                                   hist_gauss, linear_plot, residual_plot,
                                   time_stop)
+from IMP_utils_py.playground import GradeCalculator
 
 flags.DEFINE_enum(
     "mode",
@@ -17,6 +18,8 @@ flags.DEFINE_enum(
         "errorbar-l",
         "linear-plot",
         "residual-plot",
+        "grade-calculator-IMP",
+        "grade-calculator-general",
     ],
     "just ask Samuel",
 )
@@ -45,6 +48,13 @@ def main(*unused_argv):
         linear_plot()
     elif FLAGS.mode == "residual-plot":
         residual_plot()
+    elif FLAGS.mode == "grade-calculator-IMP":
+        gc = GradeCalculator()
+        gc.calculate_total_grade(IMP=True)
+    elif FLAGS.mode == "grade-calculator-general":
+        gc = GradeCalculator()
+        gc.calculate_total_grade(IMP=False)
+    
 
 def console_entry_point():
     """From pip installed script."""

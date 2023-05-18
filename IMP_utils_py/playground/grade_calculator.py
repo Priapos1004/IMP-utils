@@ -1,4 +1,5 @@
 import gin
+import numpy as np
 import pandas as pd
 import pdfplumber
 import tabula
@@ -8,9 +9,9 @@ from IMP_utils_py.config.logging import setup_logger
 ### logging setup
 logger = setup_logger()
 
+@gin.configurable
 class GradeCalculator:
 
-    @gin.configurable
     def __init__(self, file_path: str):
         self.df_exams = self.extract_exams(file_path)
         self.df_modules = self.extract_modules(file_path)
@@ -92,11 +93,17 @@ class GradeCalculator:
         
         return pd.DataFrame({"name": names, "grade": grades, "credit": credits})
     
-    def modules_exams_diff(self):
+    def modules_exams_diff(self, drop_idx: list):
+        logger.info("calculation infos:")
         print()
         print("using the following modules for calculation:")
         print()
-        print(self.df_modules.to_markdown(index=False))
+        print(self.df_modules.drop(index=drop_idx, inplace=False).to_markdown(index=False))
+        if drop_idx != []:
+            print("\n\n")
+            print("not using the following modules because of Studienordnung IMP:")
+            print()
+            print(self.df_modules.iloc[drop_idx].to_markdown(index=False))
         print("\n\n")
         print("not using the following exams because of missing credits:")
         print()
@@ -104,18 +111,58 @@ class GradeCalculator:
         for idx in range(len(self.df_exams)):
             if not self.df_exams.name.iloc[idx] in list(self.df_modules.name):
                 not_idx.append(idx)
-        print(self.df_exams.iloc[not_idx].to_markdown(index=False))
+        if not_idx != []:
+            print(self.df_exams.iloc[not_idx].to_markdown(index=False))
+        else:
+            print("--- no such exam detected ---")
         print()
+
+    def get_better_LinA_Ana_result(self) -> list:
+        """ 
+        get better result if both are present from:
+        - 'Lineare Algebra und Analytische Geometrie I' and 'Lineare Algebra und Analytische Geometrie II'
+        - 'Analysis I' and 'Analysis II'
+
+        @return: list with idx of result that will not be used for calculation
+        """
+        LinA = [10,10]
+        LinA_idx = [None, None]
+        Ana = [10,10]
+        Ana_idx = [None, None]
+        for idx in range(len(self.df_modules)):
+            if self.df_modules.name.iloc[idx] == "Lineare Algebra und Analytische Geometrie I":
+                LinA[0] = self.df_modules.grade.iloc[idx]
+                LinA_idx[0] = idx
+            elif self.df_modules.name.iloc[idx] == "Lineare Algebra und Analytische Geometrie II":
+                LinA[1] = self.df_modules.grade.iloc[idx]
+                LinA_idx[1] = idx
+            elif self.df_modules.name.iloc[idx] == "Analysis I":
+                Ana[0] = self.df_modules.grade.iloc[idx]
+                Ana_idx[0] = idx
+            elif self.df_modules.name.iloc[idx] == "Analysis II":
+                Ana[1] = self.df_modules.grade.iloc[idx]
+                Ana_idx[1] = idx
+
+        drop_idx = []
+        if sum(LinA) < 10:
+            drop_idx.append(LinA_idx[np.argmax(LinA)])
+        if sum(Ana) < 10:
+            drop_idx.append(Ana_idx[np.argmax(Ana)])
+        return drop_idx
     
-    def calculate_total_grade(self) -> float:
-        """ calculates grade with weighted by credits average of 'Modulnote' """
-        self.modules_exams_diff()
-        total_credits = sum(self.df_modules.credit)
-        total_product = sum([self.df_modules.grade.iloc[idx] * self.df_modules.credit.iloc[idx] for idx in range(len(self.df_modules))])
+    def calculate_total_grade(self, IMP: bool) -> float:
+        """ 
+        calculates grade with weighted by credits average of 'Modulnote' 
+
+        @param:
+            IMP: if True, only the better result of (LinA I and LinA II) and (Ana I and Ana II) will be used
+        """
+        drop_idx = []
+        if IMP:
+            drop_idx = self.get_better_LinA_Ana_result()
+        self.modules_exams_diff(drop_idx)
+        total_credits = sum(self.df_modules.drop(index=drop_idx, inplace=False).credit)
+        total_product = sum([self.df_modules.grade.iloc[idx] * self.df_modules.credit.iloc[idx] for idx in range(len(self.df_modules)) if idx not in drop_idx])
         final_grade = total_product/total_credits
         logger.info(f"final grade: {final_grade}")
         return final_grade
-    
-if __name__ == "__main__":
-    gc = GradeCalculator("data/Leistungsspiegel.pdf")
-    gc.calculate_total_grade()
