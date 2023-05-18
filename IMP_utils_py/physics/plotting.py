@@ -33,7 +33,7 @@ def read_data(data_path: str) -> pd.DataFrame:
 
 ### command functions
 @gin.configurable
-def linear_plot(data_path: str, graphic_path: str, x_column: str, x_error_column: str, y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: int, intercept_zero: bool):
+def linear_plot(data_path: str, graphic_path: str, x_column: str, x_error_column: str, y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: int, intercept_zero: bool, show_linear_fit: bool):
     """
     @params:
         x_column: column name for x values
@@ -42,6 +42,7 @@ def linear_plot(data_path: str, graphic_path: str, x_column: str, x_error_column
         y_plot_label: label for y-plot or list of labels for y-plots
         y_error_column: column name for y value errors or list of column names for y value errors
         intercept_zero: True (y = m*x) or False (y = m*x + n)
+        show_linear_fit: if False, the linear fit will not be shown
 
     @output:
         plot saved in graphic_path and errors in console
@@ -86,7 +87,8 @@ def linear_plot(data_path: str, graphic_path: str, x_column: str, x_error_column
     # max value on x-axes
     max_length = int(np.ceil(max(x)*10))/10
     # colors for y-value fits
-    colors = ['blue', 'green', 'red', 'cyan', 'magenta']
+    colors = ["lightskyblue", "lightgreen", "lightcoral", "paleturquoise", "plum"]
+    errorbar_colors = ['blue', 'green', 'red', 'cyan', 'magenta']
 
     for y_idx in range(len(y_column)):
         y = data[y_column[y_idx]]
@@ -121,12 +123,13 @@ def linear_plot(data_path: str, graphic_path: str, x_column: str, x_error_column
             logger.info(f"Unsicherheit des y-Achsenschnitt ({y_column[y_idx]}): {dn}")
 
         # add graphs to plot
-        x_intervall = np.linspace(0, max_length, 1000)
-        if intercept_zero:
-            ax.plot(x_intervall, m*x_intervall, '--', label=y_plot_label[y_idx], color=colors[y_idx%len(colors)])
-        else:
-            ax.plot(x_intervall, m*x_intervall+n, '--', label=y_plot_label[y_idx], color=colors[y_idx%len(colors)])
-        plt.errorbar(x, y, yerr=dy, xerr=dx, linestyle='None', marker='.', elinewidth=0.5, capsize=3, color="black")
+        if show_linear_fit:
+            x_intervall = np.linspace(0, max_length, 1000)
+            if intercept_zero:
+                ax.plot(x_intervall, m*x_intervall, '--', label=y_plot_label[y_idx], color=colors[y_idx%len(colors)])
+            else:
+                ax.plot(x_intervall, m*x_intervall+n, '--', label=y_plot_label[y_idx], color=colors[y_idx%len(colors)])
+        plt.errorbar(x, y, yerr=dy, xerr=dx, linestyle='None', marker='.', elinewidth=0.5, capsize=3, color=errorbar_colors[y_idx%len(errorbar_colors)])
 
     # legend settings
     ax.set_xticks(np.linspace(0, max_length, x_ticks_number))
