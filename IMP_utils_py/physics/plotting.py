@@ -136,7 +136,7 @@ def linear_plot(data_path: str, graphic_path: str, x_column: str, x_error_column
     ax.set_title(title)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
-    if not all(v is None for v in y_plot_label):
+    if not all(v is None for v in y_plot_label) and show_linear_fit:
         ax.legend()
 
     # if y-axes values are long numbers, the y-label is cut off. Has to be tested if always best solution for this.
