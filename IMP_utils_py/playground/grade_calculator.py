@@ -99,7 +99,7 @@ class GradeCalculator:
         print("using the following modules for calculation:")
         print()
         print(self.df_modules.drop(index=drop_idx, inplace=False).to_markdown(index=False))
-        if drop_idx != []:
+        if drop_idx:
             print("\n\n")
             print("not using the following modules because of Studienordnung IMP:")
             print()
@@ -107,11 +107,9 @@ class GradeCalculator:
         print("\n\n")
         print("not using the following exams because of missing credits:")
         print()
-        not_idx = []
-        for idx in range(len(self.df_exams)):
-            if not self.df_exams.name.iloc[idx] in list(self.df_modules.name):
-                not_idx.append(idx)
-        if not_idx != []:
+
+        not_idx = [idx for idx in range(len(self.df_exams)) if not self.df_exams.name.iloc[idx] in list(self.df_modules.name)]
+        if not_idx:
             print(self.df_exams.iloc[not_idx].to_markdown(index=False))
         else:
             print("--- no such exam detected ---")
