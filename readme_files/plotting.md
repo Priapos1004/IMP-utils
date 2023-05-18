@@ -66,6 +66,9 @@ Run the following commands in the terminal (current working directory: `IMP-util
 - LINEAR_PLOT_XTICKS_NUMBER: number of ticks on x axes *(has sometimes to be adjusted a bit for a better laylout)*
   - `integer`
 
+- LINEAR_PLOT_SHOW_FIT: shall the linear fit be displayed *(i.e. only errorplot when False)*
+  - `boolean`
+
 ### function parameter
 
 - LINEAR_PLOT_INTERCEPT_ZERO: True (linear model with intercept zero - y=m\*x) or False (linear model - y=m\*x+n)
@@ -78,6 +81,12 @@ Run the following commands in the terminal (current working directory: `IMP-util
 The x-/y-values and x-/y-error-values are used to create a linear fit with the [kafe2](https://github.com/PhiLFitters/kafe2) library. The advantage of kafe2 compared to matplotlib or scipy is that the errors in x- and y-axes are used to calculate the increase and also the error of the increase. The parameters of the fit and also their errors will be logged in the console.
 
 If you input more than 5 y-value column names, the plot colors will not be unique anymore.
+
+### only errorplot example
+
+<p align="left">
+  <img src="./images/plot_T4_V.png" width="400" title="only errorplot example" alt="only errorplot example">
+</p>
 
 ### linear plot example
 

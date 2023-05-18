@@ -12,6 +12,7 @@ LINEAR_PLOT_XLABEL = r"n" # x label of linear/residual plot
 LINEAR_PLOT_YLABEL = r"Frequenzen $f_n$ in Hz für 1kg/2kg/3kg" # y label of linear/residual plot
 LINEAR_PLOT_XTICKS_NUMBER = 8 # number of ticks on x axes
 LINEAR_PLOT_INTERCEPT_ZERO = False # True (linear model with intercept zero) or False (linear model)
+LINEAR_PLOT_SHOW_FIT = True # if False, the linear fit will not be shown
 
 
 linear_plot.data_path = %RAW_DATA_PATH
@@ -26,6 +27,7 @@ linear_plot.x_label = %LINEAR_PLOT_XLABEL
 linear_plot.y_label = %LINEAR_PLOT_YLABEL
 linear_plot.x_ticks_number = %LINEAR_PLOT_XTICKS_NUMBER
 linear_plot.intercept_zero = %LINEAR_PLOT_INTERCEPT_ZERO
+linear_plot.show_linear_fit = %LINEAR_PLOT_SHOW_FIT
 
 residual_plot.data_path = %RAW_DATA_PATH
 residual_plot.graphic_path = %RESIDUAL_PLOT_PATH
