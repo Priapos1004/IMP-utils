@@ -33,7 +33,7 @@ def read_data(data_path: str) -> pd.DataFrame:
 
 ### command functions
 @gin.configurable
-def linear_plot(data_path: str, graphic_path: str, x_column: str, x_error_column: str, y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: int, intercept_zero: bool, show_linear_fit: bool):
+def errorbar_plot(data_path: str, graphic_path: str, x_column: str, x_error_column: str, y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: int, intercept_zero: bool, show_linear_fit: bool):
     """
     @params:
         x_column: column name for x values
@@ -97,38 +97,39 @@ def linear_plot(data_path: str, graphic_path: str, x_column: str, x_error_column
         else:
             dy = None
 
-        ### kafe2 calculation
-        xy_data = XYContainer(x,y)
-        if dx is not None:
-            xy_data.add_error("x", dx)
-        if dy is not None:
-            xy_data.add_error("y", dy)
-
-        my_fit = Fit(xy_data, model)
-        my_fit.do_fit()
-        model_params = my_fit.parameter_values
-        model_params_error = my_fit.parameter_errors
-
-        # fit values
-        m = model_params[0]
-        dm = model_params_error[0]
-        if not intercept_zero:
-            n = model_params[1]
-            dn = model_params_error[1]
-
-        logger.info(f"Steigung der Gerade ({y_column[y_idx]}): {m}")
-        logger.info(f"Unsicherheit der Steigung ({y_column[y_idx]}): {dm}")
-        if not intercept_zero:
-            logger.info(f"y-Achsenschnitt der Gerade ({y_column[y_idx]}): {n}")
-            logger.info(f"Unsicherheit des y-Achsenschnitt ({y_column[y_idx]}): {dn}")
-
-        # add graphs to plot
         if show_linear_fit:
+            ### kafe2 calculation
+            xy_data = XYContainer(x,y)
+            if dx is not None:
+                xy_data.add_error("x", dx)
+            if dy is not None:
+                xy_data.add_error("y", dy)
+
+            my_fit = Fit(xy_data, model)
+            my_fit.do_fit()
+            model_params = my_fit.parameter_values
+            model_params_error = my_fit.parameter_errors
+
+            # fit values
+            m = model_params[0]
+            dm = model_params_error[0]
+            if not intercept_zero:
+                n = model_params[1]
+                dn = model_params_error[1]
+
+            logger.info(f"Steigung der Gerade ({y_column[y_idx]}): {m}")
+            logger.info(f"Unsicherheit der Steigung ({y_column[y_idx]}): {dm}")
+            if not intercept_zero:
+                logger.info(f"y-Achsenschnitt der Gerade ({y_column[y_idx]}): {n}")
+                logger.info(f"Unsicherheit des y-Achsenschnitt ({y_column[y_idx]}): {dn}")
+
+            # add graphs to plot
             x_intervall = np.linspace(0, max_length, 1000)
             if intercept_zero:
                 ax.plot(x_intervall, m*x_intervall, '--', label=y_plot_label[y_idx], color=colors[y_idx%len(colors)])
             else:
                 ax.plot(x_intervall, m*x_intervall+n, '--', label=y_plot_label[y_idx], color=colors[y_idx%len(colors)])
+
         plt.errorbar(x, y, yerr=dy, xerr=dx, linestyle='None', marker='.', elinewidth=0.5, capsize=3, color=errorbar_colors[y_idx%len(errorbar_colors)])
 
     # legend settings
