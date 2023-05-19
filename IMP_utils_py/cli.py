@@ -1,8 +1,8 @@
 import gin
 from absl import app, flags
 
-from IMP_utils_py.physics import (errorbar_l, errorbar_phi, eval_raw_data,
-                                  hist_gauss, linear_plot, residual_plot,
+from IMP_utils_py.physics import (errorbar_l, errorbar_phi, errorbar_plot,
+                                  eval_raw_data, hist_gauss, residual_plot,
                                   time_stop)
 from IMP_utils_py.playground import GradeCalculator
 
@@ -45,7 +45,7 @@ def main(*unused_argv):
     elif FLAGS.mode == "errorbar-l":
         errorbar_l() 
     elif FLAGS.mode == "linear-plot":
-        linear_plot()
+        errorbar_plot()
     elif FLAGS.mode == "residual-plot":
         residual_plot()
     elif FLAGS.mode == "grade-calculator-IMP":
