@@ -16,7 +16,7 @@ flags.DEFINE_enum(
         "hist-gauss",
         "errorbar-phi",
         "errorbar-l",
-        "linear-plot",
+        "errorbar-plot",
         "residual-plot",
         "grade-calculator-IMP",
         "grade-calculator-general",
@@ -44,7 +44,7 @@ def main(*unused_argv):
         errorbar_phi() 
     elif FLAGS.mode == "errorbar-l":
         errorbar_l() 
-    elif FLAGS.mode == "linear-plot":
+    elif FLAGS.mode == "errorbar-plot":
         errorbar_plot()
     elif FLAGS.mode == "residual-plot":
         residual_plot()
