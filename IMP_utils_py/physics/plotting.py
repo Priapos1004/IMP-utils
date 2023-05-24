@@ -122,7 +122,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
             model_params_error = my_fit.parameter_errors
 
             # fit values
-            if model_type in ["linear", "linear_zero"]:
+            if model_type in ("linear", "linear_zero"):
                 m = model_params[0]
                 dm = model_params_error[0]
                 logger.info(f"Steigung der Gerade ({y_column[y_idx]}): {m}")
