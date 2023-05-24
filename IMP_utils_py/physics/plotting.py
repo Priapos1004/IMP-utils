@@ -12,9 +12,13 @@ from IMP_utils_py.config.logging import setup_logger
 logger = setup_logger()
 
 ### helper functions
+def constant_model(x, a=1.0):
+    """ y = a """
+    return a
+
 def linear_zero_model(x, a=1.0):
     """ y = a * x """
-    return a * x
+    return a*x
 
 def linear_model(x, a=1.0, b=0.0):
     """ y = a * x + b """
@@ -33,7 +37,7 @@ def read_data(data_path: str) -> pd.DataFrame:
 
 ### command functions
 @gin.configurable
-def errorbar_plot(data_path: str, graphic_path: str, x_column: str, x_error_column: str, y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: int, intercept_zero: bool, show_linear_fit: bool):
+def errorbar_plot(data_path: str, graphic_path: str, x_column: str, x_error_column: str, y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: int, model_type: str, show_linear_fit: bool):
     """
     @params:
         x_column: column name for x values
@@ -50,10 +54,17 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
     @Note: max 5 y-value sets
     """
 
-    if intercept_zero:
+    if model_type == "linear_zero":
         model = linear_zero_model
-    else:
+        logger.debug("selected linear_zero model")
+    elif model_type == "linear":
         model = linear_model
+        logger.debug("selected linear model")
+    elif model_type == "constant":
+        model = constant_model
+        logger.debug("selected constant model")
+    else:
+        raise ValueError(f"Model '{model_type}' ist not supported -> choose 'linear_zero', 'linear', or 'constant'")
 
     data = read_data(data_path)
     data.sort_values(by=[x_column])
@@ -92,7 +103,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
 
     for y_idx in range(len(y_column)):
         y = data[y_column[y_idx]]
-        if y_error_column != "":
+        if y_error_column[y_idx] != "":
             dy = data[y_error_column[y_idx]]
         else:
             dy = None
@@ -111,24 +122,36 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
             model_params_error = my_fit.parameter_errors
 
             # fit values
-            m = model_params[0]
-            dm = model_params_error[0]
-            if not intercept_zero:
-                n = model_params[1]
-                dn = model_params_error[1]
-
-            logger.info(f"Steigung der Gerade ({y_column[y_idx]}): {m}")
-            logger.info(f"Unsicherheit der Steigung ({y_column[y_idx]}): {dm}")
-            if not intercept_zero:
+            if model_type in ["linear", "linear_zero"]:
+                m = model_params[0]
+                dm = model_params_error[0]
+                logger.info(f"Steigung der Gerade ({y_column[y_idx]}): {m}")
+                logger.info(f"Unsicherheit der Steigung ({y_column[y_idx]}): {dm}")
+                if model_type == "linear":
+                    n = model_params[1]
+                    dn = model_params_error[1]
+                    logger.info(f"y-Achsenschnitt der Gerade ({y_column[y_idx]}): {n}")
+                    logger.info(f"Unsicherheit des y-Achsenschnitt ({y_column[y_idx]}): {dn}")
+            elif model_type == "constant":
+                n = model_params[0]
+                dn = model_params_error[0]
                 logger.info(f"y-Achsenschnitt der Gerade ({y_column[y_idx]}): {n}")
                 logger.info(f"Unsicherheit des y-Achsenschnitt ({y_column[y_idx]}): {dn}")
 
             # add graphs to plot
             x_intervall = np.linspace(0, max_length, 1000)
-            if intercept_zero:
+            if model_type == "constant":
+                ax.plot(x_intervall, [n]*len(x_intervall), '--', label=y_plot_label[y_idx], color=colors[y_idx%len(colors)])
+                logger.debug(f"added constant fit ({y_plot_label[y_idx]})")
+            elif model_type == "linear_zero":
                 ax.plot(x_intervall, m*x_intervall, '--', label=y_plot_label[y_idx], color=colors[y_idx%len(colors)])
-            else:
+                logger.debug(f"added linear_zero fit ({y_plot_label[y_idx]})")
+            elif model_type == "linear":
                 ax.plot(x_intervall, m*x_intervall+n, '--', label=y_plot_label[y_idx], color=colors[y_idx%len(colors)])
+                logger.debug(f"added linear fit ({y_plot_label[y_idx]})")
+
+        else:
+            logger.info("Fits are deactivated")
 
         plt.errorbar(x, y, yerr=dy, xerr=dx, linestyle='None', marker='.', elinewidth=0.5, capsize=3, color=errorbar_colors[y_idx%len(errorbar_colors)])
 
@@ -147,7 +170,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
     logger.info("plot saved")
 
 @gin.configurable
-def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_column: str, y_column: str, y_error_column: str, title: str, x_label: str, y_label: str, x_ticks_number: int, intercept_zero: bool):
+def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_column: str, y_column: str, y_error_column: str, title: str, x_label: str, y_label: str, x_ticks_number: int, model_type: str):
     """
     @params:
         x_column: column name for x values
@@ -160,10 +183,18 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
         plot saved in graphic_path
     """
 
-    if intercept_zero:
+    if model_type == "linear_zero":
         model = linear_zero_model
-    else:
+        logger.debug("selected linear_zero model")
+    elif model_type == "linear":
         model = linear_model
+        logger.debug("selected linear model")
+    elif model_type == "constant":
+        model = constant_model
+        logger.debug("selected constant model")
+    else:
+        raise ValueError(f"Model '{model_type}' ist not supported -> choose 'linear_zero', 'linear', or 'constant'")
+
 
     data = read_data(data_path)
     data.sort_values(by=[x_column])
@@ -198,14 +229,16 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
     model_params = my_fit.parameter_values
 
     m = model_params[0]
-    if not intercept_zero:
+    if model_type == "linear":
         n = model_params[1]
 
     # calculate residuals
-    if intercept_zero:
+    if model_type == "linear_zero":
         residuals = [y.iloc[idx]-linear_zero_model(x.iloc[idx], m) for idx in range(len(x))]
-    else:
+    elif model_type == "linear":
         residuals = [y.iloc[idx]-linear_model(x.iloc[idx], m, n) for idx in range(len(x))]
+    elif model_type == "constant":
+        residuals = [y.iloc[idx]-constant_model(x.iloc[idx], m) for idx in range(len(x))]
 
     # add graphs to plot
     plt.scatter(x, residuals, s=10)
