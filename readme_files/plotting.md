@@ -64,8 +64,9 @@ Run the following commands in the terminal (current working directory: `IMP-util
 - ERRORBAR_PLOT_SHOW_FIT: if False, no linear fit will be created and just the errorbar displayed
   - `boolean`
 
-- ERRORBAR_PLOT_INTERCEPT_ZERO: True (linear model with intercept zero - y=m\*x) or False (linear model - y=m\*x+n)
-  - `boolean`
+- ERRORBAR_PLOT_MODEL: choose the model for the linear fit
+  - `string`
+  - 'linear' *(y = m\*x + n)* / 'linear_zero' *(y = m\*x)* / 'constant' *(y = n)*
 
 - ERRORBAR_PLOT_PLOTLABELS:
   - label for plot in legend
@@ -86,6 +87,12 @@ If you input more than 5 y-value column names, the plot colors will not be uniqu
 
 <p align="left">
   <img src="./images/plot_T4_V.png" width="400" title="only errorplot example" alt="only errorplot example">
+</p>
+
+### constant plot example
+
+<p align="left">
+  <img src="./images/plot_T4_pV_korr.png" width="400" title="constant plot example" alt="constant plot example">
 </p>
 
 ### linear plot example
@@ -157,12 +164,13 @@ python IMP_utils_py/cli.py --mode=errorbar-plot --gin_file=IMP_utils_py/config/p
 
 ### function parameter
 
-- ERRORBAR_PLOT_INTERCEPT_ZERO: True (linear model with intercept zero - y=m\*x) or False (linear model - y=m\*x+n)
-  - `boolean`
+- ERRORBAR_PLOT_MODEL: choose the model for the linear fit
+  - `string`
+  - 'linear' *(y = m\*x + n)* / 'linear_zero' *(y = m\*x)* / 'constant' *(y = n)*
 
 ### INFO
 
-The residual plot represents the residuals *(actual_y_value − predicted_y_value)* of the linear fitfunction mentioned in [errorbar-plot](#errorbar-plot-info).
+The residual plot represents the residuals *(actual_y_value − predicted_y_value)* of the linear fit-function mentioned in [errorbar-plot](#errorbar-plot-info).
 
 You can only use one set of y-values and not multiple like in errorbar-plot.
 

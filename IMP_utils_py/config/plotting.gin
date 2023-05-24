@@ -13,7 +13,7 @@ ERRORBAR_PLOT_XTICKS_NUMBER = 8 # number of ticks on x axes
 # only used when ERRORBAR_PLOT_SHOW_FIT = True
 ERRORBAR_PLOT_SHOW_FIT = True # if False, the linear fit will not be shown
 ERRORBAR_PLOT_PLOTLABELS = ["1kg", "2kg", "3kg"] # labels for linear plots in legend
-ERRORBAR_PLOT_INTERCEPT_ZERO = False # True (linear model with intercept zero) or False (linear model)
+ERRORBAR_PLOT_MODEL = "linear" # 'linear' (y = m*x + n) / 'linear_zero' (y = m*x) / 'constant' (y = n)
 
 
 errorbar_plot.data_path = %RAW_DATA_PATH
@@ -27,7 +27,7 @@ errorbar_plot.title = %ERRORBAR_PLOT_TITLE
 errorbar_plot.x_label = %ERRORBAR_PLOT_XLABEL
 errorbar_plot.y_label = %ERRORBAR_PLOT_YLABEL
 errorbar_plot.x_ticks_number = %ERRORBAR_PLOT_XTICKS_NUMBER
-errorbar_plot.intercept_zero = %ERRORBAR_PLOT_INTERCEPT_ZERO
+errorbar_plot.model_type = %ERRORBAR_PLOT_MODEL
 errorbar_plot.show_linear_fit = %ERRORBAR_PLOT_SHOW_FIT
 
 residual_plot.data_path = %RAW_DATA_PATH
@@ -40,4 +40,4 @@ residual_plot.title = %ERRORBAR_PLOT_TITLE
 residual_plot.x_label = %ERRORBAR_PLOT_XLABEL
 residual_plot.y_label = %ERRORBAR_PLOT_YLABEL
 residual_plot.x_ticks_number = %ERRORBAR_PLOT_XTICKS_NUMBER
-residual_plot.intercept_zero = %ERRORBAR_PLOT_INTERCEPT_ZERO
+residual_plot.model_type = %ERRORBAR_PLOT_MODEL
