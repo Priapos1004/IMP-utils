@@ -14,6 +14,8 @@ Run the following commands in the terminal (current working directory: `IMP-util
 
 ### path parameters
 
+*(not effected by multiple plots in one graph)*
+
 - RAW_DATA_PATH: location of the csv/excel file with the data
   - `string` e.g. "raw_data.csv" or "raw_data.xlsx"
 
@@ -24,22 +26,20 @@ Run the following commands in the terminal (current working directory: `IMP-util
 
 - ERRORBAR_PLOT_X_COLUMN: column name of column with x values
   - `string` e.g. "L"
+  - `list of strings` e.g. ["L1", "L2", "L3"]
 
 - ERRORBAR_PLOT_X_ERROR_COLUMN: column name of column with errors of x values
   - `string` e.g. "u_L"
+  - `list of strings` e.g. ["u_L1", "", "u_L3"]
   - **NOTE:** use an empty string "" to provide no error column for the x-values
 
-- ERRORBAR_PLOT_Y_COLUMN: 
-  - column name of column with y values
-    - `string` e.g. "f"
-  - list of column names with y values *(for multiple linear plots in one graph)*
-    - `list of strings` e.g. ["f1", "f2", "f3"]
+- ERRORBAR_PLOT_Y_COLUMN: column name of column with y values
+  - `string` e.g. "f"
+  - `list of strings` e.g. ["f1", "f2", "f3"]
 
-- ERRORBAR_PLOT_Y_ERROR_COLUMN:
-  - column name of column with errors of y values
-    - `string` e.g. "u_f"
-  - list of column names of columns with errors of y values *(for multiple linear plots in one graph)*
-    - `list of strings` e.g. ["u_f1", "u_f2", "u_f3"]
+- ERRORBAR_PLOT_Y_ERROR_COLUMN: column name of column with errors of y values
+  - `string` e.g. "u_f"
+  - `list of strings` e.g. ["u_f1", "u_f2", ""]
   - **NOTE:** use an empty string "" to provide no error column for the y-values
 
 ### plot legend parameters
@@ -56,30 +56,31 @@ Run the following commands in the terminal (current working directory: `IMP-util
   - `string` e.g. "Frequenz f in Hz"
   - **NOTE:** use an empty string "" if there shall be no label for this axes
 
+- ERRORBAR_PLOT_PLOTLABELS: label for plot in legend
+  - `string` e.g. "Frequenz f"
+  - `list of strings` e.g. ["Frequenz f1", "Frequenz f2", "Frequenz f3"]
+  - **NOTE:** use an empty string "" if there shall be no label for this plot
+
 - ERRORBAR_PLOT_XTICKS_NUMBER: number of ticks on x axes *(has sometimes to be adjusted a bit for a better laylout)*
   - `integer`
 
-### function parameter only used with `ERRORBAR_PLOT_SHOW_FIT = True`
-
-- ERRORBAR_PLOT_SHOW_FIT: if False, no linear fit will be created and just the errorbar displayed
-  - `boolean`
+### function parameter
 
 - ERRORBAR_PLOT_MODEL: choose the model for the linear fit
-  - `string`
-  - 'linear' *(y = m\*x + n)* / 'linear_zero' *(y = m\*x)* / 'constant' *(y = n)*
-
-- ERRORBAR_PLOT_PLOTLABELS:
-  - label for plot in legend
-    - `string` e.g. "Frequenz f"
-  - list of labels for plots in legend
-    - `list of strings` e.g. ["Frequenz f1", "Frequenz f2", "Frequenz f3"]
-  - **NOTE:** use an empty string "" if there shall be no label for this plot
+  - `string` e.g. "linear"
+  - `list of strings` e.g. ["linear", "constant", "none"]
+  - 'linear' *(y = m\*x + n)* / 'linear_zero' *(y = m\*x)* / 'constant' *(y = n)* / 'none' *(no fit will be created)*
 
 <a name="errorbar-plot-info"/>
 
 ### INFO
 
-When *ERRORBAR_PLOT_SHOW_FIT = True*, the x-/y-values and x-/y-error-values are used to create a linear fit with the [kafe2](https://github.com/PhiLFitters/kafe2) library. The advantage of kafe2 compared to excel or scipy is that the errors in x- and y-axes are used to calculate the increase and also the error of the increase. The parameters of the fit and also their errors will be logged in the console.
+**FOR MULTIPLE PLOTS IN ONE GRAPH:**
+- use `list of strings` (with same length) instead of `string` for parameters with `list of strings` as an option
+- You can use a `string` in ERRORBAR_PLOT_MODEL, it will apply to all plots
+- You can use a `string` in ERRORBAR_PLOT_X_COLUMN and ERRORBAR_PLOT_X_ERROR_COLUMN, the x values will be used for every set of y values
+
+When *ERRORBAR_PLOT_MODEL* is not *'none'*, the x-/y-values and x-/y-error-values are used to create a linear fit with the [kafe2](https://github.com/PhiLFitters/kafe2) library. The advantage of kafe2 compared to excel or scipy is that the errors in x- and y-axes are used to calculate the increase and also the error of the increase. The parameters of the fit and also their errors will be logged in the console.
 
 If you input more than 5 y-value column names, the plot colors will not be unique anymore.
 
@@ -89,22 +90,28 @@ If you input more than 5 y-value column names, the plot colors will not be uniqu
   <img src="./images/plot_T4_V.png" width="400" title="only errorplot example" alt="only errorplot example">
 </p>
 
-### constant plot example
+### constant plot example *(old colors)*
 
 <p align="left">
   <img src="./images/plot_T4_pV_korr.png" width="400" title="constant plot example" alt="constant plot example">
 </p>
 
-### linear plot example
+### linear plot example *(old colors)*
 
 <p align="left">
   <img src="./images/plot_O6_bhg.png" width="400" title="linear plot example" alt="linear plot example">
 </p>
 
-### multiple linear plots example
+### multiple all linear plots example
 
 <p align="left">
-  <img src="./images/plot_M12_kg.png" width="400" title="multiple linear plots example" alt="multiple linear plots example">
+  <img src="./images/plot_M12_kg.png" width="400" title="multiple all linear plots example" alt="multiple all linear plots example">
+</p>
+
+### multiple linear/none plots example
+
+<p align="left">
+  <img src="./images/plot_E5_UI.png" width="400" title="multiple linear/none plots example" alt="multiple linear/none plots example">
 </p>
 
 ### command

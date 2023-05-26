@@ -37,43 +37,22 @@ def read_data(data_path: str) -> pd.DataFrame:
 
 ### command functions
 @gin.configurable
-def errorbar_plot(data_path: str, graphic_path: str, x_column: str, x_error_column: str, y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: int, model_type: str, show_linear_fit: bool):
+def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list], x_error_column: Union[str, list], y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: int, model_type: Union[str, list]):
     """
-    @params:
+    @params (str or list[str]):
         x_column: column name for x values
         x_error_column: column name for x value errors
-        y_column: column name for y values or list of column names for y values
-        y_plot_label: label for y-plot or list of labels for y-plots
-        y_error_column: column name for y value errors or list of column names for y value errors
-        intercept_zero: True (y = m*x) or False (y = m*x + n)
-        show_linear_fit: if False, the linear fit will not be shown
+        y_column: column name for y values
+        y_plot_label: label for y-plot
+        y_error_column: column name for y value errors
+        model_type: 'linear' (y = m*x + n) / 'linear_zero' (y = m*x) / 'constant' (y = n) / 'none' (no model will be shown)
 
     @output:
         plot saved in graphic_path and errors in console
 
     @Note: max 5 y-value sets
     """
-
-    if model_type == "linear_zero":
-        model = linear_zero_model
-        logger.debug("selected linear_zero model")
-    elif model_type == "linear":
-        model = linear_model
-        logger.debug("selected linear model")
-    elif model_type == "constant":
-        model = constant_model
-        logger.debug("selected constant model")
-    else:
-        raise ValueError(f"Model '{model_type}' ist not supported -> choose 'linear_zero', 'linear', or 'constant'")
-
     data = read_data(data_path)
-    data.sort_values(by=[x_column])
-
-    x = data[x_column]
-    if x_error_column != "":
-        dx = data[x_error_column]
-    else:
-        dx = None
 
     # convert string input to list of string
     if type(y_column) == str:
@@ -89,26 +68,80 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
     elif len(y_column) > 5:
         logger.warning(f"Found more than 5 y-value sets ({len(y_column)} > 5) -> the plot colors will not be unique")
 
+    if type(x_column) == str:
+        x_column = [x_column]
+    if type(x_error_column) == str:
+        x_error_column = [x_error_column]
+
+    # max value on x-axes
+    max_length = 0
+    for x_col in x_column:
+        x = data[x_col]
+        max_length_x = int(np.ceil(max(x)*10))/10
+        if max_length_x > max_length:
+            max_length = max_length_x
+
+    # if 1 x-value and multiple y-values
+    if len(x_column) == 1 and len(x_error_column) == 1 and len(y_column) > 1:
+        x_column = x_column * len(y_column)
+        x_error_column = x_error_column * len(y_column)
+    else:
+        # check length of x and y columns
+        if not (len(x_column) == len(x_error_column) == len(y_column)):
+            raise ValueError(f"Number of y_columns ({len(y_column)}), number of x_column ({len(x_column)}), or number of x_error_column ({len(x_error_column)}) do not match")
+        
+    # model_type to list
+    if type(model_type) == str:
+        model_type = [model_type]*len(y_column)
+    else:
+        # check length of show_linear_fit list and y columns
+        if not (len(model_type) == len(y_column)):
+            raise ValueError(f"Number of y_columns ({len(y_column)}) and number of model_type ({len(model_type)}) does not match")
+    
+
     # replace empty strings with None in y_plot_label
     y_plot_label = [None if elem == "" else elem for elem in y_plot_label]
     
     fig = plt.figure()
     ax = fig.add_subplot()
 
-    # max value on x-axes
-    max_length = int(np.ceil(max(x)*10))/10
     # colors for y-value fits
-    colors = ["lightskyblue", "lightgreen", "lightcoral", "paleturquoise", "plum"]
-    errorbar_colors = ['blue', 'green', 'red', 'cyan', 'magenta']
+    colors = ["steelblue", "lightgreen", "lightcoral", "plum", "paleturquoise"]
+    errorbar_colors = ['blue', 'green', 'red', 'magenta', 'cyan']
 
     for y_idx in range(len(y_column)):
+        data.sort_values(by=[x_column[y_idx]])
+
+        x = data[x_column[y_idx]]
+        if x_error_column[y_idx] != "":
+            dx = data[x_error_column[y_idx]]
+        else:
+            dx = None
+
         y = data[y_column[y_idx]]
         if y_error_column[y_idx] != "":
             dy = data[y_error_column[y_idx]]
         else:
             dy = None
 
-        if show_linear_fit:
+        # select model based on model_type
+        if model_type[y_idx] == "linear_zero":
+            model = linear_zero_model
+            logger.debug(f"selected linear_zero model ({y_column[y_idx]})")
+        elif model_type[y_idx] == "linear":
+            model = linear_model
+            logger.debug(f"selected linear model ({y_column[y_idx]})")
+        elif model_type[y_idx] == "constant":
+            model = constant_model
+            logger.debug(f"selected constant model ({y_column[y_idx]})")
+        elif model_type[y_idx] == "none":
+            model = None
+            logger.debug(f"no model ({y_column[y_idx]})")
+        else:
+            raise ValueError(f"Model '{model_type[y_idx]}' ist not supported -> choose 'linear_zero', 'linear', 'constant', or 'none'")
+
+        # if a model was selected
+        if model is not None:
             ### kafe2 calculation
             xy_data = XYContainer(x,y)
             if dx is not None:
@@ -122,17 +155,17 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
             model_params_error = my_fit.parameter_errors
 
             # fit values
-            if model_type in ("linear", "linear_zero"):
+            if model_type[y_idx] in ("linear", "linear_zero"):
                 m = model_params[0]
                 dm = model_params_error[0]
                 logger.info(f"Steigung der Gerade ({y_column[y_idx]}): {m}")
                 logger.info(f"Unsicherheit der Steigung ({y_column[y_idx]}): {dm}")
-                if model_type == "linear":
+                if model_type[y_idx] == "linear":
                     n = model_params[1]
                     dn = model_params_error[1]
                     logger.info(f"y-Achsenschnitt der Gerade ({y_column[y_idx]}): {n}")
                     logger.info(f"Unsicherheit des y-Achsenschnitt ({y_column[y_idx]}): {dn}")
-            elif model_type == "constant":
+            elif model_type[y_idx] == "constant":
                 n = model_params[0]
                 dn = model_params_error[0]
                 logger.info(f"y-Achsenschnitt der Gerade ({y_column[y_idx]}): {n}")
@@ -140,27 +173,30 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
 
             # add graphs to plot
             x_intervall = np.linspace(0, max_length, 1000)
-            if model_type == "constant":
-                ax.plot(x_intervall, [n]*len(x_intervall), '--', label=y_plot_label[y_idx], color=colors[y_idx%len(colors)])
+            if model_type[y_idx] == "constant":
+                ax.plot(x_intervall, [n]*len(x_intervall), '--', color=colors[y_idx%len(colors)])
                 logger.debug(f"added constant fit ({y_plot_label[y_idx]})")
-            elif model_type == "linear_zero":
-                ax.plot(x_intervall, m*x_intervall, '--', label=y_plot_label[y_idx], color=colors[y_idx%len(colors)])
+            elif model_type[y_idx] == "linear_zero":
+                ax.plot(x_intervall, m*x_intervall, '--', color=colors[y_idx%len(colors)])
                 logger.debug(f"added linear_zero fit ({y_plot_label[y_idx]})")
-            elif model_type == "linear":
-                ax.plot(x_intervall, m*x_intervall+n, '--', label=y_plot_label[y_idx], color=colors[y_idx%len(colors)])
+            elif model_type[y_idx] == "linear":
+                # not below zero fit line if decreasing
+                if m<0:
+                    x_intervall = np.linspace(0, min(max_length, -n/m), 1000)
+                ax.plot(x_intervall, m*x_intervall+n, '--', color=colors[y_idx%len(colors)])
                 logger.debug(f"added linear fit ({y_plot_label[y_idx]})")
 
         else:
-            logger.info("Fits are deactivated")
+            logger.info(f"Fits are deactivated ({y_column[y_idx]})")
 
-        plt.errorbar(x, y, yerr=dy, xerr=dx, linestyle='None', marker='.', elinewidth=0.5, capsize=3, color=errorbar_colors[y_idx%len(errorbar_colors)])
+        plt.errorbar(x, y, yerr=dy, xerr=dx, linestyle='None', label=y_plot_label[y_idx], marker='.', elinewidth=0.5, capsize=3, color=errorbar_colors[y_idx%len(errorbar_colors)])
 
     # legend settings
     ax.set_xticks(np.linspace(0, max_length, x_ticks_number))
     ax.set_title(title)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
-    if not all(v is None for v in y_plot_label) and show_linear_fit:
+    if not all(v is None for v in y_plot_label):
         ax.legend()
 
     # if y-axes values are long numbers, the y-label is cut off. Has to be tested if always best solution for this.
@@ -177,7 +213,7 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
         x_error_column: column name for x value errors
         y_column: column name for y values
         y_error_column: column name for y value errors
-        intercept_zero: True (y = m*x) or False (y = m*x + n)
+        model_type: 'linear' (y = m*x + n) / 'linear_zero' (y = m*x) / 'constant' (y = n)
 
     @output:
         plot saved in graphic_path
