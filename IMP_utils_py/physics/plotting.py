@@ -180,8 +180,9 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
                 ax.plot(x_intervall, m*x_intervall, '--', color=colors[y_idx%len(colors)])
                 logger.debug(f"added linear_zero fit ({y_plot_label[y_idx]})")
             elif model_type[y_idx] == "linear":
-                # not below zero fit line
-                x_intervall = np.linspace(0, min(max_length, -n/m), 1000)
+                # not below zero fit line if decreasing
+                if m<0:
+                    x_intervall = np.linspace(0, min(max_length, -n/m), 1000)
                 ax.plot(x_intervall, m*x_intervall+n, '--', color=colors[y_idx%len(colors)])
                 logger.debug(f"added linear fit ({y_plot_label[y_idx]})")
 
