@@ -42,7 +42,7 @@ Run the following commands in the terminal (current working directory: `IMP-util
   - `list of strings` e.g. ["u_f1", "u_f2", ""]
   - **NOTE:** use an empty string "" to provide no error column for the y-values
 
-### plot legend parameters 
+### plot legend parameters
 
 - ERRORBAR_PLOT_TITLE: title 
   - `string` e.g. "f(L)-Diagramm"
