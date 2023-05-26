@@ -37,35 +37,21 @@ def read_data(data_path: str) -> pd.DataFrame:
 
 ### command functions
 @gin.configurable
-def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list], x_error_column: Union[str, list], y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: int, model_type: str, show_linear_fit: Union[bool, list]):
+def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list], x_error_column: Union[str, list], y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: int, model_type: Union[str, list]):
     """
-    @params:
-        x_column: column name for x values or list of column names for x values
-        x_error_column: column name for x value errors or list of column names for x value errors
-        y_column: column name for y values or list of column names for y values
-        y_plot_label: label for y-plot or list of labels for y-plots
-        y_error_column: column name for y value errors or list of column names for y value errors
-        model_type: 'linear' (y = m*x + n) / 'linear_zero' (y = m*x) / 'constant' (y = n)
-        show_linear_fit: if False, the linear fit will not be shown
+    @params (str or list[str]):
+        x_column: column name for x values
+        x_error_column: column name for x value errors
+        y_column: column name for y values
+        y_plot_label: label for y-plot
+        y_error_column: column name for y value errors
+        model_type: 'linear' (y = m*x + n) / 'linear_zero' (y = m*x) / 'constant' (y = n) / 'none' (no model will be shown)
 
     @output:
         plot saved in graphic_path and errors in console
 
     @Note: max 5 y-value sets
     """
-
-    if model_type == "linear_zero":
-        model = linear_zero_model
-        logger.debug("selected linear_zero model")
-    elif model_type == "linear":
-        model = linear_model
-        logger.debug("selected linear model")
-    elif model_type == "constant":
-        model = constant_model
-        logger.debug("selected constant model")
-    else:
-        raise ValueError(f"Model '{model_type}' ist not supported -> choose 'linear_zero', 'linear', or 'constant'")
-
     data = read_data(data_path)
 
     # convert string input to list of string
@@ -104,13 +90,13 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
         if not (len(x_column) == len(x_error_column) == len(y_column)):
             raise ValueError(f"Number of y_columns ({len(y_column)}), number of x_column ({len(x_column)}), or number of x_error_column ({len(x_error_column)}) do not match")
         
-    # show_fit to list
-    if type(show_linear_fit) == bool:
-        show_linear_fit = [show_linear_fit]*len(y_column)
+    # model_type to list
+    if type(model_type) == str:
+        model_type = [model_type]*len(y_column)
     else:
         # check length of show_linear_fit list and y columns
-        if not (len(show_linear_fit) == len(y_column)):
-            raise ValueError(f"Number of y_columns ({len(y_column)}) and number of show_linear_fit ({len(show_linear_fit)}) do not match")
+        if not (len(model_type) == len(y_column)):
+            raise ValueError(f"Number of y_columns ({len(y_column)}) and number of model_type ({len(model_type)}) does not match")
     
 
     # replace empty strings with None in y_plot_label
@@ -138,7 +124,24 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
         else:
             dy = None
 
-        if show_linear_fit[y_idx]:
+        # select model based on model_type
+        if model_type[y_idx] == "linear_zero":
+            model = linear_zero_model
+            logger.debug(f"selected linear_zero model ({y_column[y_idx]})")
+        elif model_type[y_idx] == "linear":
+            model = linear_model
+            logger.debug(f"selected linear model ({y_column[y_idx]})")
+        elif model_type[y_idx] == "constant":
+            model = constant_model
+            logger.debug(f"selected constant model ({y_column[y_idx]})")
+        elif model_type[y_idx] == "none":
+            model = None
+            logger.debug(f"no model ({y_column[y_idx]})")
+        else:
+            raise ValueError(f"Model '{model_type[y_idx]}' ist not supported -> choose 'linear_zero', 'linear', 'constant', or 'none'")
+
+        # if a model was selected
+        if model is not None:
             ### kafe2 calculation
             xy_data = XYContainer(x,y)
             if dx is not None:
@@ -152,17 +155,17 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
             model_params_error = my_fit.parameter_errors
 
             # fit values
-            if model_type in ("linear", "linear_zero"):
+            if model_type[y_idx] in ("linear", "linear_zero"):
                 m = model_params[0]
                 dm = model_params_error[0]
                 logger.info(f"Steigung der Gerade ({y_column[y_idx]}): {m}")
                 logger.info(f"Unsicherheit der Steigung ({y_column[y_idx]}): {dm}")
-                if model_type == "linear":
+                if model_type[y_idx] == "linear":
                     n = model_params[1]
                     dn = model_params_error[1]
                     logger.info(f"y-Achsenschnitt der Gerade ({y_column[y_idx]}): {n}")
                     logger.info(f"Unsicherheit des y-Achsenschnitt ({y_column[y_idx]}): {dn}")
-            elif model_type == "constant":
+            elif model_type[y_idx] == "constant":
                 n = model_params[0]
                 dn = model_params_error[0]
                 logger.info(f"y-Achsenschnitt der Gerade ({y_column[y_idx]}): {n}")
@@ -170,13 +173,13 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
 
             # add graphs to plot
             x_intervall = np.linspace(0, max_length, 1000)
-            if model_type == "constant":
+            if model_type[y_idx] == "constant":
                 ax.plot(x_intervall, [n]*len(x_intervall), '--', color=colors[y_idx%len(colors)])
                 logger.debug(f"added constant fit ({y_plot_label[y_idx]})")
-            elif model_type == "linear_zero":
+            elif model_type[y_idx] == "linear_zero":
                 ax.plot(x_intervall, m*x_intervall, '--', color=colors[y_idx%len(colors)])
                 logger.debug(f"added linear_zero fit ({y_plot_label[y_idx]})")
-            elif model_type == "linear":
+            elif model_type[y_idx] == "linear":
                 # not below zero fit line
                 x_intervall = np.linspace(0, min(max_length, -n/m), 1000)
                 ax.plot(x_intervall, m*x_intervall+n, '--', color=colors[y_idx%len(colors)])
