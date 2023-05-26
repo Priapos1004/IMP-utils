@@ -86,13 +86,13 @@ When *ERRORBAR_PLOT_MODEL* is not *'none'*, the x-/y-values and x-/y-error-value
 
 If you input more than 5 y-value column names, the plot colors will not be unique anymore.
 
-### only errorplot example (old version)
+### only errorplot example
 
 <p align="left">
   <img src="./images/plot_T4_V.png" width="400" title="only errorplot example" alt="only errorplot example">
 </p>
 
-### constant plot example (old version)
+### constant plot example
 
 <p align="left">
   <img src="./images/plot_T4_pV_korr.png" width="400" title="constant plot example" alt="constant plot example">
