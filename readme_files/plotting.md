@@ -80,7 +80,7 @@ Run the following commands in the terminal (current working directory: `IMP-util
 **FOR MULTIPLE PLOTS IN ONE GRAPH:**
 - use `list of strings` (with same length) instead of `string` for parameters
 - You can use a `string` in ERRORBAR_PLOT_MODEL, it will apply to all plots
-- You can use a `string`in ERRORBAR_PLOT_X_COLUMN and ERRORBAR_PLOT_X_ERROR_COLUMN, the x values will be used for every set of y values
+- You can use a `string` in ERRORBAR_PLOT_X_COLUMN and ERRORBAR_PLOT_X_ERROR_COLUMN, the x values will be used for every set of y values
 
 When *ERRORBAR_PLOT_MODEL* is not *'none'*, the x-/y-values and x-/y-error-values are used to create a linear fit with the [kafe2](https://github.com/PhiLFitters/kafe2) library. The advantage of kafe2 compared to excel or scipy is that the errors in x- and y-axes are used to calculate the increase and also the error of the increase. The parameters of the fit and also their errors will be logged in the console.
 
@@ -92,13 +92,13 @@ If you input more than 5 y-value column names, the plot colors will not be uniqu
   <img src="./images/plot_T4_V.png" width="400" title="only errorplot example" alt="only errorplot example">
 </p>
 
-### constant plot example
+### constant plot example *(old colors)*
 
 <p align="left">
   <img src="./images/plot_T4_pV_korr.png" width="400" title="constant plot example" alt="constant plot example">
 </p>
 
-### linear plot example (old version)
+### linear plot example *(old colors)*
 
 <p align="left">
   <img src="./images/plot_O6_bhg.png" width="400" title="linear plot example" alt="linear plot example">
