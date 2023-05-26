@@ -37,15 +37,15 @@ def read_data(data_path: str) -> pd.DataFrame:
 
 ### command functions
 @gin.configurable
-def errorbar_plot(data_path: str, graphic_path: str, x_column: str, x_error_column: str, y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: int, model_type: str, show_linear_fit: bool):
+def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list], x_error_column: Union[str, list], y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: int, model_type: str, show_linear_fit: bool):
     """
     @params:
-        x_column: column name for x values
-        x_error_column: column name for x value errors
+        x_column: column name for x values or list of column names for x values
+        x_error_column: column name for x value errors or list of column names for x value errors
         y_column: column name for y values or list of column names for y values
         y_plot_label: label for y-plot or list of labels for y-plots
         y_error_column: column name for y value errors or list of column names for y value errors
-        intercept_zero: True (y = m*x) or False (y = m*x + n)
+        model_type: 'linear' (y = m*x + n) / 'linear_zero' (y = m*x) / 'constant' (y = n)
         show_linear_fit: if False, the linear fit will not be shown
 
     @output:
@@ -177,7 +177,7 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
         x_error_column: column name for x value errors
         y_column: column name for y values
         y_error_column: column name for y value errors
-        intercept_zero: True (y = m*x) or False (y = m*x + n)
+        model_type: 'linear' (y = m*x + n) / 'linear_zero' (y = m*x) / 'constant' (y = n)
 
     @output:
         plot saved in graphic_path
