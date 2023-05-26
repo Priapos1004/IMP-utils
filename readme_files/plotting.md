@@ -44,8 +44,6 @@ Run the following commands in the terminal (current working directory: `IMP-util
 
 ### plot legend parameters 
 
-*(not effected by multiple plots in one graph)*
-
 - ERRORBAR_PLOT_TITLE: title 
   - `string` e.g. "f(L)-Diagramm"
   - **NOTE:** use an empty string "" if there shall be no title for this plot
@@ -58,27 +56,27 @@ Run the following commands in the terminal (current working directory: `IMP-util
   - `string` e.g. "Frequenz f in Hz"
   - **NOTE:** use an empty string "" if there shall be no label for this axes
 
+- ERRORBAR_PLOT_PLOTLABELS: label for plot in legend
+  - `string` e.g. "Frequenz f"
+  - `list of strings` e.g. ["Frequenz f1", "Frequenz f2", "Frequenz f3"]
+  - **NOTE:** use an empty string "" if there shall be no label for this plot
+
 - ERRORBAR_PLOT_XTICKS_NUMBER: number of ticks on x axes *(has sometimes to be adjusted a bit for a better laylout)*
   - `integer`
 
-### function parameter only used with `ERRORBAR_PLOT_SHOW_FIT = True`
+### function parameter
 
 - ERRORBAR_PLOT_MODEL: choose the model for the linear fit
   - `string` e.g. "linear"
   - `list of strings` e.g. ["linear", "constant", "none"]
   - 'linear' *(y = m\*x + n)* / 'linear_zero' *(y = m\*x)* / 'constant' *(y = n)* / 'none' *(no fit will be created)*
 
-- ERRORBAR_PLOT_PLOTLABELS: label for plot in legend
-  - `string` e.g. "Frequenz f"
-  - `list of strings` e.g. ["Frequenz f1", "Frequenz f2", "Frequenz f3"]
-  - **NOTE:** use an empty string "" if there shall be no label for this plot
-
 <a name="errorbar-plot-info"/>
 
 ### INFO
 
 **FOR MULTIPLE PLOTS IN ONE GRAPH:**
-- use `list of strings` (with same length) instead of `string` for parameters
+- use `list of strings` (with same length) instead of `string` for parameters with `list of strings` as an option
 - You can use a `string` in ERRORBAR_PLOT_MODEL, it will apply to all plots
 - You can use a `string` in ERRORBAR_PLOT_X_COLUMN and ERRORBAR_PLOT_X_ERROR_COLUMN, the x values will be used for every set of y values
 
