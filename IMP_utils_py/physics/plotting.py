@@ -68,6 +68,10 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
     elif len(y_column) > 5:
         logger.warning(f"Found more than 5 y-value sets ({len(y_column)} > 5) -> the plot colors will not be unique")
 
+    # check if x_ticks_number >= 0
+    if x_ticks_number < 0:
+        raise ValueError(f"x_ticks_number has to be greater 0 or 0 for no x-axes ticks ({x_ticks_number} < 0)")
+
     if type(x_column) == str:
         x_column = [x_column]
     if type(x_error_column) == str:
