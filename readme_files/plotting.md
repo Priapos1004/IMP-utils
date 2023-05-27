@@ -90,11 +90,47 @@ If you input more than 5 y-value column names, the plot colors will not be uniqu
   <img src="./images/plot_T4_V.png" width="400" title="only errorplot example" alt="only errorplot example">
 </p>
 
+<details><summary>parameters</summary>
+
+``` // opening
+RAW_DATA_PATH = "data/Grundpraktikum/T4_V.csv"
+ERRORBAR_PLOT_PATH = "data/graphics/plot_T4_V.png"
+ERRORBAR_PLOT_X_COLUMN = 'V'
+ERRORBAR_PLOT_X_ERROR_COLUMN = "u_V"
+ERRORBAR_PLOT_Y_COLUMN = "p"
+ERRORBAR_PLOT_Y_ERROR_COLUMN = "u_p"
+ERRORBAR_PLOT_TITLE = ""
+ERRORBAR_PLOT_XLABEL = "Druck p in Bar"
+ERRORBAR_PLOT_YLABEL = "Volumen V in $cm^3$"
+ERRORBAR_PLOT_XTICKS_NUMBER = 8
+ERRORBAR_PLOT_PLOTLABELS = ""
+ERRORBAR_PLOT_MODEL = "none"
+```
+</details>
+
 ### constant plot example *(old colors)*
 
 <p align="left">
   <img src="./images/plot_T4_pV_korr.png" width="400" title="constant plot example" alt="constant plot example">
 </p>
+
+<details><summary>parameters</summary>
+
+``` // opening
+RAW_DATA_PATH = "data/Grundpraktikum/T4_V.csv"
+ERRORBAR_PLOT_PATH = "data/graphics/plot_T4_pV_korr.png"
+ERRORBAR_PLOT_X_COLUMN = 'V_korr'
+ERRORBAR_PLOT_X_ERROR_COLUMN = "u_V_korr"
+ERRORBAR_PLOT_Y_COLUMN = "pV_korr"
+ERRORBAR_PLOT_Y_ERROR_COLUMN = "u_pV_korr"
+ERRORBAR_PLOT_TITLE = ""
+ERRORBAR_PLOT_XLABEL = "korrigierte Volumen $V_{korr}$ in $cm^3$"
+ERRORBAR_PLOT_YLABEL = "korrigierter Volumen-Druck $pV_{korr}$ in Bar$\cdot cm^3$"
+ERRORBAR_PLOT_XTICKS_NUMBER = 8
+ERRORBAR_PLOT_PLOTLABELS = ""
+ERRORBAR_PLOT_MODEL = "constant"
+```
+</details>
 
 ### linear plot example
 
