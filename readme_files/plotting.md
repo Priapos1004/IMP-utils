@@ -115,6 +115,7 @@ If you input more than 5 y-value column names, the plot colors will not be uniqu
 </p>
 
 <details><summary>parameters</summary>
+
 ``` // opening 
 RAW_DATA_PATH = "data/Grundpraktikum/E5_UI.csv"
 ERRORBAR_PLOT_PATH = "data/graphics/plot_E5_UI.png"
@@ -128,7 +129,7 @@ ERRORBAR_PLOT_YLABEL = r"Spannung U in V"
 ERRORBAR_PLOT_XTICKS_NUMBER = 9
 ERRORBAR_PLOT_PLOTLABELS = ["EWG ohne Kondensator", "EWG mit Kondensator", "ZWG ohne Kondensator", "ZWG mit Kondensator"]
 ERRORBAR_PLOT_MODEL = ["linear", "none", "linear", "none"]
-``` // closing
+```
 </details>
 
 ### command
