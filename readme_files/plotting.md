@@ -115,7 +115,6 @@ If you input more than 5 y-value column names, the plot colors will not be uniqu
 </p>
 
 <details><summary>parameters</summary>
-
 ``` // opening 
 RAW_DATA_PATH = "data/Grundpraktikum/E5_UI.csv"
 ERRORBAR_PLOT_PATH = "data/graphics/plot_E5_UI.png"
