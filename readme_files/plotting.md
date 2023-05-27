@@ -108,7 +108,7 @@ ERRORBAR_PLOT_MODEL = "none"
 ```
 </details>
 
-### constant plot example *(old colors)*
+### constant plot example
 
 <p align="left">
   <img src="./images/plot_T4_pV_korr.png" width="400" title="constant plot example" alt="constant plot example">
