@@ -70,7 +70,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
 
     # check if x_ticks_number >= 0
     if x_ticks_number < 0:
-        raise ValueError(f"x_ticks_number has to be greater 0 or 0 for no x-axes ticks ({x_ticks_number} < 0)")
+        raise ValueError(f"x_ticks_number has to be greater 0 or 0 for no x-axes ticks (found: {x_ticks_number} < 0)")
 
     if type(x_column) == str:
         x_column = [x_column]
