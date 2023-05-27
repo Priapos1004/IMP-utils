@@ -114,6 +114,24 @@ If you input more than 5 y-value column names, the plot colors will not be uniqu
   <img src="./images/plot_E5_UI.png" width="400" title="multiple linear/none plots example" alt="multiple linear/none plots example">
 </p>
 
+<details><summary>parameters</summary>
+
+``` // opening 
+RAW_DATA_PATH = "data/Grundpraktikum/E5_UI.csv"
+ERRORBAR_PLOT_PATH = "data/graphics/plot_E5_UI.png"
+ERRORBAR_PLOT_X_COLUMN = ["I_EoK", "I_EmK", "I_ZoK", "I_ZmK"]
+ERRORBAR_PLOT_X_ERROR_COLUMN = ["u_I_EoK", "u_I_EmK", "u_I_ZoK", "u_I_ZmK"]
+ERRORBAR_PLOT_Y_COLUMN = ["U_EoK", "U_EmK", "U_ZoK", "U_ZmK"]
+ERRORBAR_PLOT_Y_ERROR_COLUMN = ["u_U_EoK", "u_U_EmK", "u_U_ZoK", "u_U_ZmK"]
+ERRORBAR_PLOT_TITLE = ""
+ERRORBAR_PLOT_XLABEL = r"Stromstärke I in mA"
+ERRORBAR_PLOT_YLABEL = r"Spannung U in V"
+ERRORBAR_PLOT_XTICKS_NUMBER = 9
+ERRORBAR_PLOT_PLOTLABELS = ["EWG ohne Kondensator", "EWG mit Kondensator", "ZWG ohne Kondensator", "ZWG mit Kondensator"]
+ERRORBAR_PLOT_MODEL = ["linear", "none", "linear", "none"]
+``` // closing
+</details>
+
 ### command
 
 ```
