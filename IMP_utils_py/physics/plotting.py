@@ -82,7 +82,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
             max_length = max_length_x
 
     # if 1 x-value and multiple y-values
-    if len(x_column) == 1 and len(x_error_column) == 1 and len(y_column) > 1:
+    if len(x_column) == len(x_error_column) == 1 and len(y_column) > 1:
         x_column = x_column * len(y_column)
         x_error_column = x_error_column * len(y_column)
     else:
