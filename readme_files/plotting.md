@@ -277,6 +277,23 @@ You can only use one set of y-values and not multiple like in errorbar-plot.
   <img src="./images/plot_O6_bhg_residual.png" width="400" title="residual plot example" alt="residual plot example">
 </p>
 
+<details><summary>parameters</summary>
+
+``` // opening
+RAW_DATA_PATH = "data/Grundpraktikum/O6_bhg.csv"
+RESIDUAL_PLOT_PATH = "data/graphics/plot_O6_bhg_residual.png"
+ERRORBAR_PLOT_X_COLUMN = 'k'
+ERRORBAR_PLOT_X_ERROR_COLUMN = ""
+ERRORBAR_PLOT_Y_COLUMN = "y"
+ERRORBAR_PLOT_Y_ERROR_COLUMN = "uy"
+ERRORBAR_PLOT_TITLE = ""
+ERRORBAR_PLOT_XLABEL = "k"
+ERRORBAR_PLOT_YLABEL = "$r_k^2$ in $mm^2$"
+ERRORBAR_PLOT_XTICKS_NUMBER = 8
+ERRORBAR_PLOT_MODEL = "linear"
+```
+</details>
+
 ### command
 
 ```
