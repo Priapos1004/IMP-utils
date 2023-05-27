@@ -8,7 +8,7 @@ stuff to make your life easier
 
 0. python version 3.9 or higher is required for using the package
 
-*check your python version:*
+*check your python version in the terminal with:*
 
 ```
 python --version
