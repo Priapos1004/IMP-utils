@@ -4,9 +4,9 @@ stuff to make your life easier
 
 ## IMP_utils_py
 
-### getting started
+### pre-requirements
 
-0. python version 3.9 or higher is required for using the package
+python version 3.9 or higher is required for using the package
 
 *check your python version in the terminal with:*
 
@@ -15,6 +15,8 @@ python --version
 ```
 
 You can install python, a virtual environment managementsystem, and nearly all packages you will ever need with simply installing [anaconda](https://www.anaconda.com/download) *(highly recommended)*
+
+### getting started
 
 1. clone this repository into your current working directory (you can also download the code as zip-file or use tools like [GitHub Desktop](https://desktop.github.com))
 
