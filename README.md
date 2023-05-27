@@ -6,6 +6,16 @@ stuff to make your life easier
 
 ### getting started
 
+0. python version 3.9 or higher is required for using the package
+
+*check your python version:*
+
+```
+python --version
+```
+
+You can install python, a virtual environment managementsystem, and nearly all packages you will ever need with simply installing [anaconda](https://www.anaconda.com/download) *(highly recommended)*
+
 1. clone this repository into your current working directory (you can also download the code as zip-file or use tools like [GitHub Desktop](https://desktop.github.com))
 
 ```
@@ -18,7 +28,7 @@ git clone https://github.com/Priapos1004/IMP-utils
 cd IMP-utils/
 ```
 
-3. install the package to your activated virtual environment (don't forget the `.` at the end of the command) (python version 3.9 and higher is required)
+3. install the package to your activated virtual environment (don't forget the `.` at the end of the command)
 
 ```
 pip install -e .
