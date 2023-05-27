@@ -96,17 +96,53 @@ If you input more than 5 y-value column names, the plot colors will not be uniqu
   <img src="./images/plot_T4_pV_korr.png" width="400" title="constant plot example" alt="constant plot example">
 </p>
 
-### linear plot example *(old colors)*
+### linear plot example
 
 <p align="left">
   <img src="./images/plot_O6_bhg.png" width="400" title="linear plot example" alt="linear plot example">
 </p>
+
+<details><summary>parameters</summary>
+
+``` // opening
+RAW_DATA_PATH = "data/Grundpraktikum/O6_bhg.csv"
+ERRORBAR_PLOT_PATH = "data/graphics/plot_O6_bhg.png"
+ERRORBAR_PLOT_X_COLUMN = 'k'
+ERRORBAR_PLOT_X_ERROR_COLUMN = ""
+ERRORBAR_PLOT_Y_COLUMN = "y"
+ERRORBAR_PLOT_Y_ERROR_COLUMN = "uy"
+ERRORBAR_PLOT_TITLE = ""
+ERRORBAR_PLOT_XLABEL = "k"
+ERRORBAR_PLOT_YLABEL = "$r_k^2$ in $mm^2$"
+ERRORBAR_PLOT_XTICKS_NUMBER = 8
+ERRORBAR_PLOT_PLOTLABELS = ""
+ERRORBAR_PLOT_MODEL = "linear"
+```
+</details>
 
 ### multiple all linear plots example
 
 <p align="left">
   <img src="./images/plot_M12_kg.png" width="400" title="multiple all linear plots example" alt="multiple all linear plots example">
 </p>
+
+<details><summary>parameters</summary>
+
+``` // opening
+RAW_DATA_PATH = "data/Grundpraktikum/M12_kg.csv"
+ERRORBAR_PLOT_PATH = "data/graphics/plot_M12_kg.png"
+ERRORBAR_PLOT_X_COLUMN = 'n'
+ERRORBAR_PLOT_X_ERROR_COLUMN = ""
+ERRORBAR_PLOT_Y_COLUMN = ["f_1kg", "f_2kg", "f_3kg"]
+ERRORBAR_PLOT_Y_ERROR_COLUMN = ["u_1kg", "u_2kg", "u_3kg"]
+ERRORBAR_PLOT_TITLE = ""
+ERRORBAR_PLOT_XLABEL = "n"
+ERRORBAR_PLOT_YLABEL = "Frequenzen $f_n$ in Hz für 1kg/2kg/3kg"
+ERRORBAR_PLOT_XTICKS_NUMBER = 8
+ERRORBAR_PLOT_PLOTLABELS = ["1kg", "2kg", "3kg"]
+ERRORBAR_PLOT_MODEL = "linear"
+```
+</details>
 
 ### multiple linear/none plots example
 
@@ -116,7 +152,7 @@ If you input more than 5 y-value column names, the plot colors will not be uniqu
 
 <details><summary>parameters</summary>
 
-``` // opening 
+``` // opening
 RAW_DATA_PATH = "data/Grundpraktikum/E5_UI.csv"
 ERRORBAR_PLOT_PATH = "data/graphics/plot_E5_UI.png"
 ERRORBAR_PLOT_X_COLUMN = ["I_EoK", "I_EmK", "I_ZoK", "I_ZmK"]
