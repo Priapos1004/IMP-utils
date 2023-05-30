@@ -37,7 +37,7 @@ def read_data(data_path: str) -> pd.DataFrame:
 
 ### command functions
 @gin.configurable
-def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list], x_error_column: Union[str, list], y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: int, model_type: Union[str, list]):
+def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list], x_error_column: Union[str, list], y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: int, max_x_ticks: Union[str, float, int], model_type: Union[str, list]):
     """
     @params (str or list[str]):
         x_column: column name for x values
@@ -46,6 +46,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
         y_plot_label: label for y-plot
         y_error_column: column name for y value errors
         model_type: 'linear' (y = m*x + n) / 'linear_zero' (y = m*x) / 'constant' (y = n) / 'none' (no model will be shown)
+        max_x_ticks: 'auto' or float/int
 
     @output:
         plot saved in graphic_path and errors in console
@@ -78,12 +79,20 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
         x_error_column = [x_error_column]
 
     # max value on x-axes
-    max_length = 0
-    for x_col in x_column:
-        x = data[x_col]
-        max_length_x = int(np.ceil(max(x)*10))/10
-        if max_length_x > max_length:
-            max_length = max_length_x
+    if max_x_ticks == "auto":
+        max_length = 0
+        for x_col in x_column:
+            x = data[x_col]
+            max_length_x = int(np.ceil(max(x)*10))/10
+            if max_length_x > max_length:
+                max_length = max_length_x
+    elif type(max_x_ticks) == float or type(max_x_ticks) == int:
+        # check if max_x_ticks > 0
+        if max_x_ticks <= 0:
+            raise ValueError(f"max_x_ticks has to be greater 0, but {max_x_ticks} <= 0")
+        max_length = max_x_ticks
+    else:
+        raise ValueError(f"max_x_ticks has to be 'auto' or float/int greater 0 (found: {max_x_ticks} with type {type(max_x_ticks)})")
 
     # if 1 x-value and multiple y-values
     if len(x_column) == len(x_error_column) == 1 and len(y_column) > 1:
