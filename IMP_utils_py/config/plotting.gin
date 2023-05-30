@@ -9,9 +9,11 @@ ERRORBAR_PLOT_Y_ERROR_COLUMN = ["u_U_EoK", "u_U_EmK", "u_U_ZoK", "u_U_ZmK"]
 ERRORBAR_PLOT_TITLE = "" # title of linear/residual plot
 ERRORBAR_PLOT_XLABEL = r"Stromstärke I in mA" # x label of linear/residual plot
 ERRORBAR_PLOT_YLABEL = r"Spannung U in V" # y label of linear/residual plot
-ERRORBAR_PLOT_XTICKS_NUMBER = 9 # number of ticks on x axes
+ERRORBAR_PLOT_XTICKS_NUMBER = 11 # number of ticks on x axes
+ERRORBAR_PLOT_MAX_XTICKS = 125 # max tick value on x axes
 ERRORBAR_PLOT_PLOTLABELS = ["EWG ohne Kondensator", "EWG mit Kondensator", "ZWG ohne Kondensator", "ZWG mit Kondensator"] # labels for linear plots in legend
 ERRORBAR_PLOT_MODEL = ["linear", "none", "linear", "none"] # 'linear' (y = m*x + n) / 'linear_zero' (y = m*x) / 'constant' (y = n) / 'none' (no model will be shown)
+ERRORBAR_PLOT_EXTRA_LOG = True # activates extra logs in console
 
 
 errorbar_plot.data_path = %RAW_DATA_PATH
@@ -25,7 +27,9 @@ errorbar_plot.title = %ERRORBAR_PLOT_TITLE
 errorbar_plot.x_label = %ERRORBAR_PLOT_XLABEL
 errorbar_plot.y_label = %ERRORBAR_PLOT_YLABEL
 errorbar_plot.x_ticks_number = %ERRORBAR_PLOT_XTICKS_NUMBER
+errorbar_plot.max_x_ticks = %ERRORBAR_PLOT_MAX_XTICKS
 errorbar_plot.model_type = %ERRORBAR_PLOT_MODEL
+errorbar_plot.extra_log = %ERRORBAR_PLOT_EXTRA_LOG
 
 residual_plot.data_path = %RAW_DATA_PATH
 residual_plot.graphic_path = %RESIDUAL_PLOT_PATH

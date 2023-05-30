@@ -64,12 +64,23 @@ Run the following commands in the terminal (current working directory: `IMP-util
 - ERRORBAR_PLOT_XTICKS_NUMBER: number of ticks on x axes *(has sometimes to be adjusted a bit for a better laylout)*
   - `integer`
 
+- ERRORBAR_PLOT_MAX_XTICKS: max value of ticks on x axes
+  - `string` if ERRORBAR_PLOT_MAX_XTICKS='auto', the max tick will be the rounded max x value from the data
+  - `float`/`integer` e.g. 125 or 0.65
+
 ### function parameter
 
 - ERRORBAR_PLOT_MODEL: choose the model for the linear fit
   - `string` e.g. "linear"
   - `list of strings` e.g. ["linear", "constant", "none"]
   - 'linear' *(y = m\*x + n)* / 'linear_zero' *(y = m\*x)* / 'constant' *(y = n)* / 'none' *(no fit will be created)*
+
+- ERRORBAR_PLOT_EXTRA_LOG: if True, additional logs will be shown in console
+  - `boolean`
+  - additional log:
+    - if ERRORBAR_PLOT_MODEL = "linear":
+      - Nullstelle *(-n/m)*
+      - Unsicherheit der Nullstelle *(Gauß'sche Fehlerfortpflanzung: sqrt((1/m * dn)^2 + (n/m^2 * dm)^2))*
 
 <a name="errorbar-plot-info"/>
 
@@ -103,6 +114,7 @@ ERRORBAR_PLOT_TITLE = ""
 ERRORBAR_PLOT_XLABEL = "Druck p in Bar"
 ERRORBAR_PLOT_YLABEL = "Volumen V in $cm^3$"
 ERRORBAR_PLOT_XTICKS_NUMBER = 8
+ERRORBAR_PLOT_MAX_XTICKS = "auto"
 ERRORBAR_PLOT_PLOTLABELS = ""
 ERRORBAR_PLOT_MODEL = "none"
 ```
@@ -127,8 +139,10 @@ ERRORBAR_PLOT_TITLE = ""
 ERRORBAR_PLOT_XLABEL = "korrigierte Volumen $V_{korr}$ in $cm^3$"
 ERRORBAR_PLOT_YLABEL = "korrigierter Volumen-Druck $pV_{korr}$ in Bar$\cdot cm^3$"
 ERRORBAR_PLOT_XTICKS_NUMBER = 8
+ERRORBAR_PLOT_MAX_XTICKS = "auto"
 ERRORBAR_PLOT_PLOTLABELS = ""
 ERRORBAR_PLOT_MODEL = "constant"
+ERRORBAR_PLOT_EXTRA_LOG = False
 ```
 </details>
 
@@ -151,8 +165,10 @@ ERRORBAR_PLOT_TITLE = ""
 ERRORBAR_PLOT_XLABEL = "k"
 ERRORBAR_PLOT_YLABEL = "$r_k^2$ in $mm^2$"
 ERRORBAR_PLOT_XTICKS_NUMBER = 8
+ERRORBAR_PLOT_MAX_XTICKS = "auto"
 ERRORBAR_PLOT_PLOTLABELS = ""
 ERRORBAR_PLOT_MODEL = "linear"
+ERRORBAR_PLOT_EXTRA_LOG = False
 ```
 </details>
 
@@ -175,8 +191,10 @@ ERRORBAR_PLOT_TITLE = ""
 ERRORBAR_PLOT_XLABEL = "n"
 ERRORBAR_PLOT_YLABEL = "Frequenzen $f_n$ in Hz für 1kg/2kg/3kg"
 ERRORBAR_PLOT_XTICKS_NUMBER = 8
+ERRORBAR_PLOT_MAX_XTICKS = "auto"
 ERRORBAR_PLOT_PLOTLABELS = ["1kg", "2kg", "3kg"]
 ERRORBAR_PLOT_MODEL = "linear"
+ERRORBAR_PLOT_EXTRA_LOG = False
 ```
 </details>
 
@@ -198,9 +216,11 @@ ERRORBAR_PLOT_Y_ERROR_COLUMN = ["u_U_EoK", "u_U_EmK", "u_U_ZoK", "u_U_ZmK"]
 ERRORBAR_PLOT_TITLE = ""
 ERRORBAR_PLOT_XLABEL = r"Stromstärke I in mA"
 ERRORBAR_PLOT_YLABEL = r"Spannung U in V"
-ERRORBAR_PLOT_XTICKS_NUMBER = 9
+ERRORBAR_PLOT_XTICKS_NUMBER = 11
+ERRORBAR_PLOT_MAX_XTICKS = 125
 ERRORBAR_PLOT_PLOTLABELS = ["EWG ohne Kondensator", "EWG mit Kondensator", "ZWG ohne Kondensator", "ZWG mit Kondensator"]
 ERRORBAR_PLOT_MODEL = ["linear", "none", "linear", "none"]
+ERRORBAR_PLOT_EXTRA_LOG = True
 ```
 </details>
 
@@ -259,6 +279,10 @@ python IMP_utils_py/cli.py --mode=errorbar-plot --gin_file=IMP_utils_py/config/p
 - ERRORBAR_PLOT_XTICKS_NUMBER: number of ticks on x axes *(has sometimes to be adjusted a bit for a better laylout)*
   - `integer`
 
+- ERRORBAR_PLOT_MAX_XTICKS: max value of ticks on x axes
+  - `string` if ERRORBAR_PLOT_MAX_XTICKS='auto', the max tick will be the rounded max x value from the data
+  - `float`/`integer` e.g. 125 or 0.65
+
 ### function parameter
 
 - ERRORBAR_PLOT_MODEL: choose the model for the linear fit
@@ -290,6 +314,7 @@ ERRORBAR_PLOT_TITLE = ""
 ERRORBAR_PLOT_XLABEL = "k"
 ERRORBAR_PLOT_YLABEL = "$r_k^2$ in $mm^2$"
 ERRORBAR_PLOT_XTICKS_NUMBER = 8
+ERRORBAR_PLOT_MAX_XTICKS = "auto"
 ERRORBAR_PLOT_MODEL = "linear"
 ```
 </details>
