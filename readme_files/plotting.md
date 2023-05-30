@@ -268,6 +268,10 @@ python IMP_utils_py/cli.py --mode=errorbar-plot --gin_file=IMP_utils_py/config/p
 - ERRORBAR_PLOT_XTICKS_NUMBER: number of ticks on x axes *(has sometimes to be adjusted a bit for a better laylout)*
   - `integer`
 
+- ERRORBAR_PLOT_MAX_XTICKS: max value of ticks on x axes
+  - `string` if ERRORBAR_PLOT_MAX_XTICKS='auto', the max tick will be the rounded max x value from the data
+  - `float`/`integer` e.g. 125 or 0.65
+
 ### function parameter
 
 - ERRORBAR_PLOT_MODEL: choose the model for the linear fit
@@ -299,6 +303,7 @@ ERRORBAR_PLOT_TITLE = ""
 ERRORBAR_PLOT_XLABEL = "k"
 ERRORBAR_PLOT_YLABEL = "$r_k^2$ in $mm^2$"
 ERRORBAR_PLOT_XTICKS_NUMBER = 8
+ERRORBAR_PLOT_MAX_XTICKS = "auto"
 ERRORBAR_PLOT_MODEL = "linear"
 ```
 </details>

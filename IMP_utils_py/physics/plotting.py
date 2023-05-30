@@ -219,7 +219,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
     logger.info("plot saved")
 
 @gin.configurable
-def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_column: str, y_column: str, y_error_column: str, title: str, x_label: str, y_label: str, x_ticks_number: int, model_type: str):
+def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_column: str, y_column: str, y_error_column: str, title: str, x_label: str, y_label: str, x_ticks_number: int, max_x_ticks: Union[str, float, int], model_type: str):
     """
     @params:
         x_column: column name for x values
@@ -261,7 +261,15 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
         dy = None
 
     # max value on x-axes
-    max_length = int(np.ceil(max(x)*10))/10
+    if max_x_ticks == "auto":
+        max_length = int(np.ceil(max(x)*10))/10
+    elif type(max_x_ticks) == float or type(max_x_ticks) == int:
+        # check if max_x_ticks > 0
+        if max_x_ticks <= 0:
+            raise ValueError(f"max_x_ticks has to be greater 0, but {max_x_ticks} <= 0")
+        max_length = max_x_ticks
+    else:
+        raise ValueError(f"max_x_ticks has to be 'auto' or float/int greater 0 (found: {max_x_ticks} with type {type(max_x_ticks)})")
 
     fig = plt.figure()
     ax = fig.add_subplot()
