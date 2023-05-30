@@ -37,7 +37,7 @@ def read_data(data_path: str) -> pd.DataFrame:
 
 ### command functions
 @gin.configurable
-def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list], x_error_column: Union[str, list], y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: int, max_x_ticks: Union[str, float, int], model_type: Union[str, list]):
+def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list], x_error_column: Union[str, list], y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: int, max_x_ticks: Union[str, float, int], model_type: Union[str, list], extra_log: bool):
     """
     @params (str or list[str]):
         x_column: column name for x values
@@ -178,6 +178,11 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
                     dn = model_params_error[1]
                     logger.info(f"y-Achsenschnitt der Gerade ({y_column[y_idx]}): {n}")
                     logger.info(f"Unsicherheit des y-Achsenschnitt ({y_column[y_idx]}): {dn}")
+                    if extra_log:
+                        zero_point = -n/m
+                        dzero_point = np.sqrt((1/m * dn)**2 + (n/m**2 * dm)**2)
+                        logger.info(f"Nullstelle der Gerade  ({y_column[y_idx]}): {zero_point}")
+                        logger.info(f"Unsicherheit der Nullstelle der Gerade  ({y_column[y_idx]}): {dzero_point}")
             elif model_type[y_idx] == "constant":
                 n = model_params[0]
                 dn = model_params_error[0]

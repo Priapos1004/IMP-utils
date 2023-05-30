@@ -75,6 +75,13 @@ Run the following commands in the terminal (current working directory: `IMP-util
   - `list of strings` e.g. ["linear", "constant", "none"]
   - 'linear' *(y = m\*x + n)* / 'linear_zero' *(y = m\*x)* / 'constant' *(y = n)* / 'none' *(no fit will be created)*
 
+- ERRORBAR_PLOT_EXTRA_LOG: if True, additional logs will be shown in console
+  - `boolean`
+  - additional log:
+    - if ERRORBAR_PLOT_MODEL = "linear":
+      - Nullstelle *(-n/m)*
+      - Unsicherheit der Nullstelle *(Gauß'sche Fehlerfortpflanzung: sqrt((1/m * dn)^2 + (n/m^2 * dm)^2))*
+
 <a name="errorbar-plot-info"/>
 
 ### INFO
@@ -135,6 +142,7 @@ ERRORBAR_PLOT_XTICKS_NUMBER = 8
 ERRORBAR_PLOT_MAX_XTICKS = "auto"
 ERRORBAR_PLOT_PLOTLABELS = ""
 ERRORBAR_PLOT_MODEL = "constant"
+ERRORBAR_PLOT_EXTRA_LOG = False
 ```
 </details>
 
@@ -160,6 +168,7 @@ ERRORBAR_PLOT_XTICKS_NUMBER = 8
 ERRORBAR_PLOT_MAX_XTICKS = "auto"
 ERRORBAR_PLOT_PLOTLABELS = ""
 ERRORBAR_PLOT_MODEL = "linear"
+ERRORBAR_PLOT_EXTRA_LOG = False
 ```
 </details>
 
@@ -185,6 +194,7 @@ ERRORBAR_PLOT_XTICKS_NUMBER = 8
 ERRORBAR_PLOT_MAX_XTICKS = "auto"
 ERRORBAR_PLOT_PLOTLABELS = ["1kg", "2kg", "3kg"]
 ERRORBAR_PLOT_MODEL = "linear"
+ERRORBAR_PLOT_EXTRA_LOG = False
 ```
 </details>
 
@@ -210,6 +220,7 @@ ERRORBAR_PLOT_XTICKS_NUMBER = 11
 ERRORBAR_PLOT_MAX_XTICKS = 125
 ERRORBAR_PLOT_PLOTLABELS = ["EWG ohne Kondensator", "EWG mit Kondensator", "ZWG ohne Kondensator", "ZWG mit Kondensator"]
 ERRORBAR_PLOT_MODEL = ["linear", "none", "linear", "none"]
+ERRORBAR_PLOT_EXTRA_LOG = True
 ```
 </details>
 
