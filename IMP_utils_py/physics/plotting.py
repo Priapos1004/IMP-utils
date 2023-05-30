@@ -86,7 +86,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
             max_length_x = int(np.ceil(max(x)*10))/10
             if max_length_x > max_length:
                 max_length = max_length_x
-    elif type(max_x_ticks) == float or type(max_x_ticks) == int:
+    elif type(max_x_ticks) in (float, int):
         # check if max_x_ticks > 0
         if max_x_ticks <= 0:
             raise ValueError(f"max_x_ticks has to be greater 0, but {max_x_ticks} <= 0")
@@ -268,7 +268,7 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
     # max value on x-axes
     if max_x_ticks == "auto":
         max_length = int(np.ceil(max(x)*10))/10
-    elif type(max_x_ticks) == float or type(max_x_ticks) == int:
+    elif type(max_x_ticks) in (float, int):
         # check if max_x_ticks > 0
         if max_x_ticks <= 0:
             raise ValueError(f"max_x_ticks has to be greater 0, but {max_x_ticks} <= 0")
