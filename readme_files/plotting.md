@@ -62,7 +62,8 @@ Run the following commands in the terminal (current working directory: `IMP-util
   - **NOTE:** use an empty string "" if there shall be no label for this plot
 
 - ERRORBAR_PLOT_XTICKS_NUMBER: number of ticks on x axes *(has sometimes to be adjusted a bit for a better laylout)*
-  - `integer`
+  - `string` if ERRORBAR_PLOT_XTICKS_NUMBER='auto', the optimal number of x-ticks will be calculated
+  - `integer` e.g. 8
 
 - ERRORBAR_PLOT_MAX_XTICKS: max value of ticks on x axes
   - `string` if ERRORBAR_PLOT_MAX_XTICKS='auto', the max tick will be the rounded max x value from the data
@@ -94,6 +95,12 @@ Run the following commands in the terminal (current working directory: `IMP-util
 When *ERRORBAR_PLOT_MODEL* is not *'none'*, the x-/y-values and x-/y-error-values are used to create a linear fit with the [kafe2](https://github.com/PhiLFitters/kafe2) library. The advantage of kafe2 compared to excel or scipy is that the errors in x- and y-axes are used to calculate the increase and also the error of the increase. The parameters of the fit and also their errors will be logged in the console.
 
 If you input more than 5 y-value column names, the plot colors will not be unique anymore.
+
+### HINT FOR USAGE
+
+Set ERRORBAR_PLOT_MAX_XTICKS='auto' and ERRORBAR_PLOT_XTICKS_NUMBER='auto' because normally, this will work pretty well for the x-ticks and only if this is not good, change it.
+
+Set ERRORBAR_PLOT_EXTRA_LOG=True because some more logs do not hurt and you will always have all the information.
 
 ### only errorplot example
 
@@ -165,7 +172,7 @@ ERRORBAR_PLOT_Y_ERROR_COLUMN = "uy"
 ERRORBAR_PLOT_TITLE = ""
 ERRORBAR_PLOT_XLABEL = "k"
 ERRORBAR_PLOT_YLABEL = "$r_k^2$ in $mm^2$"
-ERRORBAR_PLOT_XTICKS_NUMBER = 8
+ERRORBAR_PLOT_XTICKS_NUMBER = "auto"
 ERRORBAR_PLOT_MAX_XTICKS = "auto"
 ERRORBAR_PLOT_PLOTLABELS = ""
 ERRORBAR_PLOT_MODEL = "linear"
@@ -278,6 +285,7 @@ python IMP_utils_py/cli.py --mode=errorbar-plot --gin_file=IMP_utils_py/config/p
   - **NOTE:** use an empty string "" if there shall be no label for this axes
 
 - ERRORBAR_PLOT_XTICKS_NUMBER: number of ticks on x axes *(has sometimes to be adjusted a bit for a better laylout)*
+  - `string` if ERRORBAR_PLOT_XTICKS_NUMBER='auto', the optimal number of x-ticks will be calculated
   - `integer`
 
 - ERRORBAR_PLOT_MAX_XTICKS: max value of ticks on x axes
@@ -295,6 +303,10 @@ python IMP_utils_py/cli.py --mode=errorbar-plot --gin_file=IMP_utils_py/config/p
 The residual plot represents the residuals *(actual_y_value − predicted_y_value)* of the linear fit-function mentioned in [errorbar-plot](#errorbar-plot-info).
 
 You can only use one set of y-values and not multiple like in errorbar-plot.
+
+### HINT FOR USAGE
+
+Set ERRORBAR_PLOT_MAX_XTICKS='auto' and ERRORBAR_PLOT_XTICKS_NUMBER='auto' because normally, this will work pretty well for the x-ticks and only if this is not good, change it.
 
 ### example plot
 
@@ -314,7 +326,7 @@ ERRORBAR_PLOT_Y_ERROR_COLUMN = "uy"
 ERRORBAR_PLOT_TITLE = ""
 ERRORBAR_PLOT_XLABEL = "k"
 ERRORBAR_PLOT_YLABEL = "$r_k^2$ in $mm^2$"
-ERRORBAR_PLOT_XTICKS_NUMBER = 8
+ERRORBAR_PLOT_XTICKS_NUMBER = "auto"
 ERRORBAR_PLOT_MAX_XTICKS = "auto"
 ERRORBAR_PLOT_MODEL = "linear"
 ```
