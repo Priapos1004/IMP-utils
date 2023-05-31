@@ -35,9 +35,59 @@ def read_data(data_path: str) -> pd.DataFrame:
     
     return data
 
+def get_best_divider(number: float, possible_divider: list) -> int:
+    """
+    get best divider of a number out of a given list of possible divider
+
+    scoring:
+        - first by length: shorter is better
+        - second by ranking based on last_digit: 
+            - rank/last digit: 0-0, 1-5, 2-2, 3-1, 4-4, 5-6, 6-8, 7-3, 8-7, 9-9
+        - third by divider: higher value with same length and ranking is better
+
+    example:
+        - number = 100.8 and possible_divider = list(range(5,12)) -> best divider 10
+            - tick_number 5, one_tick 25.2, length 3, last_digit 2, ranking 2
+            - tick_number 6, one_tick 20.16, length 4, last_digit 6, ranking 5
+            - tick_number 7, one_tick 16.8, length 3, last_digit 8, ranking 6
+            - tick_number 8, one_tick 14.4, length 3, last_digit 4, ranking 4
+            - tick_number 9, one_tick 12.6, length 3, last_digit 6, ranking 5
+            - tick_number 10, one_tick 11.2, length 3, last_digit 2, ranking 2
+            - tick_number 11, one_tick 10.08, length 4, last_digit 8, ranking 6
+    """
+    auto_ticks = possible_divider
+    # tick number
+    best_tick_number = -1
+    # rank/last digit: 0-0, 1-5, 2-2, 3-1, 4-4, 5-6, 6-8, 7-3, 8-7, 9-9
+    best_tick_ranking = 10
+    ranking_mapping = {0: 0, 5: 1, 2: 2, 1: 3, 4: 4, 6: 5, 8: 6, 3: 7, 7: 8, 9: 9}
+    # length of string without special characters
+    best_tick_length = -1
+    for tick in auto_ticks:
+        one_tick = number/(tick-1)
+        tick_length = len(str(one_tick).replace(".",""))
+        last_digit = int(str(one_tick)[-1])
+        ranking = ranking_mapping[last_digit]
+        logger.debug(f"tick_number {tick}, one_tick {one_tick}, length {tick_length}, last_digit {last_digit}, ranking {ranking}")
+        if tick_length<best_tick_length or best_tick_length==-1:
+            best_tick_number = tick
+            best_tick_length = tick_length
+            best_tick_ranking = ranking
+        elif tick_length == best_tick_length:
+            if best_tick_ranking > ranking:
+                best_tick_number = tick
+                best_tick_length = tick_length
+                best_tick_ranking = ranking
+            elif best_tick_ranking == ranking:
+                if best_tick_number < tick:
+                    best_tick_number = tick
+                    best_tick_length = tick_length
+                    best_tick_ranking = ranking
+    return best_tick_number
+
 ### command functions
 @gin.configurable
-def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list], x_error_column: Union[str, list], y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: int, max_x_ticks: Union[str, float, int], model_type: Union[str, list], extra_log: bool):
+def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list], x_error_column: Union[str, list], y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: Union[str, int], max_x_ticks: Union[str, float, int], model_type: Union[str, list], extra_log: bool):
     """
     @params (str or list[str]):
         x_column: column name for x values
@@ -69,10 +119,6 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
     elif len(y_column) > 5:
         logger.warning(f"Found more than 5 y-value sets ({len(y_column)} > 5) -> the plot colors will not be unique")
 
-    # check if x_ticks_number >= 0
-    if x_ticks_number < 0:
-        raise ValueError(f"x_ticks_number has to be greater 0 or 0 for no x-axes ticks (found: {x_ticks_number} < 0)")
-
     if type(x_column) == str:
         x_column = [x_column]
     if type(x_error_column) == str:
@@ -86,6 +132,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
             max_length_x = int(np.ceil(max(x)*10))/10
             if max_length_x > max_length:
                 max_length = max_length_x
+        logger.info(f"auto max_length = {max_length}")
     elif type(max_x_ticks) in (float, int):
         # check if max_x_ticks > 0
         if max_x_ticks <= 0:
@@ -93,6 +140,17 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
         max_length = max_x_ticks
     else:
         raise ValueError(f"max_x_ticks has to be 'auto' or float/int greater 0 (found: {max_x_ticks} with type {type(max_x_ticks)})")
+    
+    # number of ticks on x-axes
+    if x_ticks_number == "auto":
+        x_ticks_number = get_best_divider(max_length, list(range(5,12)))
+        logger.info(f"auto x_ticks_number = {x_ticks_number}")
+    elif type(x_ticks_number) == int:
+        # check if x_ticks_number >= 0
+        if x_ticks_number < 0:
+            raise ValueError(f"x_ticks_number has to be greater 0 or 0 for no x-axes ticks (found: {x_ticks_number} < 0)")
+    else:
+        raise ValueError(f"x_ticks_number has to be 'auto' or int greater 0 (found: {x_ticks_number} with type {type(x_ticks_number)})")
 
     # if 1 x-value and multiple y-values
     if len(x_column) == len(x_error_column) == 1 and len(y_column) > 1:
@@ -224,7 +282,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
     logger.info("plot saved")
 
 @gin.configurable
-def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_column: str, y_column: str, y_error_column: str, title: str, x_label: str, y_label: str, x_ticks_number: int, max_x_ticks: Union[str, float, int], model_type: str):
+def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_column: str, y_column: str, y_error_column: str, title: str, x_label: str, y_label: str, x_ticks_number: Union[str, int], max_x_ticks: Union[str, float, int], model_type: str):
     """
     @params:
         x_column: column name for x values
@@ -268,6 +326,7 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
     # max value on x-axes
     if max_x_ticks == "auto":
         max_length = int(np.ceil(max(x)*10))/10
+        logger.info(f"auto max_length = {max_length}")
     elif type(max_x_ticks) in (float, int):
         # check if max_x_ticks > 0
         if max_x_ticks <= 0:
@@ -275,6 +334,17 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
         max_length = max_x_ticks
     else:
         raise ValueError(f"max_x_ticks has to be 'auto' or float/int greater 0 (found: {max_x_ticks} with type {type(max_x_ticks)})")
+    
+    # number of ticks on x-axes
+    if x_ticks_number == "auto":
+        x_ticks_number = get_best_divider(max_length, list(range(5,12)))
+        logger.info(f"auto x_ticks_number = {x_ticks_number}")
+    elif type(x_ticks_number) == int:
+        # check if x_ticks_number >= 0
+        if x_ticks_number < 0:
+            raise ValueError(f"x_ticks_number has to be greater 0 or 0 for no x-axes ticks (found: {x_ticks_number} < 0)")
+    else:
+        raise ValueError(f"x_ticks_number has to be 'auto' or int greater 0 (found: {x_ticks_number} with type {type(x_ticks_number)})")
 
     fig = plt.figure()
     ax = fig.add_subplot()

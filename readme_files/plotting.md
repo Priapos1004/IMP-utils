@@ -62,7 +62,8 @@ Run the following commands in the terminal (current working directory: `IMP-util
   - **NOTE:** use an empty string "" if there shall be no label for this plot
 
 - ERRORBAR_PLOT_XTICKS_NUMBER: number of ticks on x axes *(has sometimes to be adjusted a bit for a better laylout)*
-  - `integer`
+  - `string` if ERRORBAR_PLOT_XTICKS_NUMBER='auto', the optimal number of x-ticks will be calculated
+  - `integer` e.g. 8
 
 - ERRORBAR_PLOT_MAX_XTICKS: max value of ticks on x axes
   - `string` if ERRORBAR_PLOT_MAX_XTICKS='auto', the max tick will be the rounded max x value from the data
@@ -165,7 +166,7 @@ ERRORBAR_PLOT_Y_ERROR_COLUMN = "uy"
 ERRORBAR_PLOT_TITLE = ""
 ERRORBAR_PLOT_XLABEL = "k"
 ERRORBAR_PLOT_YLABEL = "$r_k^2$ in $mm^2$"
-ERRORBAR_PLOT_XTICKS_NUMBER = 8
+ERRORBAR_PLOT_XTICKS_NUMBER = "auto"
 ERRORBAR_PLOT_MAX_XTICKS = "auto"
 ERRORBAR_PLOT_PLOTLABELS = ""
 ERRORBAR_PLOT_MODEL = "linear"
@@ -278,6 +279,7 @@ python IMP_utils_py/cli.py --mode=errorbar-plot --gin_file=IMP_utils_py/config/p
   - **NOTE:** use an empty string "" if there shall be no label for this axes
 
 - ERRORBAR_PLOT_XTICKS_NUMBER: number of ticks on x axes *(has sometimes to be adjusted a bit for a better laylout)*
+  - `string` if ERRORBAR_PLOT_XTICKS_NUMBER='auto', the optimal number of x-ticks will be calculated
   - `integer`
 
 - ERRORBAR_PLOT_MAX_XTICKS: max value of ticks on x axes
@@ -314,7 +316,7 @@ ERRORBAR_PLOT_Y_ERROR_COLUMN = "uy"
 ERRORBAR_PLOT_TITLE = ""
 ERRORBAR_PLOT_XLABEL = "k"
 ERRORBAR_PLOT_YLABEL = "$r_k^2$ in $mm^2$"
-ERRORBAR_PLOT_XTICKS_NUMBER = 8
+ERRORBAR_PLOT_XTICKS_NUMBER = "auto"
 ERRORBAR_PLOT_MAX_XTICKS = "auto"
 ERRORBAR_PLOT_MODEL = "linear"
 ```

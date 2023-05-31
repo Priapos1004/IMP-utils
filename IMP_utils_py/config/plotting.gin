@@ -41,4 +41,5 @@ residual_plot.title = %ERRORBAR_PLOT_TITLE
 residual_plot.x_label = %ERRORBAR_PLOT_XLABEL
 residual_plot.y_label = %ERRORBAR_PLOT_YLABEL
 residual_plot.x_ticks_number = %ERRORBAR_PLOT_XTICKS_NUMBER
+residual_plot.max_x_ticks = %ERRORBAR_PLOT_MAX_XTICKS
 residual_plot.model_type = %ERRORBAR_PLOT_MODEL
