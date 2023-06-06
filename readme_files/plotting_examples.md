@@ -1,6 +1,6 @@
 # plotting examples
 
-Some examples of the `plotting command set` to help you understand it.
+Some examples of the [plotting command set](plotting.md) to help you understand it.
 
 ## errorbar plot
 
