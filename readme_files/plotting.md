@@ -102,29 +102,29 @@ Set ERRORBAR_PLOT_MAX_XTICKS='auto' and ERRORBAR_PLOT_XTICKS_NUMBER='auto' becau
 
 Set ERRORBAR_PLOT_EXTRA_LOG=True because some more logs do not hurt and you will always have all the information.
 
-### multiple all linear plots example
+### example plot
 
 <p align="left">
-  <img src="./images/plot_M12_kg.png" width="400" title="multiple all linear plots example" alt="multiple all linear plots example">
+  <img src="./images/plot_E5_UI.png" width="400" title="multiple linear/none plots example" alt="multiple linear/none plots example">
 </p>
 
 <details><summary>parameters</summary>
 
 ``` // opening
-RAW_DATA_PATH = "data/Grundpraktikum/M12_kg.csv"
-ERRORBAR_PLOT_PATH = "data/graphics/plot_M12_kg.png"
-ERRORBAR_PLOT_X_COLUMN = 'n'
-ERRORBAR_PLOT_X_ERROR_COLUMN = ""
-ERRORBAR_PLOT_Y_COLUMN = ["f_1kg", "f_2kg", "f_3kg"]
-ERRORBAR_PLOT_Y_ERROR_COLUMN = ["u_1kg", "u_2kg", "u_3kg"]
+RAW_DATA_PATH = "data/Grundpraktikum/E5_UI.csv"
+ERRORBAR_PLOT_PATH = "data/graphics/plot_E5_UI.png"
+ERRORBAR_PLOT_X_COLUMN = ["I_EoK", "I_EmK", "I_ZoK", "I_ZmK"]
+ERRORBAR_PLOT_X_ERROR_COLUMN = ["u_I_EoK", "u_I_EmK", "u_I_ZoK", "u_I_ZmK"]
+ERRORBAR_PLOT_Y_COLUMN = ["U_EoK", "U_EmK", "U_ZoK", "U_ZmK"]
+ERRORBAR_PLOT_Y_ERROR_COLUMN = ["u_U_EoK", "u_U_EmK", "u_U_ZoK", "u_U_ZmK"]
 ERRORBAR_PLOT_TITLE = ""
-ERRORBAR_PLOT_XLABEL = "n"
-ERRORBAR_PLOT_YLABEL = "Frequenzen $f_n$ in Hz für 1kg/2kg/3kg"
-ERRORBAR_PLOT_XTICKS_NUMBER = 8
-ERRORBAR_PLOT_MAX_XTICKS = "auto"
-ERRORBAR_PLOT_PLOTLABELS = ["1kg", "2kg", "3kg"]
-ERRORBAR_PLOT_MODEL = "linear"
-ERRORBAR_PLOT_EXTRA_LOG = False
+ERRORBAR_PLOT_XLABEL = r"Stromstärke I in mA"
+ERRORBAR_PLOT_YLABEL = r"Spannung U in V"
+ERRORBAR_PLOT_XTICKS_NUMBER = 11
+ERRORBAR_PLOT_MAX_XTICKS = 125
+ERRORBAR_PLOT_PLOTLABELS = ["EWG ohne Kondensator", "EWG mit Kondensator", "ZWG ohne Kondensator", "ZWG mit Kondensator"]
+ERRORBAR_PLOT_MODEL = ["linear", "none", "linear", "none"]
+ERRORBAR_PLOT_EXTRA_LOG = True
 ```
 </details>
 
