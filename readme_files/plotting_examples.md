@@ -108,6 +108,32 @@ ERRORBAR_PLOT_EXTRA_LOG = False
 ```
 </details>
 
+### multiple all linear_zero plots example
+
+<p align="left">
+  <img src="./images/plot_E12_e.png" width="400" title="multiple all linear_zero plots example" alt="multiple all linear_zero plots example">
+</p>
+
+<details><summary>parameters</summary>
+
+``` // opening
+RAW_DATA_PATH = "data/Grundpraktikum/E12_e.csv"
+ERRORBAR_PLOT_PATH = "data/graphics/plot_E12_e.png"
+ERRORBAR_PLOT_X_COLUMN = ["r_3000", "r_4000", "r_5000"]
+ERRORBAR_PLOT_X_ERROR_COLUMN = ["u_r_3000", "u_r_4000", "u_r_5000"]
+ERRORBAR_PLOT_Y_COLUMN = ["1/B_3000", "1/B_4000", "1/B_5000"]
+ERRORBAR_PLOT_Y_ERROR_COLUMN = ["u_1/B_3000", "u_1/B_4000", "u_1/B_5000"]
+ERRORBAR_PLOT_TITLE = ""
+ERRORBAR_PLOT_XLABEL = r"Bahnradius der Elektronen $r$ in m"
+ERRORBAR_PLOT_YLABEL = r"reziproken Wert der magnetischen Flussdichte $1/B$"
+ERRORBAR_PLOT_XTICKS_NUMBER = "auto"
+ERRORBAR_PLOT_MAX_XTICKS = 0.12
+ERRORBAR_PLOT_PLOTLABELS = ["$U_A = 3000 V$", "$U_A = 4000 V$", "$U_A = 5000 V$"]
+ERRORBAR_PLOT_MODEL = "linear_zero"
+ERRORBAR_PLOT_EXTRA_LOG = False
+```
+</details>
+
 ### multiple linear/none plots example
 
 <p align="left">
