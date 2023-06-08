@@ -1,3 +1,4 @@
+import math
 from typing import Union
 
 import gin
@@ -85,6 +86,13 @@ def get_best_divider(number: float, possible_divider: list) -> int:
                     best_tick_ranking = ranking
     return best_tick_number
 
+def signif(x, digits=2):
+    """ function to round up number to first <digits>. significant figures """
+    if x == 0 or not math.isfinite(x):
+        return x
+    digits -= math.ceil(math.log10(abs(x)))
+    return np.ceil(x*10**digits)/10**digits
+
 ### command functions
 @gin.configurable
 def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list], x_error_column: Union[str, list], y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: Union[str, int], max_x_ticks: Union[str, float, int], model_type: Union[str, list], extra_log: bool):
@@ -129,7 +137,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
         max_length = 0
         for x_col in x_column:
             x = data[x_col]
-            max_length_x = int(np.ceil(max(x)*10))/10
+            max_length_x = signif(max(x))
             if max_length_x > max_length:
                 max_length = max_length_x
         logger.info(f"auto max_length = {max_length}")
@@ -325,7 +333,7 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
 
     # max value on x-axes
     if max_x_ticks == "auto":
-        max_length = int(np.ceil(max(x)*10))/10
+        max_length = signif(max(x))
         logger.info(f"auto max_length = {max_length}")
     elif type(max_x_ticks) in (float, int):
         # check if max_x_ticks > 0
