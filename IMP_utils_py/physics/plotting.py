@@ -1,3 +1,4 @@
+import math
 from typing import Union
 
 import gin
@@ -35,7 +36,7 @@ def read_data(data_path: str) -> pd.DataFrame:
     
     return data
 
-def get_best_divider(number: float, possible_divider: list) -> int:
+def get_best_divider(number: float, possible_divider: list = list(range(5,13))) -> int:
     """
     get best divider of a number out of a given list of possible divider
 
@@ -85,11 +86,20 @@ def get_best_divider(number: float, possible_divider: list) -> int:
                     best_tick_ranking = ranking
     return best_tick_number
 
+def signif(x, digits=2):
+    """ function to round up number to first <digits>. significant figures """
+    if x == 0 or not math.isfinite(x):
+        return x
+    digits -= math.ceil(math.log10(abs(x)))
+    return np.ceil(x*10**digits)/10**digits
+
 ### command functions
 @gin.configurable
 def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list], x_error_column: Union[str, list], y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: Union[str, int], max_x_ticks: Union[str, float, int], model_type: Union[str, list], extra_log: bool):
     """
     @params (str or list[str]):
+        data_path: location of the csv/excel file with the data
+        graphic_path: location for the png of the plot
         x_column: column name for x values
         x_error_column: column name for x value errors
         y_column: column name for y values
@@ -97,6 +107,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
         y_error_column: column name for y value errors
         model_type: 'linear' (y = m*x + n) / 'linear_zero' (y = m*x) / 'constant' (y = n) / 'none' (no model will be shown)
         max_x_ticks: 'auto' or float/int
+        x_ticks_number: 'auto' or int
 
     @output:
         plot saved in graphic_path and errors in console
@@ -126,24 +137,22 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
 
     # max value on x-axes
     if max_x_ticks == "auto":
-        max_length = 0
-        for x_col in x_column:
-            x = data[x_col]
-            max_length_x = int(np.ceil(max(x)*10))/10
-            if max_length_x > max_length:
-                max_length = max_length_x
+        max_length = max([signif(max(data[x_col])) for x_col in x_column])
         logger.info(f"auto max_length = {max_length}")
     elif type(max_x_ticks) in (float, int):
         # check if max_x_ticks > 0
         if max_x_ticks <= 0:
             raise ValueError(f"max_x_ticks has to be greater 0, but {max_x_ticks} <= 0")
+        max_value = max([max(data[x_col]) for x_col in x_column])
+        if max_x_ticks < max_value:
+            logger.warning(f"max_x_ticks is smaller than the largest value of the x data ({max_x_ticks} < {max_value})")
         max_length = max_x_ticks
     else:
         raise ValueError(f"max_x_ticks has to be 'auto' or float/int greater 0 (found: {max_x_ticks} with type {type(max_x_ticks)})")
     
     # number of ticks on x-axes
     if x_ticks_number == "auto":
-        x_ticks_number = get_best_divider(max_length, list(range(5,12)))
+        x_ticks_number = get_best_divider(max_length)
         logger.info(f"auto x_ticks_number = {x_ticks_number}")
     elif type(x_ticks_number) == int:
         # check if x_ticks_number >= 0
@@ -285,12 +294,15 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
 def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_column: str, y_column: str, y_error_column: str, title: str, x_label: str, y_label: str, x_ticks_number: Union[str, int], max_x_ticks: Union[str, float, int], model_type: str):
     """
     @params:
+        data_path: location of the csv/excel file with the data
+        graphic_path: location for the png of the plot
         x_column: column name for x values
         x_error_column: column name for x value errors
         y_column: column name for y values
         y_error_column: column name for y value errors
         model_type: 'linear' (y = m*x + n) / 'linear_zero' (y = m*x) / 'constant' (y = n)
-
+        max_x_ticks: 'auto' or float/int
+        x_ticks_number: 'auto' or int
     @output:
         plot saved in graphic_path
     """
@@ -325,7 +337,7 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
 
     # max value on x-axes
     if max_x_ticks == "auto":
-        max_length = int(np.ceil(max(x)*10))/10
+        max_length = signif(max(x))
         logger.info(f"auto max_length = {max_length}")
     elif type(max_x_ticks) in (float, int):
         # check if max_x_ticks > 0
@@ -337,7 +349,7 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
     
     # number of ticks on x-axes
     if x_ticks_number == "auto":
-        x_ticks_number = get_best_divider(max_length, list(range(5,12)))
+        x_ticks_number = get_best_divider(max_length)
         logger.info(f"auto x_ticks_number = {x_ticks_number}")
     elif type(x_ticks_number) == int:
         # check if x_ticks_number >= 0
