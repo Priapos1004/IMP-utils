@@ -98,6 +98,8 @@ def signif(x, digits=2):
 def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list], x_error_column: Union[str, list], y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: Union[str, int], max_x_ticks: Union[str, float, int], model_type: Union[str, list], extra_log: bool):
     """
     @params (str or list[str]):
+        data_path: location of the csv/excel file with the data
+        graphic_path: location for the png of the plot
         x_column: column name for x values
         x_error_column: column name for x value errors
         y_column: column name for y values
@@ -105,6 +107,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
         y_error_column: column name for y value errors
         model_type: 'linear' (y = m*x + n) / 'linear_zero' (y = m*x) / 'constant' (y = n) / 'none' (no model will be shown)
         max_x_ticks: 'auto' or float/int
+        x_ticks_number: 'auto' or int
 
     @output:
         plot saved in graphic_path and errors in console
@@ -291,12 +294,15 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
 def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_column: str, y_column: str, y_error_column: str, title: str, x_label: str, y_label: str, x_ticks_number: Union[str, int], max_x_ticks: Union[str, float, int], model_type: str):
     """
     @params:
+        data_path: location of the csv/excel file with the data
+        graphic_path: location for the png of the plot
         x_column: column name for x values
         x_error_column: column name for x value errors
         y_column: column name for y values
         y_error_column: column name for y value errors
         model_type: 'linear' (y = m*x + n) / 'linear_zero' (y = m*x) / 'constant' (y = n)
-
+        max_x_ticks: 'auto' or float/int
+        x_ticks_number: 'auto' or int
     @output:
         plot saved in graphic_path
     """
