@@ -134,17 +134,15 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
 
     # max value on x-axes
     if max_x_ticks == "auto":
-        max_length = 0
-        for x_col in x_column:
-            x = data[x_col]
-            max_length_x = signif(max(x))
-            if max_length_x > max_length:
-                max_length = max_length_x
+        max_length = max([signif(max(data[x_col])) for x_col in x_column])
         logger.info(f"auto max_length = {max_length}")
     elif type(max_x_ticks) in (float, int):
         # check if max_x_ticks > 0
         if max_x_ticks <= 0:
             raise ValueError(f"max_x_ticks has to be greater 0, but {max_x_ticks} <= 0")
+        max_value = max([max(data[x_col]) for x_col in x_column])
+        if max_x_ticks < max_value:
+            logger.warning(f"max_x_ticks is smaller than the largest value of the x data ({max_x_ticks} < {max_value})")
         max_length = max_x_ticks
     else:
         raise ValueError(f"max_x_ticks has to be 'auto' or float/int greater 0 (found: {max_x_ticks} with type {type(max_x_ticks)})")
