@@ -343,6 +343,8 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
         # check if max_x_ticks > 0
         if max_x_ticks <= 0:
             raise ValueError(f"max_x_ticks has to be greater 0, but {max_x_ticks} <= 0")
+        if max_x_ticks < max(x):
+            logger.warning(f"max_x_ticks is smaller than the largest value of the x data ({max_x_ticks} < {max(x)})")
         max_length = max_x_ticks
     else:
         raise ValueError(f"max_x_ticks has to be 'auto' or float/int greater 0 (found: {max_x_ticks} with type {type(max_x_ticks)})")
