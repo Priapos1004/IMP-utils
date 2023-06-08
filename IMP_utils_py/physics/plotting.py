@@ -36,7 +36,7 @@ def read_data(data_path: str) -> pd.DataFrame:
     
     return data
 
-def get_best_divider(number: float, possible_divider: list) -> int:
+def get_best_divider(number: float, possible_divider: list = list(range(5,13))) -> int:
     """
     get best divider of a number out of a given list of possible divider
 
@@ -149,7 +149,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
     
     # number of ticks on x-axes
     if x_ticks_number == "auto":
-        x_ticks_number = get_best_divider(max_length, list(range(5,12)))
+        x_ticks_number = get_best_divider(max_length)
         logger.info(f"auto x_ticks_number = {x_ticks_number}")
     elif type(x_ticks_number) == int:
         # check if x_ticks_number >= 0
@@ -343,7 +343,7 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
     
     # number of ticks on x-axes
     if x_ticks_number == "auto":
-        x_ticks_number = get_best_divider(max_length, list(range(5,12)))
+        x_ticks_number = get_best_divider(max_length)
         logger.info(f"auto x_ticks_number = {x_ticks_number}")
     elif type(x_ticks_number) == int:
         # check if x_ticks_number >= 0

@@ -125,9 +125,9 @@ ERRORBAR_PLOT_Y_COLUMN = ["1/B_3000", "1/B_4000", "1/B_5000"]
 ERRORBAR_PLOT_Y_ERROR_COLUMN = ["u_1/B_3000", "u_1/B_4000", "u_1/B_5000"]
 ERRORBAR_PLOT_TITLE = ""
 ERRORBAR_PLOT_XLABEL = "Bahnradius der Elektronen $r$ in m"
-ERRORBAR_PLOT_YLABEL = "reziproken Wert der magnetischen Flussdichte $1/B$"
+ERRORBAR_PLOT_YLABEL = "reziproke magnetischen Flussdichte $1/B$ in $1/T$"
 ERRORBAR_PLOT_XTICKS_NUMBER = "auto"
-ERRORBAR_PLOT_MAX_XTICKS = 0.12
+ERRORBAR_PLOT_MAX_XTICKS = "auto"
 ERRORBAR_PLOT_PLOTLABELS = ["$U_A = 3000 V$", "$U_A = 4000 V$", "$U_A = 5000 V$"]
 ERRORBAR_PLOT_MODEL = "linear_zero"
 ERRORBAR_PLOT_EXTRA_LOG = False
