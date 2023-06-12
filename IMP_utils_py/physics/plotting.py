@@ -112,7 +112,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
     @output:
         plot saved in graphic_path and errors in console
 
-    @Note: max 5 y-value sets
+    @Note: max 8 y-value sets
     """
     data = read_data(data_path)
 
@@ -127,8 +127,8 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
     # check if lengths of y columns is correct
     if not (len(y_column) == len(y_error_column) == len(y_plot_label)):
         raise ValueError(f"Number of y_columns ({len(y_column)}), number of y_error_column ({len(y_error_column)}), or number of y_plot_label ({len(y_plot_label)}) do not match")
-    elif len(y_column) > 5:
-        logger.warning(f"Found more than 5 y-value sets ({len(y_column)} > 5) -> the plot colors will not be unique")
+    elif len(y_column) > 8:
+        logger.warning(f"Found more than 8 y-value sets ({len(y_column)} > 8) -> the plot colors will not be unique")
 
     if type(x_column) == str:
         x_column = [x_column]
@@ -186,8 +186,8 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
     ax = fig.add_subplot()
 
     # colors for y-value fits
-    colors = ["steelblue", "lightgreen", "lightcoral", "plum", "paleturquoise"]
-    errorbar_colors = ['blue', 'green', 'red', 'magenta', 'cyan']
+    colors = ["steelblue", "lightgreen", "lightcoral", "plum", "paleturquoise", "peachpuff", "khaki", "grey"]
+    errorbar_colors = ['blue', 'green', 'red', 'magenta', 'cyan', "orange", "yellow", "dimgrey"]
 
     for y_idx in range(len(y_column)):
         data.sort_values(by=[x_column[y_idx]])

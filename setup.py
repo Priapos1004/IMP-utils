@@ -7,7 +7,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name="IMP_utils_py",
-    version="1.4.2",
+    version="1.4.3",
     description="stuff to make your IMP life easier",
     long_description=long_description,
     long_description_content_type="text/markdown",
