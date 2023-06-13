@@ -12,7 +12,7 @@ from IMP_utils_py.config.logging import setup_logger
 ### logging setup
 logger = setup_logger()
 
-### helper functions
+### model functions
 def constant_model(x, a=1.0):
     """ y = a """
     return a
@@ -25,6 +25,21 @@ def linear_model(x, a=1.0, b=0.0):
     """ y = a * x + b """
     return a*x+b
 
+def weighted_average(y: list, y_error: list) -> tuple:
+    """ 
+    function to calculate weighted average of y values
+    @params: if y_error = None, mean and std of y will be returned. Otherwise, the weighted average with its error
+    """
+    if y_error is None:
+        w_avg = np.mean(y)
+        dw_avg = np.std(y)
+    else:
+        w_avg = sum([y[i]/y_error[i]**2 for i in range(len(y))]) / sum([1/y_error[i]**2 for i in range(len(y))])
+        dw_avg = 1 / np.sqrt(sum([1/y_error[i]**2 for i in range(len(y))]))
+
+    return w_avg, dw_avg
+
+### helper functions
 def read_data(data_path: str) -> pd.DataFrame:
     """ read data as pandas DataFrame from path """
     if data_path.split(".")[-1] == "csv":
@@ -162,11 +177,14 @@ def get_model_errorbar(model_type: list, y_column: list, y_idx: int) -> callable
     elif model_type[y_idx] == "constant":
         model = constant_model
         logger.debug(f"selected constant model ({y_column[y_idx]})")
+    elif model_type[y_idx] == "weighted_average":
+        model = weighted_average
+        logger.debug(f"selected weighted_average model ({y_column[y_idx]})")
     elif model_type[y_idx] == "none":
         model = None
         logger.debug(f"no model ({y_column[y_idx]})")
     else:
-        raise ValueError(f"Model '{model_type[y_idx]}' ist not supported -> choose 'linear_zero', 'linear', 'constant', or 'none'")
+        raise ValueError(f"Model '{model_type[y_idx]}' ist not supported -> choose 'linear_zero', 'linear', 'constant', 'weighted_average', or 'none'")
     
     return model
 
@@ -188,7 +206,7 @@ def get_model_residual(model_type: str) -> callable:
 
 ### command functions
 @gin.configurable
-def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list], x_error_column: Union[str, list], y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: Union[str, int], min_x_ticks: Union[str, float, int], max_x_ticks: Union[str, float, int], model_type: Union[str, list], extra_log: bool):
+def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list], x_error_column: Union[str, list], y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: Union[str, int], min_x_ticks: Union[str, float, int], max_x_ticks: Union[str, float, int], model_type: Union[str, list], show_model_error: Union[bool, list], extra_log: bool):
     """
     @params (str or list[str]):
         data_path: location of the csv/excel file with the data
@@ -198,10 +216,11 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
         y_column: column name for y values
         y_plot_label: label for y-plot
         y_error_column: column name for y value errors
-        model_type: 'linear' (y = m*x + n) / 'linear_zero' (y = m*x) / 'constant' (y = n) / 'none' (no model will be shown)
+        model_type: 'linear' (y = m*x + n) / 'linear_zero' (y = m*x) / 'constant' (y = n) / 'weighted_average' (y = w_avg) / 'none' (no model will be shown)
         min_x_ticks: 'auto' or float/int
         max_x_ticks: 'auto' or float/int
         x_ticks_number: 'auto' or int
+        show_model_error: if True, the y error of the model will be shown as light colored area
 
     @output:
         plot saved in graphic_path and errors in console
@@ -255,6 +274,14 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
         # check length of show_linear_fit list and y columns
         if not (len(model_type) == len(y_column)):
             raise ValueError(f"Number of y_columns ({len(y_column)}) and number of model_type ({len(model_type)}) does not match")
+        
+    # check show_model_error
+    if type(show_model_error) == bool:
+        show_model_error = [show_model_error]*len(y_column)
+    else:
+        # check length of show_linear_fit list and y columns
+        if not (len(show_model_error) == len(y_column)):
+            raise ValueError(f"Number of y_columns ({len(y_column)}) and number of show_model_error ({len(show_model_error)}) does not match")
     
 
     # replace empty strings with None in y_plot_label
@@ -264,8 +291,9 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
     ax = fig.add_subplot()
 
     # colors for y-value fits
-    COLORS = ["steelblue", "lightgreen", "lightcoral", "plum", "paleturquoise", "peachpuff", "khaki", "grey"]
-    ERRORBAR_COLORS = ['blue', 'green', 'red', 'magenta', 'cyan', "orange", "yellow", "dimgrey"]
+    ERRORAREAS_COLORS = ["lightblue", "lightgreen", "mistyrose", "thistle", "lightcyan", "peachpuff", "khaki", "lightgrey"]
+    MODEL_COLORS = ["steelblue", "yellowgreen", "lightcoral", "plum", "paleturquoise", "orange", "yellow", "darkgrey"]
+    ERRORBAR_COLORS = ['blue', 'green', 'red', 'magenta', 'cyan', "darkorange", "gold", "dimgrey"]
 
     for y_idx in range(len(y_column)):
         data.sort_values(by=[x_column[y_idx]])
@@ -287,22 +315,27 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
 
         # if a model was selected
         if model is not None:
-            ### kafe2 calculation
-            xy_data = XYContainer(x,y)
-            if dx is not None:
-                xy_data.add_error("x", dx)
-            if dy is not None:
-                xy_data.add_error("y", dy)
+            if model_type[y_idx] == "weighted_average":
+                n, dn = weighted_average(y, dy)
+            else:
+                ### kafe2 calculation
+                xy_data = XYContainer(x,y)
+                if dx is not None:
+                    xy_data.add_error("x", dx)
+                if dy is not None:
+                    xy_data.add_error("y", dy)
 
-            my_fit = Fit(xy_data, model)
-            my_fit.do_fit()
-            model_params = my_fit.parameter_values
-            model_params_error = my_fit.parameter_errors
+                my_fit = Fit(xy_data, model)
+                my_fit.do_fit()
+                model_params = my_fit.parameter_values
+                model_params_error = my_fit.parameter_errors
 
             # fit values
             if model_type[y_idx] in ("linear", "linear_zero"):
                 m = model_params[0]
                 dm = model_params_error[0]
+                n = 0
+                dn = 0
                 logger.info(f"Steigung der Gerade ({y_column[y_idx]}): {m}")
                 logger.info(f"Unsicherheit der Steigung ({y_column[y_idx]}): {dm}")
                 if model_type[y_idx] == "linear":
@@ -315,26 +348,33 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
                         dzero_point = np.sqrt((1/m * dn)**2 + (n/m**2 * dm)**2)
                         logger.info(f"Nullstelle der Gerade  ({y_column[y_idx]}): {zero_point}")
                         logger.info(f"Unsicherheit der Nullstelle der Gerade  ({y_column[y_idx]}): {dzero_point}")
-            elif model_type[y_idx] == "constant":
-                n = model_params[0]
-                dn = model_params_error[0]
+            elif model_type[y_idx] in ("constant", "weighted_average"):
+                m = 0
+                dm = 0
+                if model_type[y_idx] == "constant":
+                    n = model_params[0]
+                    dn = model_params_error[0]
                 logger.info(f"y-Achsenschnitt der Gerade ({y_column[y_idx]}): {n}")
                 logger.info(f"Unsicherheit des y-Achsenschnitt ({y_column[y_idx]}): {dn}")
 
             # add graphs to plot
             x_intervall = np.linspace(min_length, max_length, 1000)
-            if model_type[y_idx] == "constant":
-                ax.plot(x_intervall, [n]*len(x_intervall), '--', color=COLORS[y_idx%len(COLORS)])
-                logger.debug(f"added constant fit ({y_plot_label[y_idx]})")
-            elif model_type[y_idx] == "linear_zero":
-                ax.plot(x_intervall, m*x_intervall, '--', color=COLORS[y_idx%len(COLORS)])
-                logger.debug(f"added linear_zero fit ({y_plot_label[y_idx]})")
-            elif model_type[y_idx] == "linear":
-                # not below zero fit line if decreasing
-                if m<0:
-                    x_intervall = np.linspace(min_length, min(max_length, -n/m), 1000)
-                ax.plot(x_intervall, m*x_intervall+n, '--', color=COLORS[y_idx%len(COLORS)])
-                logger.debug(f"added linear fit ({y_plot_label[y_idx]})")
+            # not below zero fit line if decreasing
+            if m < 0:
+                x_intervall = np.linspace(min_length, min(max_length, -n/m), 1000)
+            ax.plot(x_intervall, m*x_intervall+n, '--', color=MODEL_COLORS[y_idx%len(MODEL_COLORS)])
+            logger.debug(f"added {model_type[y_idx]} fit ({y_plot_label[y_idx]})")
+
+            # colored areas for y-errors
+            if show_model_error[y_idx]:
+                if dn == 0:
+                    logger.warning(f"the model ({y_plot_label[y_idx]}) has a gradient of zero -> no y-error areas will be shown")
+                else:
+                    ax.fill_between(x_intervall, m*x_intervall+n, m*x_intervall+(n+dn), alpha=0.2, color=ERRORAREAS_COLORS[y_idx%len(ERRORAREAS_COLORS)])
+                    ax.fill_between(x_intervall, m*x_intervall+n, m*x_intervall+(n-dn), alpha=0.2, color=ERRORAREAS_COLORS[y_idx%len(ERRORAREAS_COLORS)])
+                    # just for design to dim the borders of the areas
+                    ax.fill_between(x_intervall, m*x_intervall+(n+dn), m*x_intervall+(n+dn), alpha=0.6, color=ERRORAREAS_COLORS[y_idx%len(ERRORAREAS_COLORS)])
+                    ax.fill_between(x_intervall, m*x_intervall+(n-dn), m*x_intervall+(n-dn), alpha=0.6, color=ERRORAREAS_COLORS[y_idx%len(ERRORAREAS_COLORS)])
 
         else:
             logger.info(f"Fits are deactivated ({y_column[y_idx]})")
