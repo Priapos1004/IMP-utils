@@ -86,16 +86,23 @@ def get_best_divider(number: float, possible_divider: list = list(range(5,13))) 
                     best_tick_ranking = ranking
     return best_tick_number
 
-def signif(x, digits=2):
+def signif_up(x, digits=2):
     """ function to round up number to first <digits>. significant figures """
     if x == 0 or not math.isfinite(x):
         return x
     digits -= math.ceil(math.log10(abs(x)))
     return np.ceil(x*10**digits)/10**digits
 
+def signif_down(x, digits=2):
+    """ function to round down number to first <digits>. significant figures """
+    if x == 0 or not math.isfinite(x):
+        return x
+    digits -= math.ceil(math.log10(abs(x)))
+    return int(x*10**digits)/10**digits
+
 ### command functions
 @gin.configurable
-def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list], x_error_column: Union[str, list], y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: Union[str, int], max_x_ticks: Union[str, float, int], model_type: Union[str, list], extra_log: bool):
+def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list], x_error_column: Union[str, list], y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: Union[str, int], min_x_ticks: Union[str, float, int], max_x_ticks: Union[str, float, int], model_type: Union[str, list], extra_log: bool):
     """
     @params (str or list[str]):
         data_path: location of the csv/excel file with the data
@@ -106,6 +113,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
         y_plot_label: label for y-plot
         y_error_column: column name for y value errors
         model_type: 'linear' (y = m*x + n) / 'linear_zero' (y = m*x) / 'constant' (y = n) / 'none' (no model will be shown)
+        min_x_ticks: 'auto' or float/int
         max_x_ticks: 'auto' or float/int
         x_ticks_number: 'auto' or int
 
@@ -137,7 +145,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
 
     # max value on x-axes
     if max_x_ticks == "auto":
-        max_length = max([signif(max(data[x_col])) for x_col in x_column])
+        max_length = max([signif_up(max(data[x_col])) for x_col in x_column])
         logger.info(f"auto max_length = {max_length}")
     elif type(max_x_ticks) in (float, int):
         # check if max_x_ticks > 0
@@ -150,9 +158,24 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
     else:
         raise ValueError(f"max_x_ticks has to be 'auto' or float/int greater 0 (found: {max_x_ticks} with type {type(max_x_ticks)})")
     
+    # min value on x-axes
+    if min_x_ticks == "auto":
+        min_length = max([signif_down(min(data[x_col])) for x_col in x_column])
+        logger.info(f"auto min_length = {min_length}")
+    elif type(min_x_ticks) in (float, int):
+        # check if min_x_ticks >= 0
+        if min_x_ticks < 0:
+            raise ValueError(f"min_x_ticks has to be greater or equal 0, but {min_x_ticks} < 0")
+        min_value = min([min(data[x_col]) for x_col in x_column])
+        if min_x_ticks > min_value:
+            logger.warning(f"min_x_ticks is larger than the smallest value of the x data ({min_x_ticks} < {min_value})")
+        min_length = min_x_ticks
+    else:
+        raise ValueError(f"min_x_ticks has to be 'auto' or float/int greater or equal 0 (found: {min_x_ticks} with type {type(min_x_ticks)})")
+    
     # number of ticks on x-axes
     if x_ticks_number == "auto":
-        x_ticks_number = get_best_divider(max_length)
+        x_ticks_number = get_best_divider(max_length-min_length)
         logger.info(f"auto x_ticks_number = {x_ticks_number}")
     elif type(x_ticks_number) == int:
         # check if x_ticks_number >= 0
@@ -257,7 +280,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
                 logger.info(f"Unsicherheit des y-Achsenschnitt ({y_column[y_idx]}): {dn}")
 
             # add graphs to plot
-            x_intervall = np.linspace(0, max_length, 1000)
+            x_intervall = np.linspace(min_length, max_length, 1000)
             if model_type[y_idx] == "constant":
                 ax.plot(x_intervall, [n]*len(x_intervall), '--', color=colors[y_idx%len(colors)])
                 logger.debug(f"added constant fit ({y_plot_label[y_idx]})")
@@ -267,7 +290,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
             elif model_type[y_idx] == "linear":
                 # not below zero fit line if decreasing
                 if m<0:
-                    x_intervall = np.linspace(0, min(max_length, -n/m), 1000)
+                    x_intervall = np.linspace(min_length, min(max_length, -n/m), 1000)
                 ax.plot(x_intervall, m*x_intervall+n, '--', color=colors[y_idx%len(colors)])
                 logger.debug(f"added linear fit ({y_plot_label[y_idx]})")
 
@@ -277,7 +300,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
         plt.errorbar(x, y, yerr=dy, xerr=dx, linestyle='None', label=y_plot_label[y_idx], marker='.', elinewidth=0.5, capsize=3, color=errorbar_colors[y_idx%len(errorbar_colors)])
 
     # legend settings
-    ax.set_xticks(np.linspace(0, max_length, x_ticks_number))
+    ax.set_xticks(np.linspace(min_length, max_length, x_ticks_number))
     ax.set_title(title)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
@@ -291,7 +314,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
     logger.info("plot saved")
 
 @gin.configurable
-def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_column: str, y_column: str, y_error_column: str, title: str, x_label: str, y_label: str, x_ticks_number: Union[str, int], max_x_ticks: Union[str, float, int], model_type: str):
+def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_column: str, y_column: str, y_error_column: str, title: str, x_label: str, y_label: str, x_ticks_number: Union[str, int], min_x_ticks: Union[str, float, int], max_x_ticks: Union[str, float, int], model_type: str):
     """
     @params:
         data_path: location of the csv/excel file with the data
@@ -301,6 +324,7 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
         y_column: column name for y values
         y_error_column: column name for y value errors
         model_type: 'linear' (y = m*x + n) / 'linear_zero' (y = m*x) / 'constant' (y = n)
+        min_x_ticks: 'auto' or float/int
         max_x_ticks: 'auto' or float/int
         x_ticks_number: 'auto' or int
     @output:
@@ -337,7 +361,7 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
 
     # max value on x-axes
     if max_x_ticks == "auto":
-        max_length = signif(max(x))
+        max_length = signif_up(max(x))
         logger.info(f"auto max_length = {max_length}")
     elif type(max_x_ticks) in (float, int):
         # check if max_x_ticks > 0
@@ -349,9 +373,23 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
     else:
         raise ValueError(f"max_x_ticks has to be 'auto' or float/int greater 0 (found: {max_x_ticks} with type {type(max_x_ticks)})")
     
+    # min value on x-axes
+    if min_x_ticks == "auto":
+        min_length = signif_down(min(x))
+        logger.info(f"auto min_length = {min_length}")
+    elif type(min_x_ticks) in (float, int):
+        # check if min_x_ticks >= 0
+        if min_x_ticks < 0:
+            raise ValueError(f"min_x_ticks has to be greater or euqal 0, but {min_x_ticks} < 0")
+        if min_x_ticks > min(x):
+            logger.warning(f"min_x_ticks is larger than the smallest value of the x data ({min_x_ticks} < {min(x)})")
+        min_length = min_x_ticks
+    else:
+        raise ValueError(f"min_x_ticks has to be 'auto' or float/int greater or equal 0 (found: {min_x_ticks} with type {type(min_x_ticks)})")
+    
     # number of ticks on x-axes
     if x_ticks_number == "auto":
-        x_ticks_number = get_best_divider(max_length)
+        x_ticks_number = get_best_divider(max_length-min_length)
         logger.info(f"auto x_ticks_number = {x_ticks_number}")
     elif type(x_ticks_number) == int:
         # check if x_ticks_number >= 0
@@ -388,11 +426,11 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
 
     # add graphs to plot
     plt.scatter(x, residuals, s=10)
-    x_intervall = np.linspace(0, max_length, 1000)
+    x_intervall = np.linspace(min_length, max_length, 1000)
     ax.plot(x_intervall, 0*x_intervall, '--k', linewidth=1)
     
     # legend settings
-    ax.set_xticks(np.linspace(0, max_length, x_ticks_number))
+    ax.set_xticks(np.linspace(min_length, max_length, x_ticks_number))
     ax.set_title(title)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
