@@ -65,8 +65,12 @@ Run the following commands in the terminal (current working directory: `IMP-util
   - `string` if ERRORBAR_PLOT_XTICKS_NUMBER='auto', the optimal number of x-ticks will be calculated
   - `integer` e.g. 8
 
+- ERRORBAR_PLOT_MIN_XTICKS: min value of ticks on x axes
+  - `string` if ERRORBAR_PLOT_MIN_XTICKS='auto', the min tick will be the rounded down min x value from the data
+  - `float`/`integer` e.g. 125 or 0.65
+
 - ERRORBAR_PLOT_MAX_XTICKS: max value of ticks on x axes
-  - `string` if ERRORBAR_PLOT_MAX_XTICKS='auto', the max tick will be the rounded max x value from the data
+  - `string` if ERRORBAR_PLOT_MAX_XTICKS='auto', the max tick will be the rounded up max x value from the data
   - `float`/`integer` e.g. 125 or 0.65
 
 ### function parameter
@@ -121,6 +125,7 @@ ERRORBAR_PLOT_TITLE = ""
 ERRORBAR_PLOT_XLABEL = r"Stromstärke I in mA"
 ERRORBAR_PLOT_YLABEL = r"Spannung U in V"
 ERRORBAR_PLOT_XTICKS_NUMBER = 11
+ERRORBAR_PLOT_MIN_XTICKS = 0
 ERRORBAR_PLOT_MAX_XTICKS = 125
 ERRORBAR_PLOT_PLOTLABELS = ["EWG ohne Kondensator", "EWG mit Kondensator", "ZWG ohne Kondensator", "ZWG mit Kondensator"]
 ERRORBAR_PLOT_MODEL = ["linear", "none", "linear", "none"]
@@ -188,8 +193,12 @@ python IMP_utils_py/cli.py --mode=errorbar-plot --gin_file=IMP_utils_py/config/p
   - `string` if ERRORBAR_PLOT_XTICKS_NUMBER='auto', the optimal number of x-ticks will be calculated
   - `integer`
 
+- ERRORBAR_PLOT_MIN_XTICKS: min value of ticks on x axes
+  - `string` if ERRORBAR_PLOT_MIN_XTICKS='auto', the min tick will be the rounded down min x value from the data
+  - `float`/`integer` e.g. 125 or 0.65
+
 - ERRORBAR_PLOT_MAX_XTICKS: max value of ticks on x axes
-  - `string` if ERRORBAR_PLOT_MAX_XTICKS='auto', the max tick will be the rounded max x value from the data
+  - `string` if ERRORBAR_PLOT_MAX_XTICKS='auto', the max tick will be the rounded up max x value from the data
   - `float`/`integer` e.g. 125 or 0.65
 
 ### function parameter
@@ -227,6 +236,7 @@ ERRORBAR_PLOT_TITLE = ""
 ERRORBAR_PLOT_XLABEL = "k"
 ERRORBAR_PLOT_YLABEL = "$r_k^2$ in $mm^2$"
 ERRORBAR_PLOT_XTICKS_NUMBER = "auto"
+ERRORBAR_PLOT_MIN_XTICKS = 0
 ERRORBAR_PLOT_MAX_XTICKS = "auto"
 ERRORBAR_PLOT_MODEL = "linear"
 ```
