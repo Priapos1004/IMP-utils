@@ -101,7 +101,7 @@ def signif_down(x, digits=2):
     return int(x*10**digits)/10**digits
 
 ### specific helper functions
-def get_max_length(data: pd.DataFrame, max_x_ticks: Union[str, float, int], x_column: list):
+def get_max_length(data: pd.DataFrame, max_x_ticks: Union[str, float, int], x_column: list) -> float:
     """ function to calculate and check max number on x axes """
     if max_x_ticks == "auto":
         max_length = max([signif_up(max(data[x_col])) for x_col in x_column])
@@ -119,7 +119,7 @@ def get_max_length(data: pd.DataFrame, max_x_ticks: Union[str, float, int], x_co
     
     return max_length
 
-def get_min_length(data: pd.DataFrame, min_x_ticks: Union[str, float, int], x_column: list):
+def get_min_length(data: pd.DataFrame, min_x_ticks: Union[str, float, int], x_column: list) -> float:
     """ function to calculate and check min number on x axes """
     if min_x_ticks == "auto":
         min_length = max([signif_down(min(data[x_col])) for x_col in x_column])
@@ -137,7 +137,7 @@ def get_min_length(data: pd.DataFrame, min_x_ticks: Union[str, float, int], x_co
     
     return min_length
 
-def get_x_ticks_number(x_ticks_number: Union[str, int], max_length: float, min_length: float):
+def get_x_ticks_number(x_ticks_number: Union[str, int], max_length: float, min_length: float) -> int:
     """ function to calculate and check number of ticks on x axes """
     if x_ticks_number == "auto":
         x_ticks_number = get_best_divider(max_length-min_length)
@@ -151,8 +151,8 @@ def get_x_ticks_number(x_ticks_number: Union[str, int], max_length: float, min_l
     
     return x_ticks_number
 
-def get_model(model_type: list, y_column: list, y_idx: int):
-    """ function to select the model based on the model_type parameter """
+def get_model_errorbar(model_type: list, y_column: list, y_idx: int) -> callable:
+    """ function to select the errorbar model based on the model_type parameter """
     if model_type[y_idx] == "linear_zero":
         model = linear_zero_model
         logger.debug(f"selected linear_zero model ({y_column[y_idx]})")
@@ -167,6 +167,22 @@ def get_model(model_type: list, y_column: list, y_idx: int):
         logger.debug(f"no model ({y_column[y_idx]})")
     else:
         raise ValueError(f"Model '{model_type[y_idx]}' ist not supported -> choose 'linear_zero', 'linear', 'constant', or 'none'")
+    
+    return model
+
+def get_model_residual(model_type: str) -> callable:
+    """ function to select the residual model based on the model_type parameter """
+    if model_type == "linear_zero":
+        model = linear_zero_model
+        logger.debug("selected linear_zero model")
+    elif model_type == "linear":
+        model = linear_model
+        logger.debug("selected linear model")
+    elif model_type == "constant":
+        model = constant_model
+        logger.debug("selected constant model")
+    else:
+        raise ValueError(f"Model '{model_type}' ist not supported -> choose 'linear_zero', 'linear', or 'constant'")
     
     return model
 
@@ -192,6 +208,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
 
     @Note: max 8 y-value sets
     """
+    # load data
     data = read_data(data_path)
 
     # convert string input to list of string
@@ -266,7 +283,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
             dy = None
 
         # select model based on model_type
-        model = get_model(model_type, y_column, y_idx)
+        model = get_model_errorbar(model_type, y_column, y_idx)
 
         # if a model was selected
         if model is not None:
@@ -356,19 +373,10 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
         plot saved in graphic_path
     """
 
-    if model_type == "linear_zero":
-        model = linear_zero_model
-        logger.debug("selected linear_zero model")
-    elif model_type == "linear":
-        model = linear_model
-        logger.debug("selected linear model")
-    elif model_type == "constant":
-        model = constant_model
-        logger.debug("selected constant model")
-    else:
-        raise ValueError(f"Model '{model_type}' ist not supported -> choose 'linear_zero', 'linear', or 'constant'")
+    # select model based on model_type
+    model = get_model_residual(model_type)
 
-
+    # load data
     data = read_data(data_path)
     data.sort_values(by=[x_column])
 
