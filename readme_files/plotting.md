@@ -102,7 +102,7 @@ If you input more than 8 y-value column names, the plot colors will not be uniqu
 
 ### HINT FOR USAGE
 
-Set ERRORBAR_PLOT_MAX_XTICKS='auto' and ERRORBAR_PLOT_XTICKS_NUMBER='auto' because normally, this will work pretty well for the x-ticks and only if this is not good, change it.
+Set ERRORBAR_PLOT_MAX_XTICKS='auto'/ERRORBAR_PLOT_MIN_XTICKS='auto' and ERRORBAR_PLOT_XTICKS_NUMBER='auto' because normally, this will work pretty well for the x-ticks and only if this is not good, change it.
 
 Set ERRORBAR_PLOT_EXTRA_LOG=True because some more logs do not hurt and you will always have all the information.
 
@@ -215,7 +215,7 @@ You can only use one set of y-values and not multiple like in errorbar-plot.
 
 ### HINT FOR USAGE
 
-Set ERRORBAR_PLOT_MAX_XTICKS='auto' and ERRORBAR_PLOT_XTICKS_NUMBER='auto' because normally, this will work pretty well for the x-ticks and only if this is not good, change it.
+Set ERRORBAR_PLOT_MAX_XTICKS='auto'/ERRORBAR_PLOT_MIN_XTICKS='auto' and ERRORBAR_PLOT_XTICKS_NUMBER='auto' because normally, this will work pretty well for the x-ticks and only if this is not good, change it.
 
 ### example plot
 

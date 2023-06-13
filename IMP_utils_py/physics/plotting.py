@@ -100,6 +100,76 @@ def signif_down(x, digits=2):
     digits -= math.ceil(math.log10(abs(x)))
     return int(x*10**digits)/10**digits
 
+### specific helper functions
+def get_max_length(data: pd.DataFrame, max_x_ticks: Union[str, float, int], x_column: list):
+    """ function to calculate and check max number on x axes """
+    if max_x_ticks == "auto":
+        max_length = max([signif_up(max(data[x_col])) for x_col in x_column])
+        logger.info(f"auto max_length = {max_length}")
+    elif type(max_x_ticks) in (float, int):
+        # check if max_x_ticks > 0
+        if max_x_ticks <= 0:
+            raise ValueError(f"max_x_ticks has to be greater 0, but {max_x_ticks} <= 0")
+        max_value = max([max(data[x_col]) for x_col in x_column])
+        if max_x_ticks < max_value:
+            logger.warning(f"max_x_ticks is smaller than the largest value of the x data ({max_x_ticks} < {max_value})")
+        max_length = max_x_ticks
+    else:
+        raise ValueError(f"max_x_ticks has to be 'auto' or float/int greater 0 (found: {max_x_ticks} with type {type(max_x_ticks)})")
+    
+    return max_length
+
+def get_min_length(data: pd.DataFrame, min_x_ticks: Union[str, float, int], x_column: list):
+    """ function to calculate and check min number on x axes """
+    if min_x_ticks == "auto":
+        min_length = max([signif_down(min(data[x_col])) for x_col in x_column])
+        logger.info(f"auto min_length = {min_length}")
+    elif type(min_x_ticks) in (float, int):
+        # check if min_x_ticks >= 0
+        if min_x_ticks < 0:
+            raise ValueError(f"min_x_ticks has to be greater or equal 0, but {min_x_ticks} < 0")
+        min_value = min([min(data[x_col]) for x_col in x_column])
+        if min_x_ticks > min_value:
+            logger.warning(f"min_x_ticks is larger than the smallest value of the x data ({min_x_ticks} < {min_value})")
+        min_length = min_x_ticks
+    else:
+        raise ValueError(f"min_x_ticks has to be 'auto' or float/int greater or equal 0 (found: {min_x_ticks} with type {type(min_x_ticks)})")
+    
+    return min_length
+
+def get_x_ticks_number(x_ticks_number: Union[str, int], max_length: float, min_length: float):
+    """ function to calculate and check number of ticks on x axes """
+    if x_ticks_number == "auto":
+        x_ticks_number = get_best_divider(max_length-min_length)
+        logger.info(f"auto x_ticks_number = {x_ticks_number}")
+    elif type(x_ticks_number) == int:
+        # check if x_ticks_number >= 0
+        if x_ticks_number < 0:
+            raise ValueError(f"x_ticks_number has to be greater 0 or 0 for no x-axes ticks (found: {x_ticks_number} < 0)")
+    else:
+        raise ValueError(f"x_ticks_number has to be 'auto' or int greater 0 (found: {x_ticks_number} with type {type(x_ticks_number)})")
+    
+    return x_ticks_number
+
+def get_model(model_type: list, y_column: list, y_idx: int):
+    """ function to select the model based on the model_type parameter """
+    if model_type[y_idx] == "linear_zero":
+        model = linear_zero_model
+        logger.debug(f"selected linear_zero model ({y_column[y_idx]})")
+    elif model_type[y_idx] == "linear":
+        model = linear_model
+        logger.debug(f"selected linear model ({y_column[y_idx]})")
+    elif model_type[y_idx] == "constant":
+        model = constant_model
+        logger.debug(f"selected constant model ({y_column[y_idx]})")
+    elif model_type[y_idx] == "none":
+        model = None
+        logger.debug(f"no model ({y_column[y_idx]})")
+    else:
+        raise ValueError(f"Model '{model_type[y_idx]}' ist not supported -> choose 'linear_zero', 'linear', 'constant', or 'none'")
+    
+    return model
+
 ### command functions
 @gin.configurable
 def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list], x_error_column: Union[str, list], y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: Union[str, int], min_x_ticks: Union[str, float, int], max_x_ticks: Union[str, float, int], model_type: Union[str, list], extra_log: bool):
@@ -144,45 +214,13 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
         x_error_column = [x_error_column]
 
     # max value on x-axes
-    if max_x_ticks == "auto":
-        max_length = max([signif_up(max(data[x_col])) for x_col in x_column])
-        logger.info(f"auto max_length = {max_length}")
-    elif type(max_x_ticks) in (float, int):
-        # check if max_x_ticks > 0
-        if max_x_ticks <= 0:
-            raise ValueError(f"max_x_ticks has to be greater 0, but {max_x_ticks} <= 0")
-        max_value = max([max(data[x_col]) for x_col in x_column])
-        if max_x_ticks < max_value:
-            logger.warning(f"max_x_ticks is smaller than the largest value of the x data ({max_x_ticks} < {max_value})")
-        max_length = max_x_ticks
-    else:
-        raise ValueError(f"max_x_ticks has to be 'auto' or float/int greater 0 (found: {max_x_ticks} with type {type(max_x_ticks)})")
+    max_length = get_max_length(data, max_x_ticks, x_column)
     
     # min value on x-axes
-    if min_x_ticks == "auto":
-        min_length = max([signif_down(min(data[x_col])) for x_col in x_column])
-        logger.info(f"auto min_length = {min_length}")
-    elif type(min_x_ticks) in (float, int):
-        # check if min_x_ticks >= 0
-        if min_x_ticks < 0:
-            raise ValueError(f"min_x_ticks has to be greater or equal 0, but {min_x_ticks} < 0")
-        min_value = min([min(data[x_col]) for x_col in x_column])
-        if min_x_ticks > min_value:
-            logger.warning(f"min_x_ticks is larger than the smallest value of the x data ({min_x_ticks} < {min_value})")
-        min_length = min_x_ticks
-    else:
-        raise ValueError(f"min_x_ticks has to be 'auto' or float/int greater or equal 0 (found: {min_x_ticks} with type {type(min_x_ticks)})")
+    min_length = get_min_length(data, min_x_ticks, x_column)
     
     # number of ticks on x-axes
-    if x_ticks_number == "auto":
-        x_ticks_number = get_best_divider(max_length-min_length)
-        logger.info(f"auto x_ticks_number = {x_ticks_number}")
-    elif type(x_ticks_number) == int:
-        # check if x_ticks_number >= 0
-        if x_ticks_number < 0:
-            raise ValueError(f"x_ticks_number has to be greater 0 or 0 for no x-axes ticks (found: {x_ticks_number} < 0)")
-    else:
-        raise ValueError(f"x_ticks_number has to be 'auto' or int greater 0 (found: {x_ticks_number} with type {type(x_ticks_number)})")
+    x_ticks_number = get_x_ticks_number(x_ticks_number, max_length, min_length)
 
     # if 1 x-value and multiple y-values
     if len(x_column) == len(x_error_column) == 1 and len(y_column) > 1:
@@ -209,8 +247,8 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
     ax = fig.add_subplot()
 
     # colors for y-value fits
-    colors = ["steelblue", "lightgreen", "lightcoral", "plum", "paleturquoise", "peachpuff", "khaki", "grey"]
-    errorbar_colors = ['blue', 'green', 'red', 'magenta', 'cyan', "orange", "yellow", "dimgrey"]
+    COLORS = ["steelblue", "lightgreen", "lightcoral", "plum", "paleturquoise", "peachpuff", "khaki", "grey"]
+    ERRORBAR_COLORS = ['blue', 'green', 'red', 'magenta', 'cyan', "orange", "yellow", "dimgrey"]
 
     for y_idx in range(len(y_column)):
         data.sort_values(by=[x_column[y_idx]])
@@ -228,20 +266,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
             dy = None
 
         # select model based on model_type
-        if model_type[y_idx] == "linear_zero":
-            model = linear_zero_model
-            logger.debug(f"selected linear_zero model ({y_column[y_idx]})")
-        elif model_type[y_idx] == "linear":
-            model = linear_model
-            logger.debug(f"selected linear model ({y_column[y_idx]})")
-        elif model_type[y_idx] == "constant":
-            model = constant_model
-            logger.debug(f"selected constant model ({y_column[y_idx]})")
-        elif model_type[y_idx] == "none":
-            model = None
-            logger.debug(f"no model ({y_column[y_idx]})")
-        else:
-            raise ValueError(f"Model '{model_type[y_idx]}' ist not supported -> choose 'linear_zero', 'linear', 'constant', or 'none'")
+        model = get_model(model_type, y_column, y_idx)
 
         # if a model was selected
         if model is not None:
@@ -282,22 +307,22 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
             # add graphs to plot
             x_intervall = np.linspace(min_length, max_length, 1000)
             if model_type[y_idx] == "constant":
-                ax.plot(x_intervall, [n]*len(x_intervall), '--', color=colors[y_idx%len(colors)])
+                ax.plot(x_intervall, [n]*len(x_intervall), '--', color=COLORS[y_idx%len(COLORS)])
                 logger.debug(f"added constant fit ({y_plot_label[y_idx]})")
             elif model_type[y_idx] == "linear_zero":
-                ax.plot(x_intervall, m*x_intervall, '--', color=colors[y_idx%len(colors)])
+                ax.plot(x_intervall, m*x_intervall, '--', color=COLORS[y_idx%len(COLORS)])
                 logger.debug(f"added linear_zero fit ({y_plot_label[y_idx]})")
             elif model_type[y_idx] == "linear":
                 # not below zero fit line if decreasing
                 if m<0:
                     x_intervall = np.linspace(min_length, min(max_length, -n/m), 1000)
-                ax.plot(x_intervall, m*x_intervall+n, '--', color=colors[y_idx%len(colors)])
+                ax.plot(x_intervall, m*x_intervall+n, '--', color=COLORS[y_idx%len(COLORS)])
                 logger.debug(f"added linear fit ({y_plot_label[y_idx]})")
 
         else:
             logger.info(f"Fits are deactivated ({y_column[y_idx]})")
 
-        plt.errorbar(x, y, yerr=dy, xerr=dx, linestyle='None', label=y_plot_label[y_idx], marker='.', elinewidth=0.5, capsize=3, color=errorbar_colors[y_idx%len(errorbar_colors)])
+        plt.errorbar(x, y, yerr=dy, xerr=dx, linestyle='None', label=y_plot_label[y_idx], marker='.', elinewidth=0.5, capsize=3, color=ERRORBAR_COLORS[y_idx%len(ERRORBAR_COLORS)])
 
     # legend settings
     ax.set_xticks(np.linspace(min_length, max_length, x_ticks_number))
@@ -360,43 +385,13 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
         dy = None
 
     # max value on x-axes
-    if max_x_ticks == "auto":
-        max_length = signif_up(max(x))
-        logger.info(f"auto max_length = {max_length}")
-    elif type(max_x_ticks) in (float, int):
-        # check if max_x_ticks > 0
-        if max_x_ticks <= 0:
-            raise ValueError(f"max_x_ticks has to be greater 0, but {max_x_ticks} <= 0")
-        if max_x_ticks < max(x):
-            logger.warning(f"max_x_ticks is smaller than the largest value of the x data ({max_x_ticks} < {max(x)})")
-        max_length = max_x_ticks
-    else:
-        raise ValueError(f"max_x_ticks has to be 'auto' or float/int greater 0 (found: {max_x_ticks} with type {type(max_x_ticks)})")
+    max_length = get_max_length(data, max_x_ticks, [x_column])
     
     # min value on x-axes
-    if min_x_ticks == "auto":
-        min_length = signif_down(min(x))
-        logger.info(f"auto min_length = {min_length}")
-    elif type(min_x_ticks) in (float, int):
-        # check if min_x_ticks >= 0
-        if min_x_ticks < 0:
-            raise ValueError(f"min_x_ticks has to be greater or euqal 0, but {min_x_ticks} < 0")
-        if min_x_ticks > min(x):
-            logger.warning(f"min_x_ticks is larger than the smallest value of the x data ({min_x_ticks} < {min(x)})")
-        min_length = min_x_ticks
-    else:
-        raise ValueError(f"min_x_ticks has to be 'auto' or float/int greater or equal 0 (found: {min_x_ticks} with type {type(min_x_ticks)})")
+    min_length = get_min_length(data, min_x_ticks, [x_column])
     
     # number of ticks on x-axes
-    if x_ticks_number == "auto":
-        x_ticks_number = get_best_divider(max_length-min_length)
-        logger.info(f"auto x_ticks_number = {x_ticks_number}")
-    elif type(x_ticks_number) == int:
-        # check if x_ticks_number >= 0
-        if x_ticks_number < 0:
-            raise ValueError(f"x_ticks_number has to be greater 0 or 0 for no x-axes ticks (found: {x_ticks_number} < 0)")
-    else:
-        raise ValueError(f"x_ticks_number has to be 'auto' or int greater 0 (found: {x_ticks_number} with type {type(x_ticks_number)})")
+    x_ticks_number = get_x_ticks_number(x_ticks_number, max_length, min_length)
 
     fig = plt.figure()
     ax = fig.add_subplot()
