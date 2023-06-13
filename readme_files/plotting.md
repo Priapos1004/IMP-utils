@@ -65,8 +65,12 @@ Run the following commands in the terminal (current working directory: `IMP-util
   - `string` if ERRORBAR_PLOT_XTICKS_NUMBER='auto', the optimal number of x-ticks will be calculated
   - `integer` e.g. 8
 
+- ERRORBAR_PLOT_MIN_XTICKS: min value of ticks on x axes
+  - `string` if ERRORBAR_PLOT_MIN_XTICKS='auto', the min tick will be the rounded down min x value from the data
+  - `float`/`integer` e.g. 125 or 0.65
+
 - ERRORBAR_PLOT_MAX_XTICKS: max value of ticks on x axes
-  - `string` if ERRORBAR_PLOT_MAX_XTICKS='auto', the max tick will be the rounded max x value from the data
+  - `string` if ERRORBAR_PLOT_MAX_XTICKS='auto', the max tick will be the rounded up max x value from the data
   - `float`/`integer` e.g. 125 or 0.65
 
 ### function parameter
@@ -74,7 +78,12 @@ Run the following commands in the terminal (current working directory: `IMP-util
 - ERRORBAR_PLOT_MODEL: choose the model for the linear fit
   - `string` e.g. "linear"
   - `list of strings` e.g. ["linear", "constant", "none"]
-  - 'linear' *(y = m\*x + n)* / 'linear_zero' *(y = m\*x)* / 'constant' *(y = n)* / 'none' *(no fit will be created)*
+  - 'linear' *(y = m\*x + n)* / 'linear_zero' *(y = m\*x)* / 'constant' *(y = n)* / 'weighted_average' *(y = w_avg)* / 'none' *(no fit will be created)*
+
+- ERRORBAR_PLOT_SHOW_MODELERROR: if True, the y-error of the model will be shown as light colored area
+  - `boolean` e.g. True
+  - `list of boolean` e.g. [True, True, False]
+  - will create no errorareas for ERRORBAR_PLOT_MODEL = 'linear_zero' and ERRORBAR_PLOT_MODEL = 'none'
 
 - ERRORBAR_PLOT_EXTRA_LOG: if True, additional logs will be shown in console
   - `boolean`
@@ -90,15 +99,25 @@ Run the following commands in the terminal (current working directory: `IMP-util
 **FOR MULTIPLE PLOTS IN ONE GRAPH:**
 - use `list of strings` (with same length) instead of `string` for parameters with `list of strings` as an option
 - You can use a `string` in ERRORBAR_PLOT_MODEL, it will apply to all plots
+- You can use a `boolean` in ERRORBAR_PLOT_SHOW_MODELERROR, it will apply to all plots
 - You can use a `string` in ERRORBAR_PLOT_X_COLUMN and ERRORBAR_PLOT_X_ERROR_COLUMN, the x values will be used for every set of y values
 
 When *ERRORBAR_PLOT_MODEL* is not *'none'*, the x-/y-values and x-/y-error-values are used to create a linear fit with the [kafe2](https://github.com/PhiLFitters/kafe2) library. The advantage of kafe2 compared to excel or scipy is that the errors in x- and y-axes are used to calculate the increase and also the error of the increase. The parameters of the fit and also their errors will be logged in the console.
+
+calculation of weighted average *(ERRORBAR_PLOT_MODEL)*:
+
+![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}&space;\bar{y}&space;=&space;\frac{\sum&space;\frac{y_i}{u_{y_i}^2}}{\sum&space;\frac{1}{u_{y_i}^2}}) 
+
+calculation of weighted average error *(ERRORBAR_PLOT_MODEL)*:
+
+![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}&space;u_{\bar{y}}&space;=&space;\frac{1}{\sqrt{\sum&space;\frac{1}{u_{y_i}^2}}}) 
+
 
 If you input more than 8 y-value column names, the plot colors will not be unique anymore.
 
 ### HINT FOR USAGE
 
-Set ERRORBAR_PLOT_MAX_XTICKS='auto' and ERRORBAR_PLOT_XTICKS_NUMBER='auto' because normally, this will work pretty well for the x-ticks and only if this is not good, change it.
+Set ERRORBAR_PLOT_MAX_XTICKS='auto'/ERRORBAR_PLOT_MIN_XTICKS='auto' and ERRORBAR_PLOT_XTICKS_NUMBER='auto' because normally, this will work pretty well for the x-ticks and only if this is not good, change it.
 
 Set ERRORBAR_PLOT_EXTRA_LOG=True because some more logs do not hurt and you will always have all the information.
 
@@ -121,9 +140,11 @@ ERRORBAR_PLOT_TITLE = ""
 ERRORBAR_PLOT_XLABEL = r"Stromstärke I in mA"
 ERRORBAR_PLOT_YLABEL = r"Spannung U in V"
 ERRORBAR_PLOT_XTICKS_NUMBER = 11
+ERRORBAR_PLOT_MIN_XTICKS = 0
 ERRORBAR_PLOT_MAX_XTICKS = 125
 ERRORBAR_PLOT_PLOTLABELS = ["EWG ohne Kondensator", "EWG mit Kondensator", "ZWG ohne Kondensator", "ZWG mit Kondensator"]
 ERRORBAR_PLOT_MODEL = ["linear", "none", "linear", "none"]
+ERRORBAR_PLOT_SHOW_MODELERROR = False
 ERRORBAR_PLOT_EXTRA_LOG = True
 ```
 </details>
@@ -188,8 +209,12 @@ python IMP_utils_py/cli.py --mode=errorbar-plot --gin_file=IMP_utils_py/config/p
   - `string` if ERRORBAR_PLOT_XTICKS_NUMBER='auto', the optimal number of x-ticks will be calculated
   - `integer`
 
+- ERRORBAR_PLOT_MIN_XTICKS: min value of ticks on x axes
+  - `string` if ERRORBAR_PLOT_MIN_XTICKS='auto', the min tick will be the rounded down min x value from the data
+  - `float`/`integer` e.g. 125 or 0.65
+
 - ERRORBAR_PLOT_MAX_XTICKS: max value of ticks on x axes
-  - `string` if ERRORBAR_PLOT_MAX_XTICKS='auto', the max tick will be the rounded max x value from the data
+  - `string` if ERRORBAR_PLOT_MAX_XTICKS='auto', the max tick will be the rounded up max x value from the data
   - `float`/`integer` e.g. 125 or 0.65
 
 ### function parameter
@@ -206,7 +231,7 @@ You can only use one set of y-values and not multiple like in errorbar-plot.
 
 ### HINT FOR USAGE
 
-Set ERRORBAR_PLOT_MAX_XTICKS='auto' and ERRORBAR_PLOT_XTICKS_NUMBER='auto' because normally, this will work pretty well for the x-ticks and only if this is not good, change it.
+Set ERRORBAR_PLOT_MAX_XTICKS='auto'/ERRORBAR_PLOT_MIN_XTICKS='auto' and ERRORBAR_PLOT_XTICKS_NUMBER='auto' because normally, this will work pretty well for the x-ticks and only if this is not good, change it.
 
 ### example plot
 
@@ -227,6 +252,7 @@ ERRORBAR_PLOT_TITLE = ""
 ERRORBAR_PLOT_XLABEL = "k"
 ERRORBAR_PLOT_YLABEL = "$r_k^2$ in $mm^2$"
 ERRORBAR_PLOT_XTICKS_NUMBER = "auto"
+ERRORBAR_PLOT_MIN_XTICKS = 0
 ERRORBAR_PLOT_MAX_XTICKS = "auto"
 ERRORBAR_PLOT_MODEL = "linear"
 ```

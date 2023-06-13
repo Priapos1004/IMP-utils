@@ -23,9 +23,11 @@ ERRORBAR_PLOT_TITLE = ""
 ERRORBAR_PLOT_XLABEL = "Druck p in Bar"
 ERRORBAR_PLOT_YLABEL = "Volumen V in $cm^3$"
 ERRORBAR_PLOT_XTICKS_NUMBER = 8
+ERRORBAR_PLOT_MIN_XTICKS = 0
 ERRORBAR_PLOT_MAX_XTICKS = "auto"
 ERRORBAR_PLOT_PLOTLABELS = ""
 ERRORBAR_PLOT_MODEL = "none"
+ERRORBAR_PLOT_SHOW_MODELERROR = False
 ERRORBAR_PLOT_EXTRA_LOG = False
 ```
 </details>
@@ -49,9 +51,39 @@ ERRORBAR_PLOT_TITLE = ""
 ERRORBAR_PLOT_XLABEL = "korrigierte Volumen $V_{korr}$ in $cm^3$"
 ERRORBAR_PLOT_YLABEL = "korrigierter Volumen-Druck $pV_{korr}$ in Bar$\cdot cm^3$"
 ERRORBAR_PLOT_XTICKS_NUMBER = 8
+ERRORBAR_PLOT_MIN_XTICKS = 0
 ERRORBAR_PLOT_MAX_XTICKS = "auto"
 ERRORBAR_PLOT_PLOTLABELS = ""
 ERRORBAR_PLOT_MODEL = "constant"
+ERRORBAR_PLOT_SHOW_MODELERROR = False
+ERRORBAR_PLOT_EXTRA_LOG = False
+```
+</details>
+
+### weighted_average plot with errorareas example
+
+<p align="left">
+  <img src="./images/plot_E1_wb.png" width="400" title="weighted_average plot with errorareas example" alt="weighted_average plot with errorareas example">
+</p>
+
+<details><summary>parameters</summary>
+
+``` // opening
+RAW_DATA_PATH = "data/Grundpraktikum/E1_wb.csv"
+ERRORBAR_PLOT_PATH = "data/graphics/plot_E1_wb.png"
+ERRORBAR_PLOT_X_COLUMN = "R_N (R1)"
+ERRORBAR_PLOT_X_ERROR_COLUMN = "u_R_N (R1)"
+ERRORBAR_PLOT_Y_COLUMN = "R_1"
+ERRORBAR_PLOT_Y_ERROR_COLUMN = "u_R_1"
+ERRORBAR_PLOT_TITLE = ""
+ERRORBAR_PLOT_XLABEL = "Widerstand R$_N$ in Ohm"
+ERRORBAR_PLOT_YLABEL = "Widerstand R$_1$ in Ohm"
+ERRORBAR_PLOT_XTICKS_NUMBER = "auto"
+ERRORBAR_PLOT_MIN_XTICKS = "auto"
+ERRORBAR_PLOT_MAX_XTICKS = "auto"
+ERRORBAR_PLOT_PLOTLABELS = ""
+ERRORBAR_PLOT_MODEL = "weighted_average"
+ERRORBAR_PLOT_SHOW_MODELERROR = True
 ERRORBAR_PLOT_EXTRA_LOG = False
 ```
 </details>
@@ -75,14 +107,16 @@ ERRORBAR_PLOT_TITLE = ""
 ERRORBAR_PLOT_XLABEL = "k"
 ERRORBAR_PLOT_YLABEL = "$r_k^2$ in $mm^2$"
 ERRORBAR_PLOT_XTICKS_NUMBER = "auto"
+ERRORBAR_PLOT_MIN_XTICKS = 0
 ERRORBAR_PLOT_MAX_XTICKS = "auto"
 ERRORBAR_PLOT_PLOTLABELS = ""
 ERRORBAR_PLOT_MODEL = "linear"
+ERRORBAR_PLOT_SHOW_MODELERROR = False
 ERRORBAR_PLOT_EXTRA_LOG = False
 ```
 </details>
 
-### multiple all linear plots example
+### multiple all linear plots example *(old colors)*
 
 <p align="left">
   <img src="./images/plot_M12_kg.png" width="400" title="multiple all linear plots example" alt="multiple all linear plots example">
@@ -101,14 +135,16 @@ ERRORBAR_PLOT_TITLE = ""
 ERRORBAR_PLOT_XLABEL = "n"
 ERRORBAR_PLOT_YLABEL = "Frequenzen $f_n$ in Hz für 1kg/2kg/3kg"
 ERRORBAR_PLOT_XTICKS_NUMBER = 8
+ERRORBAR_PLOT_MIN_XTICKS = 0
 ERRORBAR_PLOT_MAX_XTICKS = "auto"
 ERRORBAR_PLOT_PLOTLABELS = ["1kg", "2kg", "3kg"]
 ERRORBAR_PLOT_MODEL = "linear"
+ERRORBAR_PLOT_SHOW_MODELERROR = False
 ERRORBAR_PLOT_EXTRA_LOG = False
 ```
 </details>
 
-### multiple all linear_zero plots example
+### multiple all linear_zero plots example *(old colors)*
 
 <p align="left">
   <img src="./images/plot_E12_e.png" width="400" title="multiple all linear_zero plots example" alt="multiple all linear_zero plots example">
@@ -127,9 +163,11 @@ ERRORBAR_PLOT_TITLE = ""
 ERRORBAR_PLOT_XLABEL = "Bahnradius der Elektronen $r$ in m"
 ERRORBAR_PLOT_YLABEL = "reziproke magnetischen Flussdichte $1/B$ in $1/T$"
 ERRORBAR_PLOT_XTICKS_NUMBER = "auto"
+ERRORBAR_PLOT_MIN_XTICKS = 0
 ERRORBAR_PLOT_MAX_XTICKS = "auto"
 ERRORBAR_PLOT_PLOTLABELS = ["$U_A = 3000 V$", "$U_A = 4000 V$", "$U_A = 5000 V$"]
 ERRORBAR_PLOT_MODEL = "linear_zero"
+ERRORBAR_PLOT_SHOW_MODELERROR = False
 ERRORBAR_PLOT_EXTRA_LOG = False
 ```
 </details>
@@ -153,9 +191,11 @@ ERRORBAR_PLOT_TITLE = ""
 ERRORBAR_PLOT_XLABEL = "Stromstärke I in mA"
 ERRORBAR_PLOT_YLABEL = "Spannung U in V"
 ERRORBAR_PLOT_XTICKS_NUMBER = 11
+ERRORBAR_PLOT_MIN_XTICKS = 0
 ERRORBAR_PLOT_MAX_XTICKS = 125
 ERRORBAR_PLOT_PLOTLABELS = ["EWG ohne Kondensator", "EWG mit Kondensator", "ZWG ohne Kondensator", "ZWG mit Kondensator"]
 ERRORBAR_PLOT_MODEL = ["linear", "none", "linear", "none"]
+ERRORBAR_PLOT_SHOW_MODELERROR = False
 ERRORBAR_PLOT_EXTRA_LOG = True
 ```
 </details>
@@ -181,6 +221,7 @@ ERRORBAR_PLOT_TITLE = ""
 ERRORBAR_PLOT_XLABEL = "k"
 ERRORBAR_PLOT_YLABEL = "$r_k^2$ in $mm^2$"
 ERRORBAR_PLOT_XTICKS_NUMBER = "auto"
+ERRORBAR_PLOT_MIN_XTICKS = 0
 ERRORBAR_PLOT_MAX_XTICKS = "auto"
 ERRORBAR_PLOT_MODEL = "linear"
 ```
