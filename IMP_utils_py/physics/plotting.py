@@ -213,8 +213,11 @@ def get_model_residual(model_type: str) -> callable:
     elif model_type == "constant":
         model = constant_model
         logger.debug("selected constant model")
+    elif model_type == "weighted_average":
+        model = weighted_average
+        logger.debug(f"selected weighted_average model")
     else:
-        raise ValueError(f"Model '{model_type}' ist not supported -> choose 'linear_zero', 'linear', or 'constant'")
+        raise ValueError(f"Model '{model_type}' ist not supported -> choose 'linear_zero', 'linear', 'constant', or 'weighted_average'")
     
     return model
 
@@ -421,7 +424,7 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
         x_error_column: column name for x value errors
         y_column: column name for y values
         y_error_column: column name for y value errors
-        model_type: 'linear' (y = m*x + n) / 'linear_zero' (y = m*x) / 'constant' (y = n)
+        model_type: 'linear' (y = m*x + n) / 'linear_zero' (y = m*x) / 'constant' (y = n) / 'weighted_average' (y = w_avg)
         min_x_ticks: 'auto' or float/int
         max_x_ticks: 'auto' or float/int
         x_ticks_number: 'auto' or int
@@ -460,27 +463,32 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
     fig = plt.figure()
     ax = fig.add_subplot()
 
-    ### kafe2 calculation
-    xy_data = XYContainer(x,y)
-    if dx is not None:
-        xy_data.add_error("x", dx)
-    if dy is not None:
-        xy_data.add_error("y", dy)
+    if model_type == "weighted_average":
+        m, _ = weighted_average(y, dy)
+    else:
+        ### kafe2 calculation
+        xy_data = XYContainer(x,y)
+        if dx is not None:
+            xy_data.add_error("x", dx)
+        if dy is not None:
+            xy_data.add_error("y", dy)
 
-    my_fit = Fit(xy_data, model)
-    my_fit.do_fit()
-    model_params = my_fit.parameter_values
+        # to suppress warning when model_type = 'constant'
+        with suppress_stdout():
+            my_fit = Fit(xy_data, model)
+            my_fit.do_fit()
+        model_params = my_fit.parameter_values
 
-    m = model_params[0]
-    if model_type == "linear":
-        n = model_params[1]
+        m = model_params[0]
+        if model_type == "linear":
+            n = model_params[1]
 
     # calculate residuals
     if model_type == "linear_zero":
         residuals = [y.iloc[idx]-linear_zero_model(x.iloc[idx], m) for idx in range(len(x))]
     elif model_type == "linear":
         residuals = [y.iloc[idx]-linear_model(x.iloc[idx], m, n) for idx in range(len(x))]
-    elif model_type == "constant":
+    elif model_type in ("constant", "weighted_average"):
         residuals = [y.iloc[idx]-constant_model(x.iloc[idx], m) for idx in range(len(x))]
 
     # add graphs to plot

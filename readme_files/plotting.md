@@ -221,7 +221,7 @@ python IMP_utils_py/cli.py --mode=errorbar-plot --gin_file=IMP_utils_py/config/p
 
 - ERRORBAR_PLOT_MODEL: choose the model for the linear fit
   - `string`
-  - 'linear' *(y = m\*x + n)* / 'linear_zero' *(y = m\*x)* / 'constant' *(y = n)*
+  - 'linear' *(y = m\*x + n)* / 'linear_zero' *(y = m\*x)* / 'constant' *(y = n)* / 'weighted_average' *(y = w_avg)*
 
 ### INFO
 
