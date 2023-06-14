@@ -1,4 +1,7 @@
 import math
+import os
+import sys
+from contextlib import contextmanager
 from typing import Union
 
 import gin
@@ -114,6 +117,17 @@ def signif_down(x, digits=2):
         return x
     digits -= math.ceil(math.log10(abs(x)))
     return int(x*10**digits)/10**digits
+
+@contextmanager
+def suppress_stdout():
+    """ function to suppress console output """
+    with open(os.devnull, "w") as devnull:
+        old_stdout = sys.stdout
+        sys.stdout = devnull
+        try:  
+            yield
+        finally:
+            sys.stdout = old_stdout
 
 ### specific helper functions
 def get_max_length(data: pd.DataFrame, max_x_ticks: Union[str, float, int], x_column: list) -> float:
@@ -325,8 +339,10 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
                 if dy is not None:
                     xy_data.add_error("y", dy)
 
-                my_fit = Fit(xy_data, model)
-                my_fit.do_fit()
+                # to suppress warning when model_type = 'constant'
+                with suppress_stdout():
+                    my_fit = Fit(xy_data, model)
+                    my_fit.do_fit()
                 model_params = my_fit.parameter_values
                 model_params_error = my_fit.parameter_errors
 
