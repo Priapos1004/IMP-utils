@@ -7,11 +7,11 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name="IMP_utils_py",
-    version="2.0.0",
+    version="2.0.1",
     description="stuff to make your IMP life easier",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    python_requires='>=3.9',
+    python_requires=">=3.9",
     packages=find_packages(),
     package_data={},
     scripts=[],
@@ -20,17 +20,17 @@ setup(
         "numpy",
         "gin-config",
         "absl-py",
-        "keyboard; platform_system=='Windows'", # only on Windows needed
+        "keyboard; platform_system=='Windows'",  # only on Windows needed
         "matplotlib",
         "scipy",
         "kafe2",
-        "iminuit", # better performance with c++ library for kafe2
-        "openpyxl", # needed for pandas read_excel
-        "pdfplumber", # extract text from pdf file
-        "tabula-py", # extract tables from pdf file
+        "iminuit",  # better performance with c++ library for kafe2
+        "openpyxl",  # needed for pandas read_excel
+        "pdfplumber",  # extract text from pdf file
+        "tabula-py",  # extract tables from pdf file
     ],
     extras_require={
-        "test": ["pytest", "pylint!=2.5.0", "isort", "refurb"],
+        "test": ["pytest", "pylint!=2.5.0", "isort", "refurb", "black"],
         "notebook": ["ipykernel"],
     },
     author="Samuel Brinkmann",

@@ -37,13 +37,13 @@ def main(*unused_argv):
     elif FLAGS.mode == "time-stop":
         time_stop()
     elif FLAGS.mode == "eval-raw-data":
-        eval_raw_data() 
+        eval_raw_data()
     elif FLAGS.mode == "hist-gauss":
-        hist_gauss() 
+        hist_gauss()
     elif FLAGS.mode == "errorbar-phi":
-        errorbar_phi() 
+        errorbar_phi()
     elif FLAGS.mode == "errorbar-l":
-        errorbar_l() 
+        errorbar_l()
     elif FLAGS.mode == "errorbar-plot":
         errorbar_plot()
     elif FLAGS.mode == "residual-plot":
@@ -54,7 +54,7 @@ def main(*unused_argv):
     elif FLAGS.mode == "grade-calculator-general":
         gc = GradeCalculator()
         gc.calculate_total_grade(IMP=False)
-    
+
 
 def console_entry_point():
     """From pip installed script."""

@@ -116,7 +116,7 @@ ERRORBAR_PLOT_EXTRA_LOG = False
 ```
 </details>
 
-### multiple all linear plots example *(old colors)*
+### multiple all linear plots example
 
 <p align="left">
   <img src="./images/plot_M12_kg.png" width="400" title="multiple all linear plots example" alt="multiple all linear plots example">
@@ -144,7 +144,7 @@ ERRORBAR_PLOT_EXTRA_LOG = False
 ```
 </details>
 
-### multiple all linear_zero plots example *(old colors)*
+### multiple all linear_zero plots example
 
 <p align="left">
   <img src="./images/plot_E12_e.png" width="400" title="multiple all linear_zero plots example" alt="multiple all linear_zero plots example">
