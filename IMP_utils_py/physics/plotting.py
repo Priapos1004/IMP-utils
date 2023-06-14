@@ -457,15 +457,8 @@ def errorbar_plot(
                 else:
                     ax.fill_between(
                         x_intervall,
-                        m * x_intervall + n,
-                        m * x_intervall + (n + dn),
-                        alpha=0.2,
-                        color=ERRORAREAS_COLORS[y_idx % len(ERRORAREAS_COLORS)],
-                    )
-                    ax.fill_between(
-                        x_intervall,
-                        m * x_intervall + n,
                         m * x_intervall + (n - dn),
+                        m * x_intervall + (n + dn),
                         alpha=0.2,
                         color=ERRORAREAS_COLORS[y_idx % len(ERRORAREAS_COLORS)],
                     )
