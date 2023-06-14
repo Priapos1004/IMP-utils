@@ -1,21 +1,21 @@
-RAW_DATA_PATH = "data/Grundpraktikum/E1_wb.csv"
-ERRORBAR_PLOT_PATH = "data/graphics/plot_E1_wb.png"
-RESIDUAL_PLOT_PATH = "data/graphics/plot_O6_na_residual.png"
+RAW_DATA_PATH = "data/data.csv"
+ERRORBAR_PLOT_PATH = "data/graphics/plot.png"
+RESIDUAL_PLOT_PATH = "data/graphics/plot_residual.png"
 
-ERRORBAR_PLOT_X_COLUMN = "R_N (R1)"
-ERRORBAR_PLOT_X_ERROR_COLUMN = "u_R_N (R1)"
-ERRORBAR_PLOT_Y_COLUMN = "R_1"
-ERRORBAR_PLOT_Y_ERROR_COLUMN = "u_R_1"
+ERRORBAR_PLOT_X_COLUMN = "I"
+ERRORBAR_PLOT_X_ERROR_COLUMN = "u_I"
+ERRORBAR_PLOT_Y_COLUMN = "U"
+ERRORBAR_PLOT_Y_ERROR_COLUMN = "u_U"
 ERRORBAR_PLOT_TITLE = "" # title of linear/residual plot
-ERRORBAR_PLOT_XLABEL = "Widerstand R$_N$ in Ohm" # x label of linear/residual plot
-ERRORBAR_PLOT_YLABEL = "Widerstand R$_1$ in Ohm" # y label of linear/residual plot
+ERRORBAR_PLOT_XLABEL = "Stromstärke I in A" # x label of linear/residual plot
+ERRORBAR_PLOT_YLABEL = "Spannung U in V" # y label of linear/residual plot
 ERRORBAR_PLOT_XTICKS_NUMBER = "auto" # number of ticks on x axes
 ERRORBAR_PLOT_MIN_XTICKS = "auto" # min tick value on x axes
 ERRORBAR_PLOT_MAX_XTICKS = "auto" # max tick value on x axes
 ERRORBAR_PLOT_PLOTLABELS = "" # labels for linear plots in legend
-ERRORBAR_PLOT_MODEL = "weighted_average" # 'linear' (y = m*x + n) / 'linear_zero' (y = m*x) / 'constant' (y = n) / 'weighted_average' (y = w_avg) / 'none' (no model will be shown)
-ERRORBAR_PLOT_SHOW_MODELERROR = True # if True, the y-error of the model will be shown as light colored area
-ERRORBAR_PLOT_EXTRA_LOG = False # activates extra logs in console
+ERRORBAR_PLOT_MODEL = "linear" # 'linear' (y = m*x + n) / 'linear_zero' (y = m*x) / 'constant' (y = n) / 'weighted_average' (y = w_avg) / 'none' (no model will be shown)
+ERRORBAR_PLOT_SHOW_MODELERROR = False # if True, the y-error of the model will be shown as light colored area
+ERRORBAR_PLOT_EXTRA_LOG = True # activates extra logs in console
 
 
 errorbar_plot.data_path = %RAW_DATA_PATH
