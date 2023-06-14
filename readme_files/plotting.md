@@ -102,7 +102,7 @@ Run the following commands in the terminal (current working directory: `IMP-util
 - You can use a `boolean` in ERRORBAR_PLOT_SHOW_MODELERROR, it will apply to all plots
 - You can use a `string` in ERRORBAR_PLOT_X_COLUMN and ERRORBAR_PLOT_X_ERROR_COLUMN, the x values will be used for every set of y values
 
-When *ERRORBAR_PLOT_MODEL* is not *'none'*, the x-/y-values and x-/y-error-values are used to create a linear fit with the [kafe2](https://github.com/PhiLFitters/kafe2) library. The advantage of kafe2 compared to excel or scipy is that the errors in x- and y-axes are used to calculate the increase and also the error of the increase. The parameters of the fit and also their errors will be logged in the console.
+When *ERRORBAR_PLOT_MODEL* is not *'none'* or *'weighted_average'*, the x-/y-values and x-/y-error-values are used to create a linear fit with the [kafe2](https://github.com/PhiLFitters/kafe2) library. The advantage of kafe2 compared to excel or scipy is that the errors in x- and y-axes are used to calculate the increase and also the error of the increase. The parameters of the fit and also their errors will be logged in the console.
 
 calculation of weighted average *(ERRORBAR_PLOT_MODEL)*:
 
