@@ -15,21 +15,25 @@ from IMP_utils_py.config.logging import setup_logger
 ### logging setup
 logger = setup_logger()
 
+
 ### model functions
 def constant_model(x, a=1.0):
-    """ y = a """
+    """y = a"""
     return a
 
+
 def linear_zero_model(x, a=1.0):
-    """ y = a * x """
-    return a*x
+    """y = a * x"""
+    return a * x
+
 
 def linear_model(x, a=1.0, b=0.0):
-    """ y = a * x + b """
-    return a*x+b
+    """y = a * x + b"""
+    return a * x + b
+
 
 def weighted_average(y: list, y_error: list) -> tuple:
-    """ 
+    """
     function to calculate weighted average of y values
     @params: if y_error = None, mean and std of y will be returned. Otherwise, the weighted average with its error
     """
@@ -37,30 +41,32 @@ def weighted_average(y: list, y_error: list) -> tuple:
         w_avg = np.mean(y)
         dw_avg = np.std(y)
     else:
-        w_avg = sum([y[i]/y_error[i]**2 for i in range(len(y))]) / sum([1/y_error[i]**2 for i in range(len(y))])
-        dw_avg = 1 / np.sqrt(sum([1/y_error[i]**2 for i in range(len(y))]))
+        w_avg = sum([y[i] / y_error[i] ** 2 for i in range(len(y))]) / sum([1 / y_error[i] ** 2 for i in range(len(y))])
+        dw_avg = 1 / np.sqrt(sum([1 / y_error[i] ** 2 for i in range(len(y))]))
 
     return w_avg, dw_avg
 
+
 ### helper functions
 def read_data(data_path: str) -> pd.DataFrame:
-    """ read data as pandas DataFrame from path """
+    """read data as pandas DataFrame from path"""
     if data_path.split(".")[-1] == "csv":
         data = pd.read_csv(data_path, index_col=0)
     elif data_path.split(".")[-1] == "xlsx":
         data = pd.read_excel(data_path)
     else:
         raise ValueError(f"raw data path '{data_path}' file format is not supported -> use .csv or .xlsx")
-    
+
     return data
 
-def get_best_divider(number: float, possible_divider: list = list(range(5,13))) -> int:
+
+def get_best_divider(number: float, possible_divider: list = list(range(5, 13))) -> int:
     """
     get best divider of a number out of a given list of possible divider
 
     scoring:
         - first by length: shorter is better
-        - second by ranking based on last_digit: 
+        - second by ranking based on last_digit:
             - rank/last digit: 0-0, 1-5, 2-2, 3-1, 4-4, 5-6, 6-8, 7-3, 8-7, 9-9
         - third by divider: higher value with same length and ranking is better
 
@@ -83,12 +89,12 @@ def get_best_divider(number: float, possible_divider: list = list(range(5,13))) 
     # length of string without special characters
     best_tick_length = -1
     for tick in auto_ticks:
-        one_tick = number/(tick-1)
-        tick_length = len(str(one_tick).replace(".",""))
+        one_tick = number / (tick - 1)
+        tick_length = len(str(one_tick).replace(".", ""))
         last_digit = int(str(one_tick)[-1])
         ranking = ranking_mapping[last_digit]
         logger.debug(f"tick_number {tick}, one_tick {one_tick}, length {tick_length}, last_digit {last_digit}, ranking {ranking}")
-        if tick_length<best_tick_length or best_tick_length==-1:
+        if tick_length < best_tick_length or best_tick_length == -1:
             best_tick_number = tick
             best_tick_length = tick_length
             best_tick_ranking = ranking
@@ -104,34 +110,40 @@ def get_best_divider(number: float, possible_divider: list = list(range(5,13))) 
                     best_tick_ranking = ranking
     return best_tick_number
 
-def signif_up(x, digits=2):
-    """ function to round up number to first <digits>. significant figures """
-    if x == 0 or not math.isfinite(x):
-        return x
-    digits -= math.ceil(math.log10(abs(x)))
-    return np.ceil(x*10**digits)/10**digits
 
-def signif_down(x, digits=2):
-    """ function to round down number to first <digits>. significant figures """
+def signif_up(x, digits=2) -> float:
+    """function to round up number to first <digits>. significant figures"""
     if x == 0 or not math.isfinite(x):
         return x
     digits -= math.ceil(math.log10(abs(x)))
-    return int(x*10**digits)/10**digits
+    return np.ceil(x * 10**digits) / 10**digits
+
+
+def signif_down(x, digits=2) -> float:
+    """function to round down number to first <digits>. significant figures"""
+    if x == 0 or not math.isfinite(x):
+        return x
+    digits -= math.ceil(math.log10(abs(x)))
+    return int(x * 10**digits) / 10**digits
+
 
 @contextmanager
 def suppress_stdout():
-    """ function to suppress console output """
+    """function to suppress console output"""
     with open(os.devnull, "w") as devnull:
         old_stdout = sys.stdout
         sys.stdout = devnull
-        try:  
+        try:
             yield
         finally:
             sys.stdout = old_stdout
 
+
 ### specific helper functions
-def get_max_length(data: pd.DataFrame, max_x_ticks: Union[str, float, int], x_column: list) -> float:
-    """ function to calculate and check max number on x axes """
+def get_max_length(
+    data: pd.DataFrame, max_x_ticks: Union[str, float, int], x_column: list
+) -> float:
+    """function to calculate and check max number on x axes"""
     if max_x_ticks == "auto":
         max_length = max([signif_up(max(data[x_col])) for x_col in x_column])
         logger.info(f"auto max_length = {max_length}")
@@ -145,11 +157,14 @@ def get_max_length(data: pd.DataFrame, max_x_ticks: Union[str, float, int], x_co
         max_length = max_x_ticks
     else:
         raise ValueError(f"max_x_ticks has to be 'auto' or float/int greater 0 (found: {max_x_ticks} with type {type(max_x_ticks)})")
-    
+
     return max_length
 
-def get_min_length(data: pd.DataFrame, min_x_ticks: Union[str, float, int], x_column: list) -> float:
-    """ function to calculate and check min number on x axes """
+
+def get_min_length(
+    data: pd.DataFrame, min_x_ticks: Union[str, float, int], x_column: list
+) -> float:
+    """function to calculate and check min number on x axes"""
     if min_x_ticks == "auto":
         min_length = max([signif_down(min(data[x_col])) for x_col in x_column])
         logger.info(f"auto min_length = {min_length}")
@@ -162,14 +177,17 @@ def get_min_length(data: pd.DataFrame, min_x_ticks: Union[str, float, int], x_co
             logger.warning(f"min_x_ticks is larger than the smallest value of the x data ({min_x_ticks} < {min_value})")
         min_length = min_x_ticks
     else:
-        raise ValueError(f"min_x_ticks has to be 'auto' or float/int greater or equal 0 (found: {min_x_ticks} with type {type(min_x_ticks)})")
-    
+        raise ValueError(f"min_x_ticks has to be 'auto' or float/int greater or equal 0 \n(found: {min_x_ticks} with type {type(min_x_ticks)})")
+
     return min_length
 
-def get_x_ticks_number(x_ticks_number: Union[str, int], max_length: float, min_length: float) -> int:
-    """ function to calculate and check number of ticks on x axes """
+
+def get_x_ticks_number(
+    x_ticks_number: Union[str, int], max_length: float, min_length: float
+) -> int:
+    """function to calculate and check number of ticks on x axes"""
     if x_ticks_number == "auto":
-        x_ticks_number = get_best_divider(max_length-min_length)
+        x_ticks_number = get_best_divider(max_length - min_length)
         logger.info(f"auto x_ticks_number = {x_ticks_number}")
     elif type(x_ticks_number) == int:
         # check if x_ticks_number >= 0
@@ -177,11 +195,12 @@ def get_x_ticks_number(x_ticks_number: Union[str, int], max_length: float, min_l
             raise ValueError(f"x_ticks_number has to be greater 0 or 0 for no x-axes ticks (found: {x_ticks_number} < 0)")
     else:
         raise ValueError(f"x_ticks_number has to be 'auto' or int greater 0 (found: {x_ticks_number} with type {type(x_ticks_number)})")
-    
+
     return x_ticks_number
 
+
 def get_model_errorbar(model_type: str, y_column: str) -> callable:
-    """ function to select the errorbar model based on the model_type parameter """
+    """function to select the errorbar model based on the model_type parameter"""
     if model_type == "linear_zero":
         model = linear_zero_model
         logger.debug(f"selected linear_zero model ({y_column})")
@@ -199,11 +218,12 @@ def get_model_errorbar(model_type: str, y_column: str) -> callable:
         logger.debug(f"no model ({y_column})")
     else:
         raise ValueError(f"Model '{model_type}' ist not supported -> choose 'linear_zero', 'linear', 'constant', 'weighted_average', or 'none'")
-    
+
     return model
 
+
 def get_model_residual(model_type: str) -> callable:
-    """ function to select the residual model based on the model_type parameter """
+    """function to select the residual model based on the model_type parameter"""
     if model_type == "linear_zero":
         model = linear_zero_model
         logger.debug("selected linear_zero model")
@@ -218,12 +238,30 @@ def get_model_residual(model_type: str) -> callable:
         logger.debug(f"selected weighted_average model")
     else:
         raise ValueError(f"Model '{model_type}' ist not supported -> choose 'linear_zero', 'linear', 'constant', or 'weighted_average'")
-    
+
     return model
+
 
 ### command functions
 @gin.configurable
-def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list], x_error_column: Union[str, list], y_column: Union[str, list], y_plot_label: Union[str, list], y_error_column: Union[str, list], title: str, x_label: str, y_label: str, x_ticks_number: Union[str, int], min_x_ticks: Union[str, float, int], max_x_ticks: Union[str, float, int], model_type: Union[str, list], show_model_error: Union[bool, list], extra_log: bool):
+def errorbar_plot(
+    data_path: str,
+    graphic_path: str,
+    x_column: Union[str, list],
+    x_error_column: Union[str, list],
+    y_column: Union[str, list],
+    y_plot_label: Union[str, list],
+    y_error_column: Union[str, list],
+    title: str,
+    x_label: str,
+    y_label: str,
+    x_ticks_number: Union[str, int],
+    min_x_ticks: Union[str, float, int],
+    max_x_ticks: Union[str, float, int],
+    model_type: Union[str, list],
+    show_model_error: Union[bool, list],
+    extra_log: bool,
+):
     """
     @params (str or list[str]):
         data_path: location of the csv/excel file with the data
@@ -257,7 +295,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
 
     # check if lengths of y columns is correct
     if not (len(y_column) == len(y_error_column) == len(y_plot_label)):
-        raise ValueError(f"Number of y_columns ({len(y_column)}), number of y_error_column ({len(y_error_column)}), or number of y_plot_label ({len(y_plot_label)}) do not match")
+        raise ValueError(f"Number of y_columns ({len(y_column)}), number of y_error_column \n({len(y_error_column)}), or number of y_plot_label ({len(y_plot_label)}) do not match")
     elif len(y_column) > 8:
         logger.warning(f"Found more than 8 y-value sets ({len(y_column)} > 8) -> the plot colors will not be unique")
 
@@ -268,10 +306,10 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
 
     # max value on x-axes
     max_length = get_max_length(data, max_x_ticks, x_column)
-    
+
     # min value on x-axes
     min_length = get_min_length(data, min_x_ticks, x_column)
-    
+
     # number of ticks on x-axes
     x_ticks_number = get_x_ticks_number(x_ticks_number, max_length, min_length)
 
@@ -282,35 +320,61 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
     else:
         # check length of x and y columns
         if not (len(x_column) == len(x_error_column) == len(y_column)):
-            raise ValueError(f"Number of y_columns ({len(y_column)}), number of x_column ({len(x_column)}), or number of x_error_column ({len(x_error_column)}) do not match")
-        
+            raise ValueError(f"Number of y_columns ({len(y_column)}), number of x_column \n({len(x_column)}), or number of x_error_column ({len(x_error_column)}) do not match")
+
     # model_type to list
     if type(model_type) == str:
-        model_type = [model_type]*len(y_column)
+        model_type = [model_type] * len(y_column)
     else:
         # check length of show_linear_fit list and y columns
         if not (len(model_type) == len(y_column)):
             raise ValueError(f"Number of y_columns ({len(y_column)}) and number of model_type ({len(model_type)}) does not match")
-        
+
     # check show_model_error
     if type(show_model_error) == bool:
-        show_model_error = [show_model_error]*len(y_column)
+        show_model_error = [show_model_error] * len(y_column)
     else:
         # check length of show_linear_fit list and y columns
         if not (len(show_model_error) == len(y_column)):
             raise ValueError(f"Number of y_columns ({len(y_column)}) and number of show_model_error ({len(show_model_error)}) does not match")
-    
 
     # replace empty strings with None in y_plot_label
     y_plot_label = [None if elem == "" else elem for elem in y_plot_label]
-    
+
     fig = plt.figure()
     ax = fig.add_subplot()
 
     # colors for y-value fits
-    ERRORAREAS_COLORS = ["lightblue", "lightgreen", "mistyrose", "thistle", "lightcyan", "peachpuff", "khaki", "lightgrey"]
-    MODEL_COLORS = ["steelblue", "yellowgreen", "lightcoral", "plum", "paleturquoise", "orange", "yellow", "darkgrey"]
-    ERRORBAR_COLORS = ['blue', 'green', 'red', 'magenta', 'cyan', "darkorange", "gold", "dimgrey"]
+    ERRORAREAS_COLORS = [
+        "lightblue",
+        "lightgreen",
+        "mistyrose",
+        "thistle",
+        "lightcyan",
+        "peachpuff",
+        "khaki",
+        "lightgrey",
+    ]
+    MODEL_COLORS = [
+        "steelblue",
+        "yellowgreen",
+        "lightcoral",
+        "plum",
+        "paleturquoise",
+        "orange",
+        "yellow",
+        "darkgrey",
+    ]
+    ERRORBAR_COLORS = [
+        "blue",
+        "green",
+        "red",
+        "magenta",
+        "cyan",
+        "darkorange",
+        "gold",
+        "dimgrey",
+    ]
 
     for y_idx in range(len(y_column)):
         data.sort_values(by=[x_column[y_idx]])
@@ -336,7 +400,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
                 n, dn = weighted_average(y, dy)
             else:
                 ### kafe2 calculation
-                xy_data = XYContainer(x,y)
+                xy_data = XYContainer(x, y)
                 if dx is not None:
                     xy_data.add_error("x", dx)
                 if dy is not None:
@@ -363,8 +427,10 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
                     logger.info(f"y-Achsenschnitt der Gerade ({y_column[y_idx]}): {n}")
                     logger.info(f"Unsicherheit des y-Achsenschnitt ({y_column[y_idx]}): {dn}")
                     if extra_log:
-                        zero_point = -n/m
-                        dzero_point = np.sqrt((1/m * dn)**2 + (n/m**2 * dm)**2)
+                        zero_point = -n / m
+                        dzero_point = np.sqrt(
+                            (1 / m * dn) ** 2 + (n / m**2 * dm) ** 2
+                        )
                         logger.info(f"Nullstelle der Gerade  ({y_column[y_idx]}): {zero_point}")
                         logger.info(f"Unsicherheit der Nullstelle der Gerade  ({y_column[y_idx]}): {dzero_point}")
             elif model_type[y_idx] in ("constant", "weighted_average"):
@@ -380,8 +446,8 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
             x_intervall = np.linspace(min_length, max_length, 1000)
             # not below zero fit line if decreasing
             if m < 0:
-                x_intervall = np.linspace(min_length, min(max_length, -n/m), 1000)
-            ax.plot(x_intervall, m*x_intervall+n, '--', color=MODEL_COLORS[y_idx%len(MODEL_COLORS)])
+                x_intervall = np.linspace(min_length, min(max_length, -n / m), 1000)
+            ax.plot(x_intervall, m * x_intervall + n, "--", color=MODEL_COLORS[y_idx % len(MODEL_COLORS)],)
             logger.debug(f"added {model_type[y_idx]} fit ({y_plot_label[y_idx]})")
 
             # colored areas for y-errors
@@ -389,16 +455,51 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
                 if dn == 0:
                     logger.warning(f"the model ({y_plot_label[y_idx]}) has a gradient of zero -> no y-error areas will be shown")
                 else:
-                    ax.fill_between(x_intervall, m*x_intervall+n, m*x_intervall+(n+dn), alpha=0.2, color=ERRORAREAS_COLORS[y_idx%len(ERRORAREAS_COLORS)])
-                    ax.fill_between(x_intervall, m*x_intervall+n, m*x_intervall+(n-dn), alpha=0.2, color=ERRORAREAS_COLORS[y_idx%len(ERRORAREAS_COLORS)])
+                    ax.fill_between(
+                        x_intervall,
+                        m * x_intervall + n,
+                        m * x_intervall + (n + dn),
+                        alpha=0.2,
+                        color=ERRORAREAS_COLORS[y_idx % len(ERRORAREAS_COLORS)],
+                    )
+                    ax.fill_between(
+                        x_intervall,
+                        m * x_intervall + n,
+                        m * x_intervall + (n - dn),
+                        alpha=0.2,
+                        color=ERRORAREAS_COLORS[y_idx % len(ERRORAREAS_COLORS)],
+                    )
                     # just for design to dim the borders of the areas
-                    ax.fill_between(x_intervall, m*x_intervall+(n+dn), m*x_intervall+(n+dn), alpha=0.6, color=ERRORAREAS_COLORS[y_idx%len(ERRORAREAS_COLORS)])
-                    ax.fill_between(x_intervall, m*x_intervall+(n-dn), m*x_intervall+(n-dn), alpha=0.6, color=ERRORAREAS_COLORS[y_idx%len(ERRORAREAS_COLORS)])
+                    ax.fill_between(
+                        x_intervall,
+                        m * x_intervall + (n + dn),
+                        m * x_intervall + (n + dn),
+                        alpha=0.6,
+                        color=ERRORAREAS_COLORS[y_idx % len(ERRORAREAS_COLORS)],
+                    )
+                    ax.fill_between(
+                        x_intervall,
+                        m * x_intervall + (n - dn),
+                        m * x_intervall + (n - dn),
+                        alpha=0.6,
+                        color=ERRORAREAS_COLORS[y_idx % len(ERRORAREAS_COLORS)],
+                    )
 
         else:
             logger.info(f"Fits are deactivated ({y_column[y_idx]})")
 
-        plt.errorbar(x, y, yerr=dy, xerr=dx, linestyle='None', label=y_plot_label[y_idx], marker='.', elinewidth=0.5, capsize=3, color=ERRORBAR_COLORS[y_idx%len(ERRORBAR_COLORS)])
+        plt.errorbar(
+            x,
+            y,
+            yerr=dy,
+            xerr=dx,
+            linestyle="None",
+            label=y_plot_label[y_idx],
+            marker=".",
+            elinewidth=0.5,
+            capsize=3,
+            color=ERRORBAR_COLORS[y_idx % len(ERRORBAR_COLORS)],
+        )
 
     # legend settings
     ax.set_xticks(np.linspace(min_length, max_length, x_ticks_number))
@@ -414,8 +515,23 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
     fig.savefig(graphic_path)
     logger.info("plot saved")
 
+
 @gin.configurable
-def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_column: str, y_column: str, y_error_column: str, title: str, x_label: str, y_label: str, x_ticks_number: Union[str, int], min_x_ticks: Union[str, float, int], max_x_ticks: Union[str, float, int], model_type: str):
+def residual_plot(
+    data_path: str,
+    graphic_path: str,
+    x_column: str,
+    x_error_column: str,
+    y_column: str,
+    y_error_column: str,
+    title: str,
+    x_label: str,
+    y_label: str,
+    x_ticks_number: Union[str, int],
+    min_x_ticks: Union[str, float, int],
+    max_x_ticks: Union[str, float, int],
+    model_type: str,
+):
     """
     @params:
         data_path: location of the csv/excel file with the data
@@ -453,10 +569,10 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
 
     # max value on x-axes
     max_length = get_max_length(data, max_x_ticks, [x_column])
-    
+
     # min value on x-axes
     min_length = get_min_length(data, min_x_ticks, [x_column])
-    
+
     # number of ticks on x-axes
     x_ticks_number = get_x_ticks_number(x_ticks_number, max_length, min_length)
 
@@ -467,7 +583,7 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
         m, _ = weighted_average(y, dy)
     else:
         ### kafe2 calculation
-        xy_data = XYContainer(x,y)
+        xy_data = XYContainer(x, y)
         if dx is not None:
             xy_data.add_error("x", dx)
         if dy is not None:
@@ -485,17 +601,23 @@ def residual_plot(data_path: str, graphic_path: str, x_column: str, x_error_colu
 
     # calculate residuals
     if model_type == "linear_zero":
-        residuals = [y.iloc[idx]-linear_zero_model(x.iloc[idx], m) for idx in range(len(x))]
+        residuals = [
+            y.iloc[idx] - linear_zero_model(x.iloc[idx], m) for idx in range(len(x))
+        ]
     elif model_type == "linear":
-        residuals = [y.iloc[idx]-linear_model(x.iloc[idx], m, n) for idx in range(len(x))]
+        residuals = [
+            y.iloc[idx] - linear_model(x.iloc[idx], m, n) for idx in range(len(x))
+        ]
     elif model_type in ("constant", "weighted_average"):
-        residuals = [y.iloc[idx]-constant_model(x.iloc[idx], m) for idx in range(len(x))]
+        residuals = [
+            y.iloc[idx] - constant_model(x.iloc[idx], m) for idx in range(len(x))
+        ]
 
     # add graphs to plot
     plt.scatter(x, residuals, s=10)
     x_intervall = np.linspace(min_length, max_length, 1000)
-    ax.plot(x_intervall, 0*x_intervall, '--k', linewidth=1)
-    
+    ax.plot(x_intervall, 0 * x_intervall, "--k", linewidth=1)
+
     # legend settings
     ax.set_xticks(np.linspace(min_length, max_length, x_ticks_number))
     ax.set_title(title)
