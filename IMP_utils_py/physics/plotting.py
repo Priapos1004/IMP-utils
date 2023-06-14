@@ -166,25 +166,25 @@ def get_x_ticks_number(x_ticks_number: Union[str, int], max_length: float, min_l
     
     return x_ticks_number
 
-def get_model_errorbar(model_type: list, y_column: list, y_idx: int) -> callable:
+def get_model_errorbar(model_type: str, y_column: str) -> callable:
     """ function to select the errorbar model based on the model_type parameter """
-    if model_type[y_idx] == "linear_zero":
+    if model_type == "linear_zero":
         model = linear_zero_model
-        logger.debug(f"selected linear_zero model ({y_column[y_idx]})")
-    elif model_type[y_idx] == "linear":
+        logger.debug(f"selected linear_zero model ({y_column})")
+    elif model_type == "linear":
         model = linear_model
-        logger.debug(f"selected linear model ({y_column[y_idx]})")
-    elif model_type[y_idx] == "constant":
+        logger.debug(f"selected linear model ({y_column})")
+    elif model_type == "constant":
         model = constant_model
-        logger.debug(f"selected constant model ({y_column[y_idx]})")
-    elif model_type[y_idx] == "weighted_average":
+        logger.debug(f"selected constant model ({y_column})")
+    elif model_type == "weighted_average":
         model = weighted_average
-        logger.debug(f"selected weighted_average model ({y_column[y_idx]})")
-    elif model_type[y_idx] == "none":
+        logger.debug(f"selected weighted_average model ({y_column})")
+    elif model_type == "none":
         model = None
-        logger.debug(f"no model ({y_column[y_idx]})")
+        logger.debug(f"no model ({y_column})")
     else:
-        raise ValueError(f"Model '{model_type[y_idx]}' ist not supported -> choose 'linear_zero', 'linear', 'constant', 'weighted_average', or 'none'")
+        raise ValueError(f"Model '{model_type}' ist not supported -> choose 'linear_zero', 'linear', 'constant', 'weighted_average', or 'none'")
     
     return model
 
@@ -311,7 +311,7 @@ def errorbar_plot(data_path: str, graphic_path: str, x_column: Union[str, list],
             dy = None
 
         # select model based on model_type
-        model = get_model_errorbar(model_type, y_column, y_idx)
+        model = get_model_errorbar(model_type[y_idx], y_column[y_idx])
 
         # if a model was selected
         if model is not None:
