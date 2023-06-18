@@ -116,10 +116,10 @@ ERRORBAR_PLOT_EXTRA_LOG = False
 ```
 </details>
 
-### multiple all linear plots example
+### multiple all linear plots example 1
 
 <p align="left">
-  <img src="./images/plot_M12_kg.png" width="400" title="multiple all linear plots example" alt="multiple all linear plots example">
+  <img src="./images/plot_M12_kg.png" width="400" title="multiple all linear plots example 1" alt="multiple all linear plots example 1">
 </p>
 
 <details><summary>parameters</summary>
@@ -138,6 +138,34 @@ ERRORBAR_PLOT_XTICKS_NUMBER = 8
 ERRORBAR_PLOT_MIN_XTICKS = 0
 ERRORBAR_PLOT_MAX_XTICKS = "auto"
 ERRORBAR_PLOT_PLOTLABELS = ["1kg", "2kg", "3kg"]
+ERRORBAR_PLOT_MODEL = "linear"
+ERRORBAR_PLOT_SHOW_MODELERROR = False
+ERRORBAR_PLOT_EXTRA_LOG = False
+```
+</details>
+
+### multiple all linear plots example 2
+
+<p align="left">
+  <img src="./images/plot_E1_UI.png" width="400" title="multiple all linear plots example 2" alt="multiple all linear plots example 2">
+</p>
+
+<details><summary>parameters</summary>
+
+``` // opening
+RAW_DATA_PATH = "data/Grundpraktikum/E1_UI.csv"
+ERRORBAR_PLOT_PATH = "data/graphics/plot_E1_UI.png"
+ERRORBAR_PLOT_X_COLUMN = ["I_1", "I_2"]
+ERRORBAR_PLOT_X_ERROR_COLUMN = ["u_I_1", "u_I_2"]
+ERRORBAR_PLOT_Y_COLUMN = ["U_1", "U_2"]
+ERRORBAR_PLOT_Y_ERROR_COLUMN = ["u_U_1", "u_U_2"]
+ERRORBAR_PLOT_TITLE = ""
+ERRORBAR_PLOT_XLABEL = "Stromstärke I in A"
+ERRORBAR_PLOT_YLABEL = "Spannung U in V"
+ERRORBAR_PLOT_XTICKS_NUMBER = "auto"
+ERRORBAR_PLOT_MIN_XTICKS = 0
+ERRORBAR_PLOT_MAX_XTICKS = 0.2
+ERRORBAR_PLOT_PLOTLABELS = ["Stromfehlerschaltung", "Spannungsfehlerschaltung"]
 ERRORBAR_PLOT_MODEL = "linear"
 ERRORBAR_PLOT_SHOW_MODELERROR = False
 ERRORBAR_PLOT_EXTRA_LOG = False
