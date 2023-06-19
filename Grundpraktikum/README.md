@@ -38,7 +38,7 @@ Samuel <br>
 Bewertung: 1,0 (19/20) <br>
 Feedback: -
 
-# E1 Wheatstonsche Brücke
+## E1 Wheatstonsche Brücke
 
 Praktikumsleiter: Dr. Daniel Kai Kohlberger
 
@@ -46,7 +46,7 @@ Samuel <br>
 Bewertung: *noch ausstehend* <br>
 Feedback: *noch ausstehend*
 
-# E5 Gleichrichterschaltungen
+## E5 Gleichrichterschaltungen
 
 Praktikumsleiter: Dr. Hackbarth
 
@@ -54,7 +54,7 @@ Samuel <br>
 Bewertung: *noch ausstehend* <br>
 Feedback: *noch ausstehend*
 
-# E12 Thomson-Versuch
+## E12 Thomson-Versuch
 
 Praktikumsleiter: Dr. Haas
 
