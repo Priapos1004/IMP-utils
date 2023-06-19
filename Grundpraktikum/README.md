@@ -8,7 +8,7 @@ Praktikumsleiter: Dr. Andreas Opitz
 
 Samuel <br>
 Bewertung: 1,0 (19/20) <br>
-Feedback: falsche Rundung
+Feedback: falsche Rundung *(mit Kommentaren zur allgemeinen Bewertung im pdf)*
 
 ## O11 Polarisation durch Reflexion
 
