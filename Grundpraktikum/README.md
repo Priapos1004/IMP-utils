@@ -56,7 +56,15 @@ Samuel <br>
 
 ## E12 Thomson-Versuch
 
-Praktikumsleiter: Dr. Haas
+Praktikumsleiter: Dr. Haas und G. Kornilov
+
+Samuel <br>
+**Bewertung:** *noch ausstehend* <br>
+**Feedback:** *noch ausstehend*
+
+## A2 Franck-Hertz-Versuch
+
+Praktikumsleiter: Dr. Haas und G. Kornilov
 
 Samuel <br>
 **Bewertung:** *noch ausstehend* <br>
