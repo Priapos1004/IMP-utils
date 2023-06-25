@@ -6,6 +6,10 @@ Für alle Protokolle wurden eLabs und die Templates der Praktikumsleiter verwend
 
 Praktikumsleiter: Dr. Andreas Opitz
 
+Levin <br>
+**Bewertung:** 1,0 (20/20) <br>
+**Feedback:** - *(mit Kommentaren zur allgemeinen Bewertung im pdf)*
+
 Samuel <br>
 **Bewertung:** 1,0 (19/20) <br>
 **Feedback:** falsche Rundung *(mit Kommentaren zur allgemeinen Bewertung im pdf)*
