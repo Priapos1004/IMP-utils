@@ -41,7 +41,7 @@ def weighted_average(y: list, y_error: list) -> tuple:
         w_avg = np.mean(y)
         dw_avg = np.std(y)
     else:
-        if 0 in y_error:
+        if 0 in list(y_error):
             raise ValueError("found 0 in y_error -> cannot calculate weighted average")
         w_avg = sum([y[i] / y_error[i] ** 2 for i in range(len(y))]) / sum([1 / y_error[i] ** 2 for i in range(len(y))])
         dw_avg = 1 / np.sqrt(sum([1 / y_error[i] ** 2 for i in range(len(y))]))
