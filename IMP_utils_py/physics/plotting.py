@@ -32,7 +32,7 @@ def linear_model(x, a=1.0, b=0.0):
     return a * x + b
 
 
-def weighted_average(y: list, y_error: list) -> tuple:
+def weighted_average(y: pd.Series, y_error: pd.Series) -> tuple:
     """
     function to calculate weighted average of y values
     @params: if y_error = None, mean and std of y will be returned. Otherwise, the weighted average with its error
