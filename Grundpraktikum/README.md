@@ -18,6 +18,14 @@ Samuel <br>
 **Bewertung:** 1,0 (19/20) <br>
 **Feedback:** falsche Rundung *(mit Kommentaren zur allgemeinen Bewertung im pdf)*
 
+## O10 Linsensysteme
+
+Praktikumsleiter: Dr. Andreas Opitz
+
+Samuel <br>
+**Bewertung:** *noch ausstehend* <br>
+**Feedback:** *noch ausstehend*
+
 ## O11 Polarisation durch Reflexion
 
 Praktikumsleiter: Dr. Guenter Kewes
