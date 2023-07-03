@@ -139,3 +139,5 @@ dmypy.json
 /data/*.pdf
 /data/graphics/*.png
 /IMP_utils_py_examples/ex_*.ipynb
+/IMP_utils_py_examples/*.xlsx
+/IMP_utils_py_examples/*.csv
