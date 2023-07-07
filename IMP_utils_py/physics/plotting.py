@@ -58,7 +58,7 @@ def O11_Rs_Rp_model(alpha_e: float, n1: float, n2: float) -> tuple:
     sqrt(R_p) = sqrt(tan^2(alpha_e - alpha_g) / tan^2(alpha_e + alpha_g))
     """
     alpha_e = alpha_e * np.pi/180 # from degrees to radian
-    alpha_g = np.arcsin(n1/n2) * alpha_e # Brechungsgesetz
+    alpha_g = np.arcsin(np.sin(alpha_e)/n2) # Brechungsgesetz
     sqrt_R_s = np.sqrt(np.sin(alpha_e - alpha_g)**2 / np.sin(alpha_e + alpha_g)**2)
     sqrt_R_p = np.sqrt(np.tan(alpha_e - alpha_g)**2 / np.tan(alpha_e + alpha_g)**2)
     return sqrt_R_s, sqrt_R_p
