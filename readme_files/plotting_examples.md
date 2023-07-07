@@ -60,7 +60,7 @@ ERRORBAR_PLOT_EXTRA_LOG = False
 ```
 </details>
 
-with command (replace it with your n1 and n2 values (Brechungsindizes)):
+with command (replace the gin_param values with your n1 and n2 values (Brechungsindizes), here: 1 and 1.5):
 ```
 python IMP_utils_py/cli.py --mode=errorbar-plot --gin_file=IMP_utils_py/config/plotting.gin --gin_param O11_Rs_Rp_model.n1=1 --gin_param O11_Rs_Rp_model.n2=1.5
 ```
