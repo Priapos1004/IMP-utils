@@ -49,6 +49,20 @@ def weighted_average(y: pd.Series, y_error: pd.Series) -> tuple:
     return w_avg, dw_avg
 
 
+### special function for Grundpraktikum
+@gin.configurable
+def O11_Rs_Rp_model(alpha_e: float, n1: float, n2: float) -> tuple:
+    """
+    alpha_g = arcsin(n1/n2 * sin(alpha_e))
+    sqrt(R_s) = sqrt(sin^2(alpha_e - alpha_g) / sin^2(alpha_e + alpha_g))
+    sqrt(R_p) = sqrt(tan^2(alpha_e - alpha_g) / tan^2(alpha_e + alpha_g))
+    """
+    alpha_e = alpha_e * np.pi/180 # from degrees to radian
+    alpha_g = np.arcsin(n1/n2) * alpha_e # Brechungsgesetz
+    sqrt_R_s = np.sqrt(np.sin(alpha_e - alpha_g)**2 / np.sin(alpha_e + alpha_g)**2)
+    sqrt_R_p = np.sqrt(np.tan(alpha_e - alpha_g)**2 / np.tan(alpha_e + alpha_g)**2)
+    return sqrt_R_s, sqrt_R_p
+
 ### helper functions
 def read_data(data_path: str) -> pd.DataFrame:
     """read data as pandas DataFrame from path"""
@@ -215,6 +229,12 @@ def get_model_errorbar(model_type: str, y_column: str) -> callable:
     elif model_type == "weighted_average":
         model = weighted_average
         logger.debug(f"selected weighted_average model ({y_column})")
+    elif model_type == "O11_Rs":
+        model = O11_Rs_Rp_model
+        logger.debug(f"selected O11_Rs model ({y_column})")
+    elif model_type == "O11_Rp":
+        model = O11_Rs_Rp_model
+        logger.debug(f"selected O11_Rp model ({y_column})")
     elif model_type == "none":
         model = None
         logger.debug(f"no model ({y_column})")
@@ -273,7 +293,7 @@ def errorbar_plot(
         y_column: column name for y values
         y_plot_label: label for y-plot
         y_error_column: column name for y value errors
-        model_type: 'linear' (y = m*x + n) / 'linear_zero' (y = m*x) / 'constant' (y = n) / 'weighted_average' (y = w_avg) / 'none' (no model will be shown)
+        model_type: 'linear' (y = m*x + n) / 'linear_zero' (y = m*x) / 'constant' (y = n) / 'weighted_average' (y = w_avg) / 'none' (no model will be shown) / 'O11_Rs' or 'O11_Rp' for specific graphs from Experiment O11
         min_x_ticks: 'auto' or float/int
         max_x_ticks: 'auto' or float/int
         x_ticks_number: 'auto' or int
@@ -400,6 +420,8 @@ def errorbar_plot(
         if model is not None:
             if model_type[y_idx] == "weighted_average":
                 n, dn = weighted_average(y, dy)
+            elif model_type[y_idx] in ("O11_Rs", "O11_Rp"):
+                pass
             else:
                 ### kafe2 calculation
                 xy_data = XYContainer(x, y)
@@ -446,39 +468,45 @@ def errorbar_plot(
 
             # add graphs to plot
             x_intervall = np.linspace(min_length, max_length, 1000)
-            # not below zero fit line if decreasing
-            if m < 0:
-                x_intervall = np.linspace(min_length, min(max_length, -n / m), 1000)
-            ax.plot(x_intervall, m * x_intervall + n, "--", color=MODEL_COLORS[y_idx % len(MODEL_COLORS)],)
-            logger.debug(f"added {model_type[y_idx]} fit ({y_plot_label[y_idx]})")
 
-            # colored areas for y-errors
-            if show_model_error[y_idx]:
-                if dn == 0:
-                    logger.warning(f"the model ({y_plot_label[y_idx]}) has a gradient of zero -> no y-error areas will be shown")
-                else:
-                    ax.fill_between(
-                        x_intervall,
-                        m * x_intervall + (n - dn),
-                        m * x_intervall + (n + dn),
-                        alpha=0.2,
-                        color=ERRORAREAS_COLORS[y_idx % len(ERRORAREAS_COLORS)],
-                    )
-                    # just for design to dim the borders of the areas
-                    ax.fill_between(
-                        x_intervall,
-                        m * x_intervall + (n + dn),
-                        m * x_intervall + (n + dn),
-                        alpha=0.6,
-                        color=ERRORAREAS_COLORS[y_idx % len(ERRORAREAS_COLORS)],
-                    )
-                    ax.fill_between(
-                        x_intervall,
-                        m * x_intervall + (n - dn),
-                        m * x_intervall + (n - dn),
-                        alpha=0.6,
-                        color=ERRORAREAS_COLORS[y_idx % len(ERRORAREAS_COLORS)],
-                    )
+            if model_type[y_idx] == "O11_Rs":
+                ax.plot(x_intervall, model(x_intervall)[0], "--", color=MODEL_COLORS[y_idx % len(MODEL_COLORS)],)
+            elif model_type[y_idx] == "O11_Rp":
+                ax.plot(x_intervall, model(x_intervall)[1], "--", color=MODEL_COLORS[y_idx % len(MODEL_COLORS)],)
+            else:
+                # not below zero fit line if decreasing
+                if m < 0:
+                    x_intervall = np.linspace(min_length, min(max_length, -n / m), 1000)
+                ax.plot(x_intervall, m * x_intervall + n, "--", color=MODEL_COLORS[y_idx % len(MODEL_COLORS)],)
+                logger.debug(f"added {model_type[y_idx]} fit ({y_plot_label[y_idx]})")
+
+                # colored areas for y-errors
+                if show_model_error[y_idx]:
+                    if dn == 0:
+                        logger.warning(f"the model ({y_plot_label[y_idx]}) has a gradient of zero -> no y-error areas will be shown")
+                    else:
+                        ax.fill_between(
+                            x_intervall,
+                            m * x_intervall + (n - dn),
+                            m * x_intervall + (n + dn),
+                            alpha=0.2,
+                            color=ERRORAREAS_COLORS[y_idx % len(ERRORAREAS_COLORS)],
+                        )
+                        # just for design to dim the borders of the areas
+                        ax.fill_between(
+                            x_intervall,
+                            m * x_intervall + (n + dn),
+                            m * x_intervall + (n + dn),
+                            alpha=0.6,
+                            color=ERRORAREAS_COLORS[y_idx % len(ERRORAREAS_COLORS)],
+                        )
+                        ax.fill_between(
+                            x_intervall,
+                            m * x_intervall + (n - dn),
+                            m * x_intervall + (n - dn),
+                            alpha=0.6,
+                            color=ERRORAREAS_COLORS[y_idx % len(ERRORAREAS_COLORS)],
+                        )
 
         else:
             logger.info(f"Fits are deactivated ({y_column[y_idx]})")

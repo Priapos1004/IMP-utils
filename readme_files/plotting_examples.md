@@ -32,6 +32,39 @@ ERRORBAR_PLOT_EXTRA_LOG = False
 ```
 </details>
 
+### O11 plot example
+
+<p align="left">
+  <img src="./images/plot_O11.png" width="400" title="O11 plot example" alt="O11 plot example">
+</p>
+
+<details><summary>parameters</summary>
+
+``` // opening
+RAW_DATA_PATH = "data/Grundpraktikum/O11_data.csv"
+ERRORBAR_PLOT_PATH = "data/graphics/plot_O11.png"
+ERRORBAR_PLOT_X_COLUMN = ["a_parallel", "a_orth"]
+ERRORBAR_PLOT_X_ERROR_COLUMN = ["u_a_parallel", "u_a_orth"]
+ERRORBAR_PLOT_Y_COLUMN = ["R_parallel", "R_orth"]
+ERRORBAR_PLOT_Y_ERROR_COLUMN = ["u_R_parallel", "u_R_orth"]
+ERRORBAR_PLOT_TITLE = ""
+ERRORBAR_PLOT_XLABEL = r"Winkel $\alpha$ in Grad"
+ERRORBAR_PLOT_YLABEL = r"Wurzel des Reflexionskoeffizienten $\sqrt{R}$"
+ERRORBAR_PLOT_XTICKS_NUMBER = 17
+ERRORBAR_PLOT_MIN_XTICKS = "auto"
+ERRORBAR_PLOT_MAX_XTICKS = "auto"
+ERRORBAR_PLOT_PLOTLABELS = [r"$\sqrt{R_p}$", r"$\sqrt{R_s}$"]
+ERRORBAR_PLOT_MODEL = ["O11_Rp", "O11_Rs"]
+ERRORBAR_PLOT_SHOW_MODELERROR = False
+ERRORBAR_PLOT_EXTRA_LOG = False
+```
+</details>
+
+with command (replace the gin_param values with your n1 and n2 values (Brechungsindizes), here: 1 and 1.5):
+```
+python IMP_utils_py/cli.py --mode=errorbar-plot --gin_file=IMP_utils_py/config/plotting.gin --gin_param O11_Rs_Rp_model.n1=1 --gin_param O11_Rs_Rp_model.n2=1.5
+```
+
 ### constant plot example
 
 <p align="left">
