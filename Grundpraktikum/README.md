@@ -22,9 +22,9 @@ Samuel <br>
 
 Praktikumsleiter: Dr. Andreas Opitz
 
-Samuel <br>
-**Bewertung:** *noch ausstehend* <br>
-**Feedback:** *noch ausstehend*
+Levin <br>
+**Bewertung:** 1,3 (19/20) <br>
+**Feedback:** - *(mit Kommentaren zur allgemeinen Bewertung im pdf)*
 
 ## O11 Polarisation durch Reflexion
 
@@ -95,5 +95,9 @@ Laurenz <br>
 **Feedback:** - *(mit Kommentaren zur allgemeinen Bewertung im pdf)*
 
 Samuel <br>
+**Bewertung:** 1,0 (20/20) <br>
+**Feedback:** - *(mit Kommentaren zur allgemeinen Bewertung im pdf)*
+
+Levin <br>
 **Bewertung:** 1,0 (20/20) <br>
 **Feedback:** - *(mit Kommentaren zur allgemeinen Bewertung im pdf)*
