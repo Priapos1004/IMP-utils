@@ -82,6 +82,10 @@ Laurenz <br>
 **Bewertung:** 1,0 (20/20) <br>
 **Feedback:** - *(mit Kommentaren zur allgemeinen Bewertung im pdf)*
 
+Matin <br>
+**Bewertung:** 1,0 (20/20) <br>
+**Feedback:** - *(mit Kommentaren zur allgemeinen Bewertung im pdf)*
+
 Samuel <br>
 **Bewertung:** 1,3 (19/20) <br>
 **Feedback:** Ganz gutes Protokoll, aber bisschen mehr auf Strukturiertheit achten, sodass alle für eine Auswertung benötigten Formeln an einer Stelle stehen und man sie nicht im Protokoll suchen muss. *(mit Kommentaren zur allgemeinen Bewertung im pdf)*
