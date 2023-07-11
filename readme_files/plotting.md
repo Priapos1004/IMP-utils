@@ -111,11 +111,11 @@ When *ERRORBAR_PLOT_MODEL* is not *'none'* or *'weighted_average'*, the x-/y-val
 
 calculation of weighted average *(ERRORBAR_PLOT_MODEL)*:
 
-![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}&space;\bar{y}&space;=&space;\frac{\sum&space;\frac{y_i}{u_{y_i}^2}}{\sum&space;\frac{1}{u_{y_i}^2}})
+$$\bar{y} = \frac{\sum \frac{y_i}{u_{y_i}^2}}{\sum \frac{1}{u_{y_i}^2}}$$
 
 calculation of weighted average error *(ERRORBAR_PLOT_MODEL)*:
 
-![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}&space;u_{\bar{y}}&space;=&space;\frac{1}{\sqrt{\sum&space;\frac{1}{u_{y_i}^2}}})
+$$u_{\bar{y}} = \frac{1}{\sqrt{\sum \frac{1}{u_{y_i}^2}}}$$
 
 calculation of O8_bessel *(ERRORBAR_PLOT_MODEL)*:
 
