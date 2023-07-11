@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from kafe2 import Fit, XYContainer
+from scipy.special import j1
 
 from IMP_utils_py.config.logging import setup_logger
 
@@ -62,6 +63,22 @@ def O11_Rs_Rp_model(alpha_e: float, n1: float, n2: float) -> tuple:
     sqrt_R_s = np.sqrt(np.sin(alpha_e - alpha_g)**2 / np.sin(alpha_e + alpha_g)**2)
     sqrt_R_p = np.sqrt(np.tan(alpha_e - alpha_g)**2 / np.tan(alpha_e + alpha_g)**2)
     return sqrt_R_s, sqrt_R_p
+
+@gin.configurable
+def O8_G(D, lam, L):
+    """
+    - L ist der Abstand zwischen der Lochblende und dem Eintrittsspalt
+
+    - D ist der Durchmesser der Lochblende
+
+    - λ die Wellenlänge des verwendeten Lichts
+    """
+    return np.pi * D/(L * lam)
+
+def O8_bessel_function(x, I0, G, IB = 0.007, x0=8):
+    if x0 in x:
+        return I0 + IB
+    return 4 * I0 * (j1(G * (x - x0))/(G * (x - x0)))**2 +IB
 
 ### helper functions
 def read_data(data_path: str) -> pd.DataFrame:
@@ -235,6 +252,9 @@ def get_model_errorbar(model_type: str, y_column: str) -> callable:
     elif model_type == "O11_Rp":
         model = O11_Rs_Rp_model
         logger.debug(f"selected O11_Rp model ({y_column})")
+    elif model_type == "O8_bessel":
+        model = O8_bessel_function
+        logger.debug(f"selected O8_bessel model ({y_column})")
     elif model_type == "none":
         model = None
         logger.debug(f"no model ({y_column})")
@@ -283,6 +303,7 @@ def errorbar_plot(
     model_type: Union[str, list],
     show_model_error: Union[bool, list],
     extra_log: bool,
+    y_scale: str,
 ):
     """
     @params (str or list[str]):
@@ -293,11 +314,12 @@ def errorbar_plot(
         y_column: column name for y values
         y_plot_label: label for y-plot
         y_error_column: column name for y value errors
-        model_type: 'linear' (y = m*x + n) / 'linear_zero' (y = m*x) / 'constant' (y = n) / 'weighted_average' (y = w_avg) / 'none' (no model will be shown) / 'O11_Rs' or 'O11_Rp' for specific graphs from Experiment O11
+        model_type: 'linear' (y = m*x + n) / 'linear_zero' (y = m*x) / 'constant' (y = n) / 'weighted_average' (y = w_avg) / 'none' (no model will be shown) / 'O11_Rs' or 'O11_Rp' for specific graphs from Experiment O11 / 'O8_bessel' specific graphs from Experiment O8
         min_x_ticks: 'auto' or float/int
         max_x_ticks: 'auto' or float/int
         x_ticks_number: 'auto' or int
         show_model_error: if True, the y error of the model will be shown as light colored area
+        y_scale: can be 'linear' or 'log' for logarithmic scale
 
     @output:
         plot saved in graphic_path and errors in console
@@ -433,6 +455,13 @@ def errorbar_plot(
                 # to suppress warning when model_type = 'constant'
                 with suppress_stdout():
                     my_fit = Fit(xy_data, model)
+                    if model_type[y_idx] == "O8_bessel":
+                        my_fit.limit_parameter("I0", 0, np.inf)
+                        my_fit.limit_parameter("x0", 0, np.inf)
+                        my_fit.limit_parameter("IB", 0, np.inf)
+                        G = O8_G()
+                        logger.info(f"berechnetes G = {G} ({y_column[y_idx]})") # http://people.physik.hu-berlin.de/~schaefer/Grundpraktikum/O8-FraunhoferscheBeugung/O8-FraunhoferscheBeugung.pdf
+                        my_fit.limit_parameter("G", 0, G)
                     my_fit.do_fit()
                 model_params = my_fit.parameter_values
                 model_params_error = my_fit.parameter_errors
@@ -465,6 +494,23 @@ def errorbar_plot(
                     dn = model_params_error[0]
                 logger.info(f"y-Achsenschnitt der Gerade ({y_column[y_idx]}): {n}")
                 logger.info(f"Unsicherheit des y-Achsenschnitt ({y_column[y_idx]}): {dn}")
+            elif model_type[y_idx] == "O8_bessel":
+                a = model_params[0]
+                da = model_params_error[0]
+                b = model_params[1]
+                db = model_params_error[1]
+                c = model_params[2]
+                dc = model_params_error[2]
+                d = model_params[3]
+                dd = model_params_error[3]
+                logger.info(f"I0  ({y_column[y_idx]}): {a}")
+                logger.info(f"Unsicherheit I0 ({y_column[y_idx]}): {da}")
+                logger.info(f"G ({y_column[y_idx]}): {b}")
+                logger.info(f"Unsicherheit G ({y_column[y_idx]}): {db}")
+                logger.info(f"IB ({y_column[y_idx]}): {c}")
+                logger.info(f"Unsicherheit IB ({y_column[y_idx]}): {dc}")
+                logger.info(f"x0 ({y_column[y_idx]}): {d}")
+                logger.info(f"Unsicherheit x0 ({y_column[y_idx]}): {dd}")
 
             # add graphs to plot
             x_intervall = np.linspace(min_length, max_length, 1000)
@@ -473,6 +519,8 @@ def errorbar_plot(
                 ax.plot(x_intervall, model(x_intervall)[0], "--", color=MODEL_COLORS[y_idx % len(MODEL_COLORS)],)
             elif model_type[y_idx] == "O11_Rp":
                 ax.plot(x_intervall, model(x_intervall)[1], "--", color=MODEL_COLORS[y_idx % len(MODEL_COLORS)],)
+            elif model_type[y_idx] == "O8_bessel":
+                ax.plot(x_intervall, model(x_intervall, a, b, c, d), "--", color=MODEL_COLORS[y_idx % len(MODEL_COLORS)],)
             else:
                 # not below zero fit line if decreasing
                 if m < 0:
@@ -529,6 +577,7 @@ def errorbar_plot(
     ax.set_title(title)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
+    ax.set_yscale(y_scale)
     if not all(v is None for v in y_plot_label):
         ax.legend()
 
