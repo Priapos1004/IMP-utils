@@ -30,7 +30,7 @@ LEISTUNGSSPIEGEL_PATH: path to pdf file of agnes Leistungsspiegel
 
 uses weighted average of grades:
 
-![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}&space;grade&space;=&space;\frac{1&space;\cdot&space;5&space;&plus;&space;1&space;\cdot&space;9&space;&plus;&space;2.3&space;\cdot&space;9&space;&plus;&space;2.7&space;\cdot&space;9&space;&plus;&space;1.3&space;\cdot&space;9&space;&plus;&space;1.3&space;\cdot&space;9&space;&plus;&space;2.3&space;\cdot&space;8}{5&plus;9&plus;9&plus;9&plus;9&plus;9&plus;8}) 
+$$grade = \frac{1 \cdot 5  + 1 \cdot 9  + 2.3 \cdot 9  + 2.7 \cdot 9  + 1.3 \cdot 9  + 1.3 \cdot 9  + 2.3 \cdot 8}{5 +9 +9 +9 +9 +9 +8}$$
 
 If you use the command for IMP only the better grade of 
 
