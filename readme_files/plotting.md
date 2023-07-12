@@ -73,6 +73,9 @@ Run the following commands in the terminal (current working directory: `IMP-util
   - `string` if ERRORBAR_PLOT_MAX_XTICKS='auto', the max tick will be the rounded up max x value from the data
   - `float`/`integer` e.g. 125 or 0.65
 
+- ERRORBAR_PLOT_YSCALE: linear or logarithmic scale for y axes
+  - `string` e.g. 'linear' or 'log'
+
 ### function parameter
 
 - ERRORBAR_PLOT_MODEL: choose the model for the linear fit
@@ -80,6 +83,7 @@ Run the following commands in the terminal (current working directory: `IMP-util
   - `list of strings` e.g. ["linear", "constant", "none"]
   - 'linear' *(y = m\*x + n)* / 'linear_zero' *(y = m\*x)* / 'constant' *(y = n)* / 'weighted_average' *(y = w_avg)* / 'none' *(no fit will be created)*
   - additionally, you can plot the theoretical Reflexioncoefficientsgraphs from experiment O11 *(Grundpraktikum)* with 'O11_Rs' and 'O11_Rp' (see [example](https://github.com/Priapos1004/IMP-utils/blob/main/readme_files/plotting_examples.md#O11-plot-example) and special command for this plot)
+  - additionally, you can fit with the besselfunction from experiment O8 *(Grundpraktikum)* with 'O8_bessel' (see [example](https://github.com/Priapos1004/IMP-utils/blob/main/readme_files/plotting_examples.md#O8-plot-example) and special command for this plot)
 
 - ERRORBAR_PLOT_SHOW_MODELERROR: if True, the y-error of the model will be shown as light colored area
   - `boolean` e.g. True
@@ -107,12 +111,21 @@ When *ERRORBAR_PLOT_MODEL* is not *'none'* or *'weighted_average'*, the x-/y-val
 
 calculation of weighted average *(ERRORBAR_PLOT_MODEL)*:
 
-![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}&space;\bar{y}&space;=&space;\frac{\sum&space;\frac{y_i}{u_{y_i}^2}}{\sum&space;\frac{1}{u_{y_i}^2}}) 
+$$\bar{y} = \frac{\sum \frac{y_i}{u_{y_i}^2}}{\sum \frac{1}{u_{y_i}^2}}$$
 
 calculation of weighted average error *(ERRORBAR_PLOT_MODEL)*:
 
-![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}&space;u_{\bar{y}}&space;=&space;\frac{1}{\sqrt{\sum&space;\frac{1}{u_{y_i}^2}}}) 
+$$u_{\bar{y}} = \frac{1}{\sqrt{\sum \frac{1}{u_{y_i}^2}}}$$
 
+calculation of O8_bessel *(ERRORBAR_PLOT_MODEL)*:
+
+$$I(x) = 4I_0 \cdot \left(\frac{J_1(G \cdot (x - x_0))}{G \cdot (x - x_0)}\right)^2 + I_B$$
+
+with J1 bessel-function, x0 position of 0. maximum, I0 & IB as additional fit parameters, and
+
+$$G = \pi \cdot \frac{D}{\lambda \cdot L}$$
+
+with D Lochblendendurchmesser, L Lochblenden-Sensor Abstand, and lambda Wellenlänge des Lasers. (see [source](http://people.physik.hu-berlin.de/~schaefer/Grundpraktikum/O8-FraunhoferscheBeugung/O8-FraunhoferscheBeugung.pdf))
 
 If you input more than 8 y-value column names, the plot colors will not be unique anymore.
 
@@ -143,6 +156,7 @@ ERRORBAR_PLOT_YLABEL = r"Spannung U in V"
 ERRORBAR_PLOT_XTICKS_NUMBER = 11
 ERRORBAR_PLOT_MIN_XTICKS = 0
 ERRORBAR_PLOT_MAX_XTICKS = 125
+ERRORBAR_PLOT_YSCALE = "linear"
 ERRORBAR_PLOT_PLOTLABELS = ["EWG ohne Kondensator", "EWG mit Kondensator", "ZWG ohne Kondensator", "ZWG mit Kondensator"]
 ERRORBAR_PLOT_MODEL = ["linear", "none", "linear", "none"]
 ERRORBAR_PLOT_SHOW_MODELERROR = False

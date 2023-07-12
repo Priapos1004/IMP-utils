@@ -25,12 +25,49 @@ ERRORBAR_PLOT_YLABEL = "Volumen V in $cm^3$"
 ERRORBAR_PLOT_XTICKS_NUMBER = 8
 ERRORBAR_PLOT_MIN_XTICKS = 0
 ERRORBAR_PLOT_MAX_XTICKS = "auto"
+ERRORBAR_PLOT_YSCALE = "linear"
 ERRORBAR_PLOT_PLOTLABELS = ""
 ERRORBAR_PLOT_MODEL = "none"
 ERRORBAR_PLOT_SHOW_MODELERROR = False
 ERRORBAR_PLOT_EXTRA_LOG = False
 ```
 </details>
+
+### O8 plot example
+
+<p align="left">
+  <img src="./images/plot_O8.png" width="400" title="O8 plot example" alt="O8 plot example">
+</p>
+
+<details><summary>parameters</summary>
+
+``` // opening
+RAW_DATA_PATH = "data/Grundpraktikum/O8_data.csv"
+ERRORBAR_PLOT_PATH = "data/graphics/plot_O8.png"
+ERRORBAR_PLOT_X_COLUMN = "x"
+ERRORBAR_PLOT_X_ERROR_COLUMN = "u_x"
+ERRORBAR_PLOT_Y_COLUMN = "I"
+ERRORBAR_PLOT_Y_ERROR_COLUMN = "u_I"
+ERRORBAR_PLOT_TITLE = ""
+ERRORBAR_PLOT_XLABEL = "Position x in mm"
+ERRORBAR_PLOT_YLABEL = "Stromstärke I in nA"
+ERRORBAR_PLOT_XTICKS_NUMBER = "auto"
+ERRORBAR_PLOT_MIN_XTICKS = "auto"
+ERRORBAR_PLOT_MAX_XTICKS = "auto"
+ERRORBAR_PLOT_YSCALE = "log"
+ERRORBAR_PLOT_PLOTLABELS = ""
+ERRORBAR_PLOT_MODEL = "O8_bessel"
+ERRORBAR_PLOT_SHOW_MODELERROR = False
+ERRORBAR_PLOT_EXTRA_LOG = False
+```
+</details>
+
+**NOTE:** all lengths should have the unit *mm*.
+
+with command (replace the gin_param values with your D (Lochblendendurchmesser), L (Abstand Lochblende-Sensor), and lam (Wellenlänge des Lasers)):
+```
+python IMP_utils_py/cli.py --mode=errorbar-plot --gin_file=IMP_utils_py/config/plotting.gin --gin_param O8_G.D=0.3511 --gin_param O8_G.L=754 --gin_param O8_G.lam=0.0006328
+```
 
 ### O11 plot example
 
@@ -53,6 +90,7 @@ ERRORBAR_PLOT_YLABEL = r"Wurzel des Reflexionskoeffizienten $\sqrt{R}$"
 ERRORBAR_PLOT_XTICKS_NUMBER = 17
 ERRORBAR_PLOT_MIN_XTICKS = "auto"
 ERRORBAR_PLOT_MAX_XTICKS = "auto"
+ERRORBAR_PLOT_YSCALE = "linear"
 ERRORBAR_PLOT_PLOTLABELS = [r"$\sqrt{R_p}$", r"$\sqrt{R_s}$"]
 ERRORBAR_PLOT_MODEL = ["O11_Rp", "O11_Rs"]
 ERRORBAR_PLOT_SHOW_MODELERROR = False
@@ -86,6 +124,7 @@ ERRORBAR_PLOT_YLABEL = "korrigierter Volumen-Druck $pV_{korr}$ in Bar$\cdot cm^3
 ERRORBAR_PLOT_XTICKS_NUMBER = 8
 ERRORBAR_PLOT_MIN_XTICKS = 0
 ERRORBAR_PLOT_MAX_XTICKS = "auto"
+ERRORBAR_PLOT_YSCALE = "linear"
 ERRORBAR_PLOT_PLOTLABELS = ""
 ERRORBAR_PLOT_MODEL = "constant"
 ERRORBAR_PLOT_SHOW_MODELERROR = False
@@ -114,6 +153,7 @@ ERRORBAR_PLOT_YLABEL = "Widerstand R$_1$ in Ohm"
 ERRORBAR_PLOT_XTICKS_NUMBER = "auto"
 ERRORBAR_PLOT_MIN_XTICKS = "auto"
 ERRORBAR_PLOT_MAX_XTICKS = "auto"
+ERRORBAR_PLOT_YSCALE = "linear"
 ERRORBAR_PLOT_PLOTLABELS = ""
 ERRORBAR_PLOT_MODEL = "weighted_average"
 ERRORBAR_PLOT_SHOW_MODELERROR = True
@@ -142,6 +182,7 @@ ERRORBAR_PLOT_YLABEL = "$r_k^2$ in $mm^2$"
 ERRORBAR_PLOT_XTICKS_NUMBER = "auto"
 ERRORBAR_PLOT_MIN_XTICKS = 0
 ERRORBAR_PLOT_MAX_XTICKS = "auto"
+ERRORBAR_PLOT_YSCALE = "linear"
 ERRORBAR_PLOT_PLOTLABELS = ""
 ERRORBAR_PLOT_MODEL = "linear"
 ERRORBAR_PLOT_SHOW_MODELERROR = False
@@ -170,6 +211,7 @@ ERRORBAR_PLOT_YLABEL = "Frequenzen $f_n$ in Hz für 1kg/2kg/3kg"
 ERRORBAR_PLOT_XTICKS_NUMBER = 8
 ERRORBAR_PLOT_MIN_XTICKS = 0
 ERRORBAR_PLOT_MAX_XTICKS = "auto"
+ERRORBAR_PLOT_YSCALE = "linear"
 ERRORBAR_PLOT_PLOTLABELS = ["1kg", "2kg", "3kg"]
 ERRORBAR_PLOT_MODEL = "linear"
 ERRORBAR_PLOT_SHOW_MODELERROR = False
@@ -198,6 +240,7 @@ ERRORBAR_PLOT_YLABEL = "Spannung U in V"
 ERRORBAR_PLOT_XTICKS_NUMBER = "auto"
 ERRORBAR_PLOT_MIN_XTICKS = 0
 ERRORBAR_PLOT_MAX_XTICKS = 0.2
+ERRORBAR_PLOT_YSCALE = "linear"
 ERRORBAR_PLOT_PLOTLABELS = ["Stromfehlerschaltung", "Spannungsfehlerschaltung"]
 ERRORBAR_PLOT_MODEL = "linear"
 ERRORBAR_PLOT_SHOW_MODELERROR = False
@@ -226,6 +269,7 @@ ERRORBAR_PLOT_YLABEL = "reziproke magnetischen Flussdichte $1/B$ in $1/T$"
 ERRORBAR_PLOT_XTICKS_NUMBER = "auto"
 ERRORBAR_PLOT_MIN_XTICKS = 0
 ERRORBAR_PLOT_MAX_XTICKS = "auto"
+ERRORBAR_PLOT_YSCALE = "linear"
 ERRORBAR_PLOT_PLOTLABELS = ["$U_A = 3000 V$", "$U_A = 4000 V$", "$U_A = 5000 V$"]
 ERRORBAR_PLOT_MODEL = "linear_zero"
 ERRORBAR_PLOT_SHOW_MODELERROR = False
@@ -254,6 +298,7 @@ ERRORBAR_PLOT_YLABEL = "Spannung U in V"
 ERRORBAR_PLOT_XTICKS_NUMBER = 11
 ERRORBAR_PLOT_MIN_XTICKS = 0
 ERRORBAR_PLOT_MAX_XTICKS = 125
+ERRORBAR_PLOT_YSCALE = "linear"
 ERRORBAR_PLOT_PLOTLABELS = ["EWG ohne Kondensator", "EWG mit Kondensator", "ZWG ohne Kondensator", "ZWG mit Kondensator"]
 ERRORBAR_PLOT_MODEL = ["linear", "none", "linear", "none"]
 ERRORBAR_PLOT_SHOW_MODELERROR = False
