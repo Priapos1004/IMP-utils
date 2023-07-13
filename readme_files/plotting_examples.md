@@ -69,6 +69,8 @@ with command (replace the gin_param values with your D (Lochblendendurchmesser),
 python IMP_utils_py/cli.py --mode=errorbar-plot --gin_file=IMP_utils_py/config/plotting.gin --gin_param O8_G.D=0.3511 --gin_param O8_G.L=754 --gin_param O8_G.lam=0.0006328
 ```
 
+It is possible that also with correct data the plot is not ideal because of some hardcoded initial search parameters. If this happens, please write an issue and I will look into this.
+
 ### O11 plot example
 
 <p align="left">
