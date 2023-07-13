@@ -75,7 +75,7 @@ def O8_G(D, lam, L):
     """
     return np.pi * D/(L * lam)
 
-def O8_bessel_function(x, I0, G, IB = 0.007, x0=8):
+def O8_bessel_function(x, I0, G, IB = 0.008, x0=8):
     if x0 in x:
         return I0 + IB
     return 4 * I0 * (j1(G * (x - x0))/(G * (x - x0)))**2 +IB
