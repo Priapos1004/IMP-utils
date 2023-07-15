@@ -83,7 +83,7 @@ Run the following commands in the terminal (current working directory: `IMP-util
   - `list of strings` e.g. ["linear", "constant", "none"]
   - 'linear' *(y = m\*x + n)* / 'linear_zero' *(y = m\*x)* / 'constant' *(y = n)* / 'weighted_average' *(y = w_avg)* / 'none' *(no fit will be created)*
   - additionally, you can plot the theoretical Reflexioncoefficientsgraphs from experiment O11 *(Grundpraktikum)* with 'O11_Rs' and 'O11_Rp' (see [example](https://github.com/Priapos1004/IMP-utils/blob/main/readme_files/plotting_examples.md#O11-plot-example) and special command for this plot)
-  - additionally, you can fit with the besselfunction from experiment O8 *(Grundpraktikum)* with 'O8_bessel' (see [example](https://github.com/Priapos1004/IMP-utils/blob/main/readme_files/plotting_examples.md#O8-plot-example) and special command for this plot)
+  - additionally, you can fit with the besselfunction from experiment O8 *(Grundpraktikum)* with 'O8_bessel' (see [example](https://github.com/Priapos1004/IMP-utils/blob/main/readme_files/plotting_examples.md#O8-plot-example))
 
 - ERRORBAR_PLOT_SHOW_MODELERROR: if True, the y-error of the model will be shown as light colored area
   - `boolean` e.g. True
