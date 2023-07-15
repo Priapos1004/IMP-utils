@@ -18,6 +18,14 @@ Samuel <br>
 **Bewertung:** 1,3 (19/20) <br>
 **Feedback:** falsche Rundung *(mit Kommentaren zur allgemeinen Bewertung im pdf)*
 
+## O8 Gleichrichterschaltungen
+
+Praktikumsleiter: Dr. Hackbarth
+
+Samuel <br>
+**Bewertung:** *noch ausstehend* <br>
+**Feedback:** *noch ausstehend*
+
 ## O10 Linsensysteme
 
 Praktikumsleiter: Dr. Andreas Opitz
