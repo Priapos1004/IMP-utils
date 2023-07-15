@@ -64,17 +64,6 @@ def O11_Rs_Rp_model(alpha_e: float, n1: float, n2: float) -> tuple:
     sqrt_R_p = np.sqrt(np.tan(alpha_e - alpha_g)**2 / np.tan(alpha_e + alpha_g)**2)
     return sqrt_R_s, sqrt_R_p
 
-@gin.configurable
-def O8_G(D, lam, L):
-    """
-    - L ist der Abstand zwischen der Lochblende und dem Eintrittsspalt
-
-    - D ist der Durchmesser der Lochblende
-
-    - λ die Wellenlänge des verwendeten Lichts
-    """
-    return np.pi * D/(L * lam)
-
 def O8_bessel_function(x, I0, G, IB = 0.008, x0=8):
     if x0 in x:
         return I0 + IB
@@ -459,9 +448,7 @@ def errorbar_plot(
                         my_fit.limit_parameter("I0", 0, np.inf)
                         my_fit.limit_parameter("x0", 0, np.inf)
                         my_fit.limit_parameter("IB", 0, np.inf)
-                        G = O8_G()
-                        logger.info(f"berechnetes G = {G} ({y_column[y_idx]})") # http://people.physik.hu-berlin.de/~schaefer/Grundpraktikum/O8-FraunhoferscheBeugung/O8-FraunhoferscheBeugung.pdf
-                        my_fit.limit_parameter("G", 0, G)
+                        my_fit.limit_parameter("G", 0, 2) # just a value that worked good
                     my_fit.do_fit()
                 model_params = my_fit.parameter_values
                 model_params_error = my_fit.parameter_errors
