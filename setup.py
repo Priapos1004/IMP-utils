@@ -27,7 +27,7 @@ setup(
         "iminuit",  # better performance with c++ library for kafe2
         "openpyxl",  # needed for pandas read_excel
         "pdfplumber",  # extract text from pdf file
-        "tabula-py",  # extract tables from pdf file
+        "tabula-py==2.7.0",  # extract tables from pdf file (Java error if not fixed version)
     ],
     extras_require={
         "test": ["pytest", "pylint!=2.5.0", "isort", "refurb", "black"],
